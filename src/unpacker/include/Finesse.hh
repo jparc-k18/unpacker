@@ -33,7 +33,7 @@ namespace hddaq
     static const uint32_t k_HEADER_MAGIC         = 0xffaa0000U;
     static const uint32_t k_HEADER_MAGIC1        = 0xffaa0200U;
     static const uint32_t k_HEADER_MAGIC2        = 0xffaa0400U;
-    static const uint32_t k_HEADER_MAGIC3        = 0xffea0400U;
+    static const uint32_t k_HEADER_MAGIC3        = 0xffea0000U;
     static const uint32_t k_TRAILER_masked       = 0xff550000U;
     static const uint32_t k_LOCAL_TAG_mask       = 0xffffff00U;
     static const uint32_t k_LOCAL_TAG_shift      = 8U;
