@@ -48,6 +48,7 @@ Finesse::check_data_format()
       && k_HEADER_MAGIC  != m_header->m_magic
       && k_HEADER_MAGIC1 != m_header->m_magic
       && k_HEADER_MAGIC2 != m_header->m_magic
+      && k_HEADER_MAGIC3 != m_header->m_magic
       ){
     m_error_state.set(defines::k_header_bit);
     cout << "#E Finesse::check_data_format\n";
