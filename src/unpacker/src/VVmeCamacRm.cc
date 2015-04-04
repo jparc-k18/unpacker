@@ -23,6 +23,7 @@ VVmeCamacRm::VVmeCamacRm(const unpacker_type& type)
   : VmeModule(type),
     m_data(0)
 {
+
 }
 
 //______________________________________________________________________________

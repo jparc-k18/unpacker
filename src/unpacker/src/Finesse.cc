@@ -145,7 +145,9 @@ Finesse::update_tag()
 // 	    << " s = " << tag.m_spill
 // 	    << std::endl;
 
-  m_has_tag.set();
+//  m_has_tag.set();
+  m_has_tag.set(k_event);
+  m_has_tag.set(k_spill);
   return;
 }
 

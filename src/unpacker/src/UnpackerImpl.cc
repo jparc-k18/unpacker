@@ -38,9 +38,11 @@ namespace hddaq
       //   cout << "#D check_mismatch(private)  " << m_name << std::endl;
       bool ret = true;
       const int n = tag.size();
-      for (int i=0; i<n; ++i)
+      for (int i=0; i<n; ++i){
 	ret &= (tag[0] == tag[i]);
-
+	//	if(!ret)std::cout << tag[0] << " " << tag[i] << std::endl;
+      }
+      
       return ret;
     }
     
@@ -159,7 +161,11 @@ UnpackerImpl::check_mismatch()
       const Tag& cmax = child->get_tag(k_tag_max);
       if (child->has_tag(k_local)){
 	// 	max.m_local = std::min(max.m_local, cmax.m_local);
-	max_local = std::min(max.m_local, cmax.m_local);
+	//	max_local = std::min(max.m_local, cmax.m_local);
+	int tmp_max_local = std::min(max.m_local, cmax.m_local);
+	if(max_local > tmp_max_local){
+	  max_local = tmp_max_local;
+	}
       }
 
       if (child->has_tag(k_event)){
@@ -223,8 +229,9 @@ UnpackerImpl::check_mismatch()
     {
       if (!check_diff(child_local))
 	{
-// 	  cerr << "\n#E " << m_name << " detects disagreement of local tag" 
-// 		 << std::endl;
+	  // 	  cerr << "\n#E " << m_name << " detects disagreement of local tag" 
+	  //	       << std::endl;
+	  
 	  m_tag[k_tag_diff].back().m_local = tag.m_local;
 	  m_error_state.set(defines::k_local_tag_bit);
 	}

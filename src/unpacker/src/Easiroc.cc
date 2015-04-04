@@ -115,7 +115,7 @@ void Easiroc::update_tag()
     = ((m_header->m_event_counter >> k_EVCOUNTER_SHIFT) & k_EVCOUNTER_MASK);
   unsigned int ev_tag
     = m_header->m_event_counter & k_EVTAG_MASK;
-  if(ev_tag != ((ev_counter-1) & k_EVTAG_MASK)){
+  if(ev_tag != ((ev_counter+1) & k_EVTAG_MASK)){
     m_error_state.set(defines::k_event_tag_bit);
   }  
   
