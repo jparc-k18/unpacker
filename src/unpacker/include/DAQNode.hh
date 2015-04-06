@@ -35,7 +35,7 @@ namespace hddaq
 	k_node_id,
 	k_node_type,
 	k_number_of_blocks,
-	k_device_type,
+	k_unix_time,
 	k_n_node_header
       };
     
@@ -48,7 +48,7 @@ namespace hddaq
       unsigned int m_node_id;
       unsigned int m_node_type;
       unsigned int m_number_of_blocks;
-      unsigned int m_device_type;
+      unsigned int m_unix_time;
     };
 
     static const unsigned int k_header_size
@@ -67,6 +67,8 @@ namespace hddaq
   protected:
     virtual void check_data_format();
     virtual void do_check();
+    virtual unsigned int
+                 get_header(int data_type) const;
     virtual void print_header() const;
     void         print_node_header() const;
     virtual void print_trailer() const;

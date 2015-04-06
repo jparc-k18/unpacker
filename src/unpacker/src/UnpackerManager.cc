@@ -23,6 +23,7 @@
 #include "lexical_cast.hh"
 #include "UnpackerConfig.hh"
 #include "UnpackerXMLReadDigit.hh"
+#include "UnpackerXMLChannelMap.hh"
 #include "EventReader.hh"
 #include "filesystem_util.hh"
 
@@ -490,6 +491,21 @@ UnpackerManager::get_counter() const
 
 //______________________________________________________________________________
 int
+UnpackerManager::get_fe_id(const char* name) const
+{
+  std::string name_str = name;
+  return get_fe_id(name_str);
+}
+
+//______________________________________________________________________________
+int
+UnpackerManager::get_fe_id(const std::string& name) const
+{
+  return GConfig::get_instance().get_channel_map().get_fe_id(name);
+}
+
+//______________________________________________________________________________
+int
 UnpackerManager::get_device_id(const char* name) const
 {
   std::string name_str = name;
@@ -623,6 +639,25 @@ int
 UnpackerManager::get_max_loop() const
 {
   return m_max_loop;
+}
+
+//______________________________________________________________________________
+unsigned int
+UnpackerManager::get_node_header(int node_id, int header_data_type) const
+{
+  Unpacker* parent = get_root();
+  Unpacker* result = NULL;
+  result = search_fe(parent, node_id);
+
+  if(result && result->is_node()){
+    return result->get_header(header_data_type);
+  }else{
+    std::cout << "#E UnpackerManager::get_node_info\n";
+    std::cout << std::hex
+	      << " No such node is found : 0x" << node_id
+	      << std::dec << std::endl;
+    return 0;
+  }
 }
 
 //______________________________________________________________________________

@@ -82,6 +82,14 @@ DAQNode::do_check()
 }
 
 //______________________________________________________________________________
+unsigned int
+DAQNode::get_header(int data_type) const
+{
+  unsigned int* ptr = reinterpret_cast<unsigned int*>(m_node_header);
+  return *(ptr + data_type);
+}
+
+//______________________________________________________________________________
 void
 DAQNode::print_header(const Header* h)
 {
@@ -102,7 +110,7 @@ DAQNode::print_header(const Header* h)
        << " node id          = " << h->m_node_id << "\n"
        << " node type        = " << h->m_node_type << "\n"
        << " number of blocks = " << h->m_number_of_blocks << "\n"
-       << " device_type      = " << h->m_device_type << "\n"
+       << " unix_time        = " << h->m_unix_time << "\n"
        << std::dec
        << std::endl;
   return;
@@ -131,7 +139,7 @@ DAQNode::print_header() const
        << " node id          = " << m_node_header->m_node_id << "\n"
        << " node type        = " << m_node_header->m_node_type << "\n"
        << " number of blocks = " << m_node_header->m_number_of_blocks << "\n"
-       << " device_type      = " << m_node_header->m_device_type << "\n"
+       << " unix_time        = " << m_node_header->m_unix_time << "\n"
        << std::dec
        << std::endl;
   return;

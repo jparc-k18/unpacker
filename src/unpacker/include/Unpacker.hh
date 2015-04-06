@@ -79,6 +79,7 @@ namespace hddaq
     unsigned int         get_entries(unsigned int ch, 
 				     unsigned int data_type) const;
     const error_state_t& get_error_state();
+    unsigned int         get_header(int data_type) const;
     uint64_t             get_id() const;
     const std::string&   get_name() const;
     Unpacker*            get_parent() const;

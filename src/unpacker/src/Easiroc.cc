@@ -115,16 +115,16 @@ void Easiroc::update_tag()
     = ((m_header->m_event_counter >> k_EVCOUNTER_SHIFT) & k_EVCOUNTER_MASK);
   unsigned int ev_tag
     = m_header->m_event_counter & k_EVTAG_MASK;
-  if(ev_tag != ((ev_counter+1) & k_EVTAG_MASK)){
-    m_error_state.set(defines::k_event_tag_bit);
-  }  
+  //  if(ev_tag != ((ev_counter+1) & k_EVTAG_MASK)){
+  //    m_error_state.set(defines::k_event_tag_bit);
+  //  }  
   
   Tag& tag = m_tag[k_tag_current].back();
   tag.m_local = ev_counter;
   tag.m_event = ev_tag;
 
   m_has_tag.set(k_local);
-  //  m_has_tag.set(k_event);
+  m_has_tag.set(k_event);
 }
 
   }

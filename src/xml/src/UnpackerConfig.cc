@@ -85,6 +85,13 @@ UnpackerConfig::get_digit_info() const
 }
 
 //______________________________________________________________________________
+const UnpackerConfig::ChannelMap&
+UnpackerConfig::get_channel_map() const
+{
+  return *(m_channel_map);
+}
+
+//______________________________________________________________________________
 const std::vector<std::pair<int, int> >&
 UnpackerConfig::get_run_range() const
 {

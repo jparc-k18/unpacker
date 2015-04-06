@@ -112,6 +112,8 @@ namespace hddaq
 
     virtual const std::map<std::string, int>&
                  get_data_id() const;
+    virtual unsigned int 
+    get_header(int data_type) const {return 0;};
     virtual bool is_related(int device_id, int plane_id=-1);
     virtual void reset();
     virtual void resize_fe_data();

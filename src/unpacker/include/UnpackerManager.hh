@@ -127,12 +127,16 @@ namespace hddaq
 			   unsigned int ch,
 			   unsigned int data_type=0,
 			   unsigned int hit_id=0) const;
+
+
     void            get_buffer(const std::vector<uint64_t>& fe_id,
 			       iterator& begin,
 			       iterator& end) const;
     iterator        get_buffer_begin(const std::vector<uint64_t>& fe_id) const;
     iterator        get_buffer_end(const std::vector<uint64_t>& fe_id) const;
     unsigned int    get_counter() const;
+    int             get_fe_id(const char* fe_name) const;
+    int             get_fe_id(const std::string& fe_name) const;
     int             get_device_id(const char* device_name) const;
     int             get_device_id(const std::string& device_name) const;
     int             get_plane_id(const char* device_name,
@@ -156,6 +160,7 @@ namespace hddaq
     fifo_t::size_type get_fifo_entries() const;
     fifo_t::size_type get_fifo_length() const;
     int             get_max_loop() const;
+    unsigned int    get_node_header(int node_id, int header_data_type) const;
     Unpacker*       get_root() const;
     void            initialize();
     bool            is_data_ready();

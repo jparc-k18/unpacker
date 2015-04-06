@@ -566,6 +566,13 @@ Unpacker::get_error_state()
 }
 
 //______________________________________________________________________________
+unsigned int
+Unpacker::get_header(int data_type) const
+{
+  return m_impl->get_header(data_type);
+}
+
+//______________________________________________________________________________
 uint64_t 
 Unpacker::get_id() const
 {

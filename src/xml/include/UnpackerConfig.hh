@@ -48,7 +48,8 @@ namespace hddaq
       void hoge(const std::string& arg="") const;
       const std::string&
            get_control_param(const std::string& key) const;
-      const DigitInfo& get_digit_info() const;
+      const DigitInfo&  get_digit_info() const;
+      const ChannelMap& get_channel_map() const;
       const std::vector<std::pair<int, int> >& 
            get_run_range() const;
       void initialize(DigitList& device_list,

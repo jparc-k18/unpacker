@@ -162,7 +162,7 @@ UnpackerImpl::check_mismatch()
       if (child->has_tag(k_local)){
 	// 	max.m_local = std::min(max.m_local, cmax.m_local);
 	//	max_local = std::min(max.m_local, cmax.m_local);
-	int tmp_max_local = std::min(max.m_local, cmax.m_local);
+	unsigned int tmp_max_local = std::min(max.m_local, cmax.m_local);
 	if(max_local > tmp_max_local){
 	  max_local = tmp_max_local;
 	}
