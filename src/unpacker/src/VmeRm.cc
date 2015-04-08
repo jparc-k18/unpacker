@@ -42,7 +42,7 @@ VmeRm::check_data_format()
     {
       cerr << "\n#E " << m_type << " " << m_name
 	   << " serial link was down" << std::endl;
-      m_error_state.set(defines::k_header_bit);
+      //      m_error_state.set(defines::k_header_bit);
     }
 
   // if (m_error_state[defines::k_header_bit])

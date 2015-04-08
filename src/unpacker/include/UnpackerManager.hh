@@ -88,9 +88,10 @@ namespace hddaq
 				 int ma=-1) const; 
     bool            empty() const;
     bool            eof() const;
-    const Device&   find(unsigned int device_id) const;
+
     const Device&   find(const char* name) const;       // char*
     const Device&   find(const std::string& name) const;// std::string
+    const Device&   find(unsigned int device_id) const; // unsigned int
     const Plane&    find(unsigned int device_id,
 			 unsigned int plane_id) const;
     const Plane&    find(const char* device_name,       // char*
