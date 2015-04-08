@@ -646,6 +646,10 @@ unsigned int
 UnpackerManager::get_node_header(int node_id, int header_data_type) const
 {
   Unpacker* parent = get_root();
+  if(parent->get_id() == node_id){
+    return parent->get_header(header_data_type);
+  }
+
   Unpacker* result = NULL;
   result = search_fe(parent, node_id);
 
