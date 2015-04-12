@@ -77,8 +77,10 @@ namespace hddaq
     bool                 m_is_decode_mode;
     bool                 m_is_unpack_mode;
     int                  m_run_number;
-    std::vector<unsigned long long int>   m_sec;
-    std::vector<unsigned long long int>   m_nsec;
+    std::vector<unsigned long long int> m_sec;
+    std::vector<unsigned long long int> m_nsec;
+
+    std::vector<unsigned int> m_fe_info;
 
     static bool         gm_is_esc_on;
     static check_mode_t gm_check_mode;
@@ -113,7 +115,10 @@ namespace hddaq
     virtual const std::map<std::string, int>&
                  get_data_id() const;
     virtual unsigned int 
+    get_fe_info(int data_type) const {return 0;};
+    virtual unsigned int 
     get_header(int data_type) const {return 0;};
+    virtual bool is_ready();
     virtual bool is_related(int device_id, int plane_id=-1);
     virtual void reset();
     virtual void resize_fe_data();

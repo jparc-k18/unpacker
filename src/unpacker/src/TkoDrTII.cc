@@ -39,6 +39,8 @@ TkoDrTII::decode()
 //       hoge();
 //       cout << " ch = " << ch << ", val = " << value << std::endl;
       fill(ch, 0,value);
+
+      ++m_fe_info[k_n_decoded]; 
     }
   return;
 }

@@ -208,6 +208,10 @@ void
 UnpackerManager::dump_data_fe(int node_id, int address, int ma) const
 {
   Unpacker* parent = get_root();
+  if((int)parent->get_id() == node_id){
+    return parent->dump_data(defines::k_hex);
+  }
+
   Unpacker* result = NULL;
   result = search_fe(parent, node_id);
   if(address != -1 && result){
@@ -498,6 +502,42 @@ UnpackerManager::get_fe_id(const char* name) const
 }
 
 //______________________________________________________________________________
+unsigned int
+UnpackerManager::get_fe_info(int node_id, int address, int ma,
+			     int data_type) const
+{
+  Unpacker* parent = get_root();
+  if((int)parent->get_id() == node_id){
+    return parent->get_fe_info(data_type);
+  }
+
+  Unpacker* result = NULL;
+  result = search_fe(parent, node_id);
+  if(address != -1 && result){
+    parent = result;
+    result = search_fe(parent, address);
+    if(ma != -1 && result){
+      parent = result;
+      result = search_fe(parent, ma);
+    }
+  }
+
+  if(result){
+    return result->get_fe_info(data_type);
+  }else{
+    // std::cout << "#E UnpackerManager::get_fe_info\n";
+    // std::cout << std::hex
+    // 	      << " Frond-end with node: " << node_id
+    // 	      << ", address: " << address
+    // 	      << ", ma: " << ma << "\n"
+    // 	      << " is not found"
+    // 	      << std::dec << std::endl;
+  }
+
+  return 0;
+}
+
+//______________________________________________________________________________
 int
 UnpackerManager::get_fe_id(const std::string& name) const
 {
@@ -646,14 +686,18 @@ unsigned int
 UnpackerManager::get_node_header(int node_id, int header_data_type) const
 {
   Unpacker* parent = get_root();
-  if(parent->get_id() == node_id){
+  if((int)parent->get_id() == node_id){
     return parent->get_header(header_data_type);
   }
 
   Unpacker* result = NULL;
   result = search_fe(parent, node_id);
 
-  if(result && result->is_node()){
+  if(true 
+     && result
+     && result->is_ready()
+     && result->is_node()
+     ){
     return result->get_header(header_data_type);
   }else{
     std::cout << "#E UnpackerManager::get_node_info\n";

@@ -360,6 +360,7 @@ void
 UnpackerImpl::clear()
 {
   // this method is called at the beginning of 1 event 
+  for(int i = 0; i<(int)m_fe_info.size(); ++i){ m_fe_info[i] = 0;}
   return;
 }
 
@@ -494,6 +495,15 @@ UnpackerImpl::get_data_id() const
 {
   static std::map<std::string, int> s_data_ref;
   return s_data_ref;
+}
+
+//______________________________________________________________________________
+bool
+UnpackerImpl::is_ready()
+{
+  bool ret = true;
+  if(m_data_first == m_data_last){ ret = false; }
+  return ret;
 }
 
 //______________________________________________________________________________

@@ -79,6 +79,7 @@ namespace hddaq
     unsigned int         get_entries(unsigned int ch, 
 				     unsigned int data_type) const;
     const error_state_t& get_error_state();
+    unsigned int         get_fe_info(int data_type) const;
     unsigned int         get_header(int data_type) const;
     uint64_t             get_id() const;
     const std::string&   get_name() const;
@@ -97,6 +98,7 @@ namespace hddaq
     bool                 is_decode_mode() const;
     bool                 is_esc_on() const;
     bool                 is_good();
+    bool                 is_ready() const;
     bool                 is_related(int device_id,
 				    int plane_id=-1) const;
     bool                 is_node() const;

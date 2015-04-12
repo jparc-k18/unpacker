@@ -31,10 +31,15 @@ namespace hddaq
       virtual ~Tko();
 
     protected:
-      virtual void decode();
-      virtual void resize_fe_data();
+      enum TkoInfo{
+	k_n_decoded, 
+	k_size_TkoInfo
+      };
+
+      virtual void         decode();
+      virtual unsigned int get_fe_info(int data_type) const;
+      virtual void         resize_fe_data();
 //       virtual void set_data(unsigned int);
-      
     };
 
   }

@@ -138,6 +138,11 @@ namespace hddaq
     unsigned int    get_counter() const;
     int             get_fe_id(const char* fe_name) const;
     int             get_fe_id(const std::string& fe_name) const;
+    unsigned int    get_fe_info(int node_id,
+				int address = -1,
+				int ma      = -1,
+				int data_type = 0
+				) const;
     int             get_device_id(const char* device_name) const;
     int             get_device_id(const std::string& device_name) const;
     int             get_plane_id(const char* device_name,

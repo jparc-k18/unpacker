@@ -139,26 +139,25 @@ VmeMaster::unpack()
 	}
       else
 	{
-//       cout << "#D VmeMaster::unpack()\n"
-// 	     << " vme address = " << std::hex << vme_address
-// 	     << " data size = " << data_size
-// 	     << " name = " << name
-// 	     << " rest = " << rest
-// 	     << std::endl;
+	  //      cout << "#D VmeMaster::unpack()\n"
+	  //	     << " vme address = " << std::hex << vme_address
+	  //	     << " data size = " << data_size
+	//	     << " name = " << name
+	  //	     << " rest = " << rest
+	  //	     << std::endl;
 	  child->set_data_size(data_size);
 	  child->set_data(vme_module_data_first, vme_module_data_last);
 	}
       rest -= data_size;
       vme_module_data_first += data_size;
-//       cout << "#D master rest = " << rest << std::endl;
+      //      cout << "#D master rest = " << rest << std::endl;
     }
 
   for (std::map<uint64_t, Unpacker*>::iterator i = m_child_list.begin(),
        iEnd=m_child_list.end(); i!=iEnd; ++i)
     {
       Unpacker* child = i->second;
-      if (child)
-	child->unpack();
+      if (child && 0 != child->get_data_size()) child->unpack();
     }
 
   if (0U!=rest)

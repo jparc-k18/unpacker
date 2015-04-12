@@ -85,6 +85,11 @@ DAQNode::do_check()
 unsigned int
 DAQNode::get_header(int data_type) const
 {
+  if(data_type >= k_n_node_header){
+    cerr << "\n#E DAQNode::get_header invalid data_type: " 
+	 << data_type << std::endl;
+    return 0;
+  }
   unsigned int* ptr = reinterpret_cast<unsigned int*>(m_node_header);
   return *(ptr + data_type);
 }

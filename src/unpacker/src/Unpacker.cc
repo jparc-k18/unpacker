@@ -567,6 +567,13 @@ Unpacker::get_error_state()
 
 //______________________________________________________________________________
 unsigned int
+Unpacker::get_fe_info(int data_type) const
+{
+  return m_impl->get_fe_info(data_type);
+}
+
+//______________________________________________________________________________
+unsigned int
 Unpacker::get_header(int data_type) const
 {
   return m_impl->get_header(data_type);
@@ -692,6 +699,13 @@ Unpacker::is_good()
 {
   get_error_state();
   return m_impl->m_error_state[defines::k_good_bit];
+}
+
+//______________________________________________________________________________
+bool
+Unpacker::is_ready() const
+{
+  return m_impl->is_ready();
 }
 
 //______________________________________________________________________________

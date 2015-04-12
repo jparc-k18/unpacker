@@ -20,6 +20,7 @@ namespace hddaq
 Tko::Tko(const unpacker_type& type)
   : UnpackerImpl(type)
 {
+  m_fe_info.resize(k_size_TkoInfo);
 }      
 
 //______________________________________________________________________________
@@ -43,8 +44,23 @@ Tko::decode()
       unsigned int sa    = (data & k_SMP_SA_mask) >> k_SMP_SA_shift;
       unsigned int value = data & k_SMP_DATA_mask;
       fill(sa, 0, value);
+      
+      ++m_fe_info[k_n_decoded];
     }
   return;
+}
+
+//______________________________________________________________________________
+unsigned int
+Tko::get_fe_info(int data_type) const
+{
+  if(data_type >= k_size_TkoInfo){
+    cerr << "\n#E Tko::get_fe_info invaid data_type: "
+	 << data_type << std::endl;
+    return 0;
+  }
+
+  return m_fe_info[data_type];
 }
 
 //______________________________________________________________________________
