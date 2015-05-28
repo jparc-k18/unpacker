@@ -37,7 +37,7 @@ TkoDrTII::decode()
 //      unsigned int ch    = 31 - (((*i) & k_CH_mask) >> k_CH_shift);
       unsigned int value = ((*i)& k_DATA_mask);
 //       hoge();
-//       cout << " ch = " << ch << ", val = " << value << std::endl;
+//      cout << " ch = " << ch << ", val = " << value << std::endl;
       fill(ch, 0,value);
 
       ++m_fe_info[k_n_decoded]; 

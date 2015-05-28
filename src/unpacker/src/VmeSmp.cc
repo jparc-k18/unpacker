@@ -33,10 +33,10 @@ VmeSmp::VmeSmp(const unpacker_type& type)
     m_sds_begin(),
     m_sds_end()
 {
-//   cout << "#D VmeSmp::VmeSmp()" << std::endl;
+  //  cout << "#D VmeSmp::VmeSmp()" << std::endl;
   m_tag[k_tag_origin].back().m_local = k_LOCAL_TAG_ORIGIN;
   m_tag[k_tag_max].back().m_local = k_SMP_MAX_LOCAL_TAG;
-//   dump_data();
+  //  dump_data();
 }
 
 //______________________________________________________________________________
@@ -48,8 +48,8 @@ VmeSmp::~VmeSmp()
 void
 VmeSmp::check_data_format()
 {
-//   cout << "#D VME SMP Unpacker::check_data_format() " 
-// 	    << m_name << std::endl;
+  //  cout << "#D VME SMP Unpacker::check_data_format() " 
+  //       << m_name << std::endl;
   VmeModule::check_data_format();
 
   // trailer
@@ -105,7 +105,7 @@ VmeSmp::check_data_format()
 void
 VmeSmp::decode()
 {
-//   cout << "#D " << k_type << "::decode()" << std::endl;
+  //  cout << "#D " << k_type << "::decode()" << std::endl;
   
 //   dump_data16();
   if (!m_register)
@@ -175,9 +175,9 @@ VmeSmp::set_tko_data(Unpacker* u,
 		     const iterator& data_first,
 		     const iterator& data_last)
 {
-//   cout << "#D " << m_name << " ::set_tko_data()" << std::endl;
+  //  cout << "#D " << m_name << " ::set_tko_data()" << std::endl;
 
-//   std::for_each(data_first, data_last, HexDump());
+  //  std::for_each(data_first, data_last, HexDump());
     
   if (!u)
     {
@@ -212,10 +212,10 @@ VmeSmp::unpack()
 {
 //   hoge();
 
-//   Unpacker::dump_data(*this);
-  unpack_header();
-  unpack_trailer();
-  unpack_body();
+//  Unpacker::dump_data(*this);
+  if(!unpack_header()) return false;
+  if(!unpack_trailer()) return false;
+  if(!unpack_body()) return false;
 
   //  Unpacker::dump_data(*this);
 
@@ -284,13 +284,23 @@ VmeSmp::unpack_header()
 
   m_sds_end  = m_sds_begin + m_sds_n_word;
 
-//   uint32_t rest  
-//     = m_vme_header->m_data_size - VmeModule::k_header_size - k_header_size;
-//   cout << "#D " << k_type << "::unpack()\n"
-// 	    << " header size = " << sizeof(struct VmeHeader)/sizeof(uint32_t)
-// 	    << " serial = " << m_sds_serial_number
-// 	    << " rest = " << rest
-// 	    << std::endl;
+  uint32_t rest  
+    = m_vme_header->m_data_size - VmeModule::k_header_size - k_header_size;
+  //  cout << "#D " << k_type << "::unpack()\n"
+    //       << " header size = " << sizeof(struct VmeHeader)/sizeof(uint32_t)
+  //       << " serial = " << m_sds_serial_number
+  //       << " n_word = " << m_sds_n_word
+  //       << " rest = " << rest
+  //       << std::endl;
+
+  if (m_sds_n_word != rest -1){ // rest include SMP header, then -1
+    cerr << "#E " << k_type << " " << m_name 
+	 << " N word missmatch" << std::endl;
+    cerr << " SDS n word: " << m_sds_n_word << ", VME n word: " << rest-1 << std::endl;
+    m_error_state.set(defines::k_data_size_bit);
+    Unpacker::dump_data(*this);
+    return false;
+  }
 
   return true;
 }
@@ -310,8 +320,8 @@ VmeSmp::unpack_trailer()
   if (0!=(m_smp_header->m_event_id & k_event_last))
     m_switch_trailer_magic = *(m_sds_end+1);
 
-//   cout << "#D module down bit = "
-// 	    << std::hex << m_module_down << std::dec << std::endl;
+  //  cout << "#D module down bit = "
+  //       << std::hex << m_module_down << std::dec << std::endl;
 
   return true;
 }
