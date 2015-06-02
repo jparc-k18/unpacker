@@ -22,7 +22,7 @@ namespace hddaq
       static const unsigned int  k_n_ch = 32;
       enum e_data { k_reset_flag, k_n_data };
 
-      static const unsigned int k_channel_mask = 0x1;
+      static const unsigned int k_channel_mask = 0x1f;
       static const unsigned int k_data_mask    = 0x1;
 
     public:
