@@ -58,8 +58,8 @@ DAQNode::check_data_format()
       m_error_state.set(defines::k_bad_bit);
     }
   m_run_number = m_node_header->m_run_number;
-//   cout << "#D " << m_name 
-//        << " run number = " << m_run_number << std::endl;
+  //  cout << "#D " << m_name 
+  //       << " run number = " << m_run_number << std::endl;
 
   // node header
   if (k_NODE_HEADER_MAGIC != m_node_header->m_magic)
