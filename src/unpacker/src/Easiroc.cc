@@ -124,7 +124,7 @@ void Easiroc::update_tag()
   tag.m_event = ev_tag;
 
   m_has_tag.set(k_local);
-  //  m_has_tag.set(k_event);
+  m_has_tag.set(k_event);
 }
 
   }
