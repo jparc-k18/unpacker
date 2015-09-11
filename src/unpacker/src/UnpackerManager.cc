@@ -700,10 +700,10 @@ UnpackerManager::get_node_header(int node_id, int header_data_type) const
      ){
     return result->get_header(header_data_type);
   }else{
-    std::cout << "#E UnpackerManager::get_node_info\n";
-    std::cout << std::hex
-	      << " No such node is found : 0x" << node_id
-	      << std::dec << std::endl;
+    // std::cerr << "#E UnpackerManager::get_node_info\n";
+    // std::cerr << std::hex
+    // 	      << " No such node is found : 0x" << node_id
+    // 	      << std::dec << std::endl;
     return 0;
   }
 }
