@@ -17,6 +17,7 @@
 
 #include "SoyTimeStamp.hh"
 
+#include "VmeAPVDaq.hh"
 #include "VmeCaenV775.hh"
 #include "VmeCaenV792.hh"
 #include "VmeCaenV820.hh"
@@ -30,7 +31,6 @@
 #include "VmeRpv100.hh"
 #include "VmeRpv130.hh"
 #include "VmeSmp.hh"
-#include "APVDaq.hh"
 
 #include "Tko.hh"
 #include "TkoDrT.hh"
@@ -84,6 +84,7 @@ UnpackerRegister::UnpackerRegister()
   g_factory.add_entry(TkoMHTdc::k_type,     create<TkoMHTdc>);
   g_factory.add_entry(TkoMHTdcCSds::k_type, create<TkoMHTdcCSds>);
 
+  g_factory.add_entry(VmeAPVDaq::k_type,   create<VmeAPVDaq>);
   g_factory.add_entry(VmeCaenV775::k_type, create<VmeCaenV775>);
   g_factory.add_entry(VmeCaenV792::k_type, create<VmeCaenV792>);
   g_factory.add_entry(VmeCaenV820::k_type, create<VmeCaenV820>);
@@ -97,7 +98,6 @@ UnpackerRegister::UnpackerRegister()
   g_factory.add_entry(VmeMaster::k_type,   create<VmeMaster>);
   g_factory.add_entry(VmeSmp::k_type,      create<VmeSmp>);
   g_factory.add_entry(VmeV1290A::k_type,   create<VmeV1290A>);
-  g_factory.add_entry(APVDaq::k_type,      create<APVDaq>);
   g_factory.add_entry(Easiroc::k_type,     create<Easiroc>);
 
   g_factory.add_entry(VmeAmt::k_type,        create<VmeAmt>);

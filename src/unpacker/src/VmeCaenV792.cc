@@ -44,7 +44,7 @@ VmeCaenV792::decode()
 {
   iterator_list::const_iterator f_begin = m_first_list.begin();
   iterator_list::const_iterator f_end   = m_first_list.end();
-  for (iterator_list::const_iterator f=f_begin;  f!=f_end; ++f) {
+  for (iterator_list::const_iterator f=f_begin; f!=f_end; ++f) {
     iterator first = *f;
     m_vme_header = reinterpret_cast<VmeModule::Header*>(&*first);
     m_module_data_first = first + VmeModule::k_header_size;
