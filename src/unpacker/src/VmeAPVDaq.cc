@@ -88,6 +88,7 @@ VmeAPVDaq::decode()
 	      case Word1:
 		chip_id = (buf[i]>>chip_id_shift) & chip_id_mask;
 		channel = (buf[i]>>channel_shift) & channel_mask;
+		channel = 32*(channel%4)+8*int(channel/4)-31*int(channel/16);
 		channel = chip_id*128 + channel;
 		data[0] = (buf[i]>>data_shift[0]) & data_mask[0];
 		data[1] = (buf[i]>>data_shift[1]) & data_mask[1];
