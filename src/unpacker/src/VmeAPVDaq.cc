@@ -5,6 +5,7 @@
 #include "VmeAPVDaq.hh"
 
 #include <cstdio>
+#include <iomanip>
 
 namespace hddaq
 {
@@ -45,7 +46,6 @@ VmeAPVDaq::~VmeAPVDaq()
 void
 VmeAPVDaq::check_data_format()
 {
-  uint32_t header = *m_module_data_first;
   return;
 }
 
@@ -55,7 +55,6 @@ VmeAPVDaq::decode()
 {
   iterator_list::const_iterator f_begin = m_first_list.begin();
   iterator_list::const_iterator f_end   = m_first_list.end();
-  bool tdc_flag = true;
   for(iterator_list::const_iterator f=f_begin; f!=f_end; ++f){
     iterator first = *f;
     m_vme_header = reinterpret_cast<VmeModule::Header*>(&*first);
@@ -65,10 +64,11 @@ VmeAPVDaq::decode()
     unsigned int data_size = m_vme_header->m_data_size - VmeModule::k_header_size;
 
     int chip_data_size[nChip];
-    unsigned int chip_id;
-    unsigned int channel;
-    unsigned int data[nSample];
-    unsigned int suppression_flag;
+    int chip_id;
+    int channel;
+    int data[nSample];
+    int suppression_flag;
+
     for(unsigned int i=0; i<data_size; ++i){
       switch(i){
       case WordModuleId:
@@ -78,6 +78,8 @@ VmeAPVDaq::decode()
 	for(int chip=0; chip<nChip; ++chip){
 	  chip_data_size[chip] =
 	    (buf[i]>>data_size_shift[chip]) & data_size_mask[chip];
+	  // std::cout<<"#D VmeAPVDaq::decode() ["<<std::setfill('0')<<std::setw(8)<<std::hex<<module_id
+	  // 	   <<"] chip #"<<chip<<" data size : "<<chip_data_size[chip]<<std::endl;
 	}
 	continue;
       case WordDataBody:
