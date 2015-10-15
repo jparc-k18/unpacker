@@ -7,10 +7,6 @@
   <xs:element name="channel_map" type="channel_mapType"/>
 
 
-
-
-
-
   <!-- ______________________________________________________________________-->
   <!-- ______________________________________________________________________-->
   <!-- _________________________________________________________________________
@@ -37,6 +33,14 @@
        <tkoAttrs>
   -->
   <xs:attributeGroup name="tkoAttrs">
+    <xs:attribute name="ma" type="xs:string" use="required"/>
+    <xs:attributeGroup ref="unpackerAttrs"/>
+  </xs:attributeGroup>
+
+  <!-- _________________________________________________________________________
+       <feraAttrs>
+  -->
+  <xs:attributeGroup name="feraAttrs">
     <xs:attribute name="ma" type="xs:string" use="required"/>
     <xs:attributeGroup ref="unpackerAttrs"/>
   </xs:attributeGroup>
@@ -103,16 +107,40 @@
   </xs:group>
 
   <!-- _________________________________________________________________________
+       <feraGroup>
+  -->
+  <xs:group name="feraGroup">
+    <xs:choice>
+      <xs:element name="FeraAD413A"   type="FeraType"/>
+      <xs:element name="Fera3377"     type="FeraType"/>
+      <xs:group   ref="feGroup"/>
+    </xs:choice>
+  </xs:group>
+
+  <!-- _________________________________________________________________________
        <vmeModuleGroup>
   -->
   <xs:group name="vmeModuleGroup">
     <xs:choice>
-      <xs:element name="VmeSmp"      type="VmeSmpType"/>
-      <xs:element name="VmeRpv130"   type="VmeModuleType"/>
-      <xs:element name="VmeRpv100"   type="VmeModuleType"/>
-      <xs:element name="VmeCaenV820" type="VmeModuleType"/>
-      <xs:element name="VmeCaenV830" type="VmeModuleType"/>
-      <xs:element name="VmeRm"       type="VmeModuleType"/>
+      <xs:element name="VmeAPVDaq"     type="VmeModuleType"/>
+      <xs:element name="VmeSmp"        type="VmeSmpType"/>
+      <xs:element name="VmeRpv130"     type="VmeModuleType"/>
+      <xs:element name="VmeRpv100"     type="VmeModuleType"/>
+      <xs:element name="VmeCaenV775"   type="VmeModuleType"/>
+      <xs:element name="VmeCaenV792"   type="VmeModuleType"/>
+      <xs:element name="VmeCaenV820"   type="VmeModuleType"/>
+      <xs:element name="VmeCaenV830"   type="VmeModuleType"/>
+      <xs:element name="VmeEmc"        type="VmeModuleType"/>
+      <xs:element name="VmeInputReg"   type="VmeModuleType"/>
+      <xs:element name="VmeTdc64M"     type="VmeModuleType"/>
+      <xs:element name="VmeRm"         type="VmeModuleType"/>
+      <xs:element name="VmeAmt"        type="VmeModuleType"/>
+      <xs:element name="VmeUmem"       type="VmeUmemType"/>
+      <xs:element name="HBJTimeStamp"  type="VmeModuleType"/>
+      <xs:element name="VVmeCamacRm"   type="VmeModuleType"/>
+      <xs:element name="VVmeFERA4300B" type="VmeModuleType"/>
+      <xs:element name="VVmeCoinReg"   type="VmeModuleType"/>
+      <xs:element name="VmeV1290A"     type="VmeModuleType"/>
       <xs:group   ref="feGroup"/>
     </xs:choice>
   </xs:group>
@@ -123,11 +151,9 @@
   <xs:group name="nodeGroup">
     <xs:choice>
       <xs:element name="SoyTimeStamp" type="DAQNodeType"/>
-      <xs:element name="APVDaq"       type="DAQNodeType"/>
-      <xs:element name="VmeV1290A"    type="DAQNodeType"/>
       <xs:element name="VmeMaster"    type="VmeMasterType"/>
       <xs:element name="Copper"       type="CopperType"/>
-      <xs:element name="CopperLite"   type="DAQNodeType"/>
+      <xs:element name="CopperLite"   type="CopperType"/>
       <xs:element name="Easiroc"      type="DAQNodeType"/>
       <xs:element name="DAQNode"      type="DAQNodeType"/>
       <xs:group   ref="feGroup"/>
@@ -141,18 +167,30 @@
     <xs:choice>
       <xs:element name="DAQNode"            type="DAQNodeType"/>
       <xs:element name="Copper"             type="CopperType"/>
+      <xs:element name="CopperLite"         type="CopperType"/>
+      <xs:element name="Easiroc"            type="DAQNodeType"/>
       <xs:element name="VmeMaster"          type="VmeMasterType"/>
       <xs:element name="SoyTimeStamp"       type="DAQNodeType"/>
-      <xs:element name="CopperLite"         type="DAQNodeType"/>
-      <xs:element name="Easrioc"            type="DAQNodeType"/>
-      <xs:element name="APVDaq"             type="DAQNodeType"/>
-      <xs:element name="VmeV1290A"          type="DAQNodeType"/>
 
       <xs:element name="VmeRpv100"          type="VmeModuleType"/>
       <xs:element name="VmeRpv130"          type="VmeModuleType"/>
+      <xs:element name="VmeCaenV775"        type="VmeModuleType"/>
+      <xs:element name="VmeCaenV792"        type="VmeModuleType"/>
       <xs:element name="VmeCaenV820"        type="VmeModuleType"/>
       <xs:element name="VmeCaenV830"        type="VmeModuleType"/>
+      <xs:element name="VmeEmc"             type="VmeModuleType"/>
+      <xs:element name="VmeInputReg"        type="VmeModuleType"/>
+      <xs:element name="VmeTdc64M"          type="VmeModuleType"/>
       <xs:element name="VmeSmp"             type="VmeSmpType"/>
+      <xs:element name="VmeRm"              type="VmeModuleType"/>
+      <xs:element name="VmeAmt"             type="VmeModuleType"/>
+      <xs:element name="VmeUmem"            type="VmeModuleType"/>
+      <xs:element name="HBJTimeStamp"       type="VmeModuleType"/>
+      <xs:element name="VVmeCamacRm"        type="VmeModuleType"/>
+      <xs:element name="VVmeFERA4300B"      type="VmeModuleType"/>
+      <xs:element name="VVmeCoinReg"        type="VmeModuleType"/>
+      <xs:element name="APVDaq"             type="VmeModuleType"/>
+      <xs:element name="VmeV1290A"          type="VmeModuleType"/>
 
       <xs:element name="Tko"                type="TkoType"/>
       <xs:element name="TkoDrT"             type="TkoType"/>
@@ -160,6 +198,9 @@
       <xs:element name="TkoMHTdc"           type="TkoMHTdcType"/>
       <xs:element name="TkoMHTdcCSds"       type="TkoMHTdcCSdsType"/>
       <xs:element name="TkoRm"              type="TkoRmType"/>
+
+      <xs:element name="FeraAD413A"         type="FeraType"/>
+      <xs:element name="Fera3377"           type="FeraType"/>
 
       <xs:element name="FinessePtdc"        type="FinesseType"/>
       <xs:element name="FinesseEncoder"     type="FinesseType"/>
@@ -234,7 +275,6 @@
     <xs:group ref="feGroup" minOccurs="0" maxOccurs="4"/>
     <xs:attributeGroup ref="tkoAttrs"/>
   </xs:complexType>
-
   <!-- _________________________________________________________________________
        <TkoMHTdcType>
   -->
@@ -252,10 +292,27 @@
   </xs:complexType>
 
   <!-- _________________________________________________________________________
+       <FeraType>
+  -->
+  <xs:complexType name="FeraType">
+    <xs:group ref="feGroup" minOccurs="0" maxOccurs="32"/>
+    <xs:attributeGroup ref="feraAttrs"/>
+  </xs:complexType>
+
+
+  <!-- _________________________________________________________________________
        <VmeSmpType>
   -->
   <xs:complexType name="VmeSmpType">
     <xs:group ref="tkoGroup" minOccurs="0" maxOccurs="unbounded"/>
+    <xs:attributeGroup ref="vmeAttrs"/>
+  </xs:complexType>
+
+  <!-- _________________________________________________________________________
+       <VmeUmemType>
+  -->
+  <xs:complexType name="VmeUmemType">
+    <xs:group ref="feraGroup" minOccurs="0" maxOccurs="unbounded"/>
     <xs:attributeGroup ref="vmeAttrs"/>
   </xs:complexType>
 
