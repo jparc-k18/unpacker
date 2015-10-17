@@ -60,6 +60,7 @@ VmeEmc::decode()
       case k_serial_magic:
       case k_xpos_magic:
       case k_ypos_magic:
+      case k_state_magic:
       case k_utime_magic:
       case k_ltime_magic:
 	{

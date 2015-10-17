@@ -20,7 +20,7 @@ namespace hddaq
     public:
       static const unpacker_type k_type;
       static const unsigned int k_n_channel = 1;
-      enum data_type { k_serial, k_xpos, k_ypos, k_utime, k_ltime, k_n_data_type };
+      enum data_type { k_serial, k_xpos, k_ypos, k_state, k_utime, k_ltime, k_n_data_type };
       
       static const unsigned int k_word_type_shift = 28;
       static const unsigned int k_word_type_mask  = 0xf;
@@ -28,8 +28,9 @@ namespace hddaq
       static const unsigned int k_serial_magic  = 0x0;
       static const unsigned int k_xpos_magic    = 0x1;
       static const unsigned int k_ypos_magic    = 0x2;
-      static const unsigned int k_utime_magic   = 0x3;
-      static const unsigned int k_ltime_magic   = 0x4;
+      static const unsigned int k_state_magic   = 0x3;
+      static const unsigned int k_utime_magic   = 0x4;
+      static const unsigned int k_ltime_magic   = 0x5;
       static const unsigned int k_footer_magic  = 0xe;
       ////////// header
       static const unsigned int k_update_shift = 0;
