@@ -661,6 +661,13 @@ UnpackerManager::get_entries(const std::string& name,
 }
 
 //______________________________________________________________________________
+uint32_t
+UnpackerManager::get_event_number() const
+{
+  return m_reader->get_daq_root_event_number();
+}
+
+//______________________________________________________________________________
 UnpackerManager::fifo_t::size_type
 UnpackerManager::get_fifo_entries() const
 {
