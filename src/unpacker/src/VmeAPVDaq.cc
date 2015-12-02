@@ -63,11 +63,11 @@ VmeAPVDaq::decode()
     const uint32_t *buf = reinterpret_cast<uint32_t*>(&*m_module_data_first);
     unsigned int data_size = m_vme_header->m_data_size - VmeModule::k_header_size;
 
-    int chip_data_size[nChip];
-    int chip_id;
-    int channel;
-    int data[nSample];
-    int suppression_flag;
+    int chip_data_size[nChip] = {};
+    int chip_id               = 0;
+    int channel               = 0;
+    int data[nSample]         = {};
+    int suppression_flag      = 0;
 
     for(unsigned int i=0; i<data_size; ++i){
       switch(i){
