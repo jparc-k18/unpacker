@@ -7,6 +7,7 @@
 #include <algorithm>
 
 #include <cstdlib>
+#include <unistd.h>
 
 #include "std_ostream.hh"
 #include "BitDump.hh"
