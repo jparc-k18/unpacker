@@ -24,7 +24,7 @@ namespace unpacker
 	k_event_tag,
 	k_spill_tag,
 	k_serial,
-	k_spill_end_flag,
+	k_time,
 	k_n_data
       };
     struct data_t
@@ -32,7 +32,7 @@ namespace unpacker
       uint32_t m_event;
       uint32_t m_spill;
       uint32_t m_serial;
-      uint32_t m_spill_end_flag;
+      uint32_t m_time;
     };
 
   private:
