@@ -16,6 +16,7 @@
 #include "FinessePtdc.hh"
 
 #include "SoyTimeStamp.hh"
+#include "Hul3DMtx.hh"
 
 #include "VmeAPVDaq.hh"
 #include "VmeCaenV775.hh"
@@ -76,6 +77,7 @@ UnpackerRegister::UnpackerRegister()
   g_factory.add_entry(FinessePtdc::k_type,           create<FinessePtdc>);
 
   g_factory.add_entry(SoyTimeStamp::k_type, create<SoyTimeStamp>);
+  g_factory.add_entry(Hul3DMtx::k_type, create<Hul3DMtx>);
 
   g_factory.add_entry(Tko::k_type,          create<Tko>);
   g_factory.add_entry(TkoDrT::k_type,       create<TkoDrT>);
