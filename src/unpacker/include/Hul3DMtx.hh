@@ -77,7 +77,7 @@ namespace hddaq{
       
       static const uint32_t k_tdc_data_mask   = 0xff;
       static const uint32_t k_ch_mask   = 0x3f;
-      static const uint32_t k_ch_shift  = 16;
+      static const uint32_t k_ch_shift  = 8;
 
     private:
       Header*  m_header;
