@@ -130,6 +130,7 @@
       <xs:element name="VmeCaenV792"   type="VmeModuleType"/>
       <xs:element name="VmeCaenV820"   type="VmeModuleType"/>
       <xs:element name="VmeCaenV830"   type="VmeModuleType"/>
+      <xs:element name="VmeCaenV1724"  type="VmeModuleType"/>
       <xs:element name="VmeEmc"        type="VmeModuleType"/>
       <xs:element name="VmeInputReg"   type="VmeModuleType"/>
       <xs:element name="VmeTdc64M"     type="VmeModuleType"/>
@@ -180,6 +181,7 @@
       <xs:element name="VmeCaenV792"        type="VmeModuleType"/>
       <xs:element name="VmeCaenV820"        type="VmeModuleType"/>
       <xs:element name="VmeCaenV830"        type="VmeModuleType"/>
+      <xs:element name="VmeCaenV1724"       type="VmeModuleType"/>
       <xs:element name="VmeEmc"             type="VmeModuleType"/>
       <xs:element name="VmeInputReg"        type="VmeModuleType"/>
       <xs:element name="VmeTdc64M"          type="VmeModuleType"/>

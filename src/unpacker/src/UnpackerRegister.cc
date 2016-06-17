@@ -23,6 +23,7 @@
 #include "VmeCaenV792.hh"
 #include "VmeCaenV820.hh"
 #include "VmeCaenV830.hh"
+#include "VmeCaenV1724.hh"
 #include "VmeEmc.hh"
 #include "VmeInputReg.hh"
 #include "VmeTdc64M.hh"
@@ -91,6 +92,7 @@ UnpackerRegister::UnpackerRegister()
   g_factory.add_entry(VmeCaenV792::k_type, create<VmeCaenV792>);
   g_factory.add_entry(VmeCaenV820::k_type, create<VmeCaenV820>);
   g_factory.add_entry(VmeCaenV830::k_type, create<VmeCaenV830>);
+  g_factory.add_entry(VmeCaenV1724::k_type, create<VmeCaenV1724>);
   g_factory.add_entry(VmeEmc::k_type,      create<VmeEmc>);
   g_factory.add_entry(VmeInputReg::k_type, create<VmeInputReg>);
   g_factory.add_entry(VmeTdc64M::k_type,   create<VmeTdc64M>);
