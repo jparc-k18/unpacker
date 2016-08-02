@@ -136,6 +136,7 @@ namespace hddaq
     iterator        get_buffer_begin(const std::vector<uint64_t>& fe_id) const;
     iterator        get_buffer_end(const std::vector<uint64_t>& fe_id) const;
     unsigned int    get_counter() const;
+    unsigned int    get_daq_root_number() const;
     int             get_fe_id(const char* fe_name) const;
     int             get_fe_id(const std::string& fe_name) const;
     unsigned int    get_fe_info(int node_id,

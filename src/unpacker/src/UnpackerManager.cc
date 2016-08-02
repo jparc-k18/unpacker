@@ -494,6 +494,13 @@ UnpackerManager::get_counter() const
 }
 
 //______________________________________________________________________________
+unsigned int
+UnpackerManager::get_daq_root_number() const
+{
+  return m_reader->get_daq_root_event_number();
+}
+
+//______________________________________________________________________________
 int
 UnpackerManager::get_fe_id(const char* name) const
 {
@@ -862,8 +869,8 @@ UnpackerManager::initialize()
   check();
   show_summary();
   decode();
-  ++m_counter;
-//   show_event_number();
+  //  ++m_counter;
+  //  show_event_number();
 
   s_is_initialized = true;
   return;
@@ -922,6 +929,7 @@ UnpackerManager::operator++()
 {
   clear();
   read();
+  cout << "#D2  is called" << std::endl;
   if (eof())
     {
       cout << "#D GUnpacker::operator++()   exit loop" << std::endl;
@@ -936,15 +944,17 @@ UnpackerManager::operator++()
       return;
     }
   dump_data();
-  if (m_print_cycle>0 && (m_counter%m_print_cycle==0)){
-    show_event_number();
-  }
 
   check();
   show_summary();
   decode();
 
   ++m_counter;
+
+  if (m_print_cycle>0 && (m_counter%m_print_cycle==0)){
+    show_event_number();
+  }
+
   return;
 }
 
