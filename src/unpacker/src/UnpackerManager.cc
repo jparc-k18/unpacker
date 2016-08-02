@@ -936,7 +936,6 @@ UnpackerManager::operator++()
 {
   clear();
   read();
-  cout << "#D2  is called" << std::endl;
   if (eof())
     {
       cout << "#D GUnpacker::operator++()   exit loop" << std::endl;
