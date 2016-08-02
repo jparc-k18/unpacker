@@ -36,21 +36,21 @@ namespace hddaq
       static const unsigned int k_header_geo_shift = 27;
       static const unsigned int k_header_geo_mask  = 0x1f;
       ////////// data
-      static const unsigned int k_data_shift = 0;
-      static const unsigned int k_data_mask  = 0xfff;
-      static const unsigned int k_overflow_shift = 12;
-      static const unsigned int k_overflow_mask  = 0x1;
+      static const unsigned int k_data_shift            = 0;
+      static const unsigned int k_data_mask             = 0xfff;
+      static const unsigned int k_overflow_shift        = 12;
+      static const unsigned int k_overflow_mask         = 0x1;
       static const unsigned int k_under_threshold_shift = 13;
       static const unsigned int k_under_threshold_mask  = 0x1;
-      static const unsigned int k_channel_shift  = 16;
-      static const unsigned int k_channel_mask   = 0x3f;
-      static const unsigned int k_data_geo_shift = 27;
-      static const unsigned int k_data_geo_mask  = 0x1f;
+      static const unsigned int k_channel_shift         = 16;
+      static const unsigned int k_channel_mask          = 0x3f;
+      static const unsigned int k_data_geo_shift        = 27;
+      static const unsigned int k_data_geo_mask         = 0x1f;
       ////////// footer
       static const unsigned int k_event_number_shift = 0;
       static const unsigned int k_event_number_mask  = 0xffffff;
-      static const unsigned int k_footer_geo_shift = 27;
-      static const unsigned int k_footer_geo_mask  = 0x1f;
+      static const unsigned int k_footer_geo_shift   = 27;
+      static const unsigned int k_footer_geo_mask    = 0x1f;
 
     public:
       VmeCaenV792(const unpacker_type& type);
@@ -59,6 +59,7 @@ namespace hddaq
     protected:
       virtual void check_data_format();
       virtual void decode();
+      virtual void update_tag();
       virtual void resize_fe_data();
 
     };

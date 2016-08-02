@@ -43,13 +43,13 @@ VmeUmem3377::decode()
       const uint32_t* buf = reinterpret_cast<uint32_t*>(&*m_module_data_first);
 
       unsigned int NofEvent = m_vme_header->m_data_size - VmeModule::k_header_size;
-      unsigned int vsn=0;
+      // unsigned int vsn=0;
       int wordtype;
       for (unsigned int i=0; i<NofEvent; i++) {
 	wordtype = (buf[i]>>k_bitshift_wordtype) & 0x1;
 	if (1 == wordtype) {
 	  // Header
-	  vsn = buf[i] & k_VSN_MASK;
+	  // vsn = buf[i] & k_VSN_MASK;
 	} else {
 	  // Data
 	  // First Data

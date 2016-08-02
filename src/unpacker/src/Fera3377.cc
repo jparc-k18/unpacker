@@ -34,7 +34,7 @@ Fera3377::decode()
   const uint32_t* buf = reinterpret_cast<uint32_t*>(&*m_data_first);
 
   unsigned int NofEvent = m_data_size;
-  unsigned int vsn=0;
+  // unsigned int vsn=0;
   int wordtype;
   //std::cout << "------------3377------\n" ;
   for (unsigned int i=0; i<NofEvent; i++) {
@@ -42,7 +42,7 @@ Fera3377::decode()
     wordtype = (buf[i]>>k_bitshift_wordtype) & 0x1;
     if (1 == wordtype) {
       // Header
-      vsn = buf[i] & k_VSN_MASK;
+      // vsn = buf[i] & k_VSN_MASK;
     } else {
       //std::cout << i+1 << " : " << std::hex << buf[i+1] << std::endl << std::dec;
       // Data

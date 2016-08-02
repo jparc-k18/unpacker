@@ -38,7 +38,7 @@ VmeRm::check_data_format()
   unsigned int lock_bit_event  = (m_data->m_event) & k_LOCK_BIT_mask;
   unsigned int lock_bit_spill  = (m_data->m_spill) & k_LOCK_BIT_mask;
 //   unsigned int lock_bit_serial = (m_data->m_serial) & k_LOCK_BIT_mask;
-  if (lock_bit_event==0 || lock_bit_spill==0)
+  if ( lock_bit_event==0 || lock_bit_spill==0 )
     {
       cerr << "\n#E " << m_type << " " << m_name
 	   << " serial link was down" << std::endl;
@@ -71,7 +71,7 @@ VmeRm::decode()
       fill(1, k_spill_tag, d->m_spill & k_LOCK_BIT_mask);
       fill(0, k_serial,    d->m_serial & 0x7fffffffU);
       fill(1, k_serial,    d->m_serial & k_LOCK_BIT_mask);
-      fill(0, k_spill_end_flag, d->m_spill_end_flag);
+      fill(0, k_time,      d->m_time);
 
     }
 

@@ -164,6 +164,7 @@ namespace hddaq
 				unsigned int segment_id,
 				unsigned int ch,
 				unsigned int data_type=0) const;
+    uint32_t        get_event_number() const;
     fifo_t::size_type get_fifo_entries() const;
     fifo_t::size_type get_fifo_length() const;
     int             get_max_loop() const;

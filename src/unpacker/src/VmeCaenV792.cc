@@ -42,6 +42,8 @@ VmeCaenV792::check_data_format()
 void
 VmeCaenV792::decode()
 {
+  unsigned int data_counter = 0;
+
   iterator_list::const_iterator f_begin = m_first_list.begin();
   iterator_list::const_iterator f_end   = m_first_list.end();
   for (iterator_list::const_iterator f=f_begin; f!=f_end; ++f) {
@@ -64,21 +66,41 @@ VmeCaenV792::decode()
 	  //uint32_t overflow = ((buf[i]>>k_overflow_shift) & k_overflow_mask);
 	  //std::cout<<"#D VmeCaenV792::decode()   ch: "<<ch<<"\tdata: "<<data<<std::endl;
 	  fill(ch, k_adc, data);
+	  ++data_counter;
 	}
 	break;
       case k_FOOTER_MAGIC:
 	break;
       case k_INVALID_MAGIC:
-	// std::cerr<<"#W VmeCaenV792::decode() not valid datum: "
+	// cerr<<"#W VmeCaenV792::decode() not valid datum: "
 	// 	 <<std::hex<<word_type<<" ("<<buf[i]<<")"<<std::endl<<std::dec;
 	break;
       default:
-	std::cerr<<"#E VmeCaenV792::decode() unknown word type: "
-		 <<std::hex<<word_type<<" ("<<buf[i]<<")"<<std::endl<<std::dec;
+	cerr<<"#E VmeCaenV792::decode() unknown word type: "
+	    <<std::hex<<word_type<<" ("<<buf[i]<<")"<<std::endl<<std::dec;
       }//switch(word_type)
     }//for(i)
   }//for(f)
+  
+  if(data_counter != k_n_channel){
+    cerr<<"#E VmeCaenV792::decode() # of data is less than 32: "
+	<< data_counter << std::endl;
+  }
+
   return;
+}
+
+//______________________________________________________________________________
+void
+VmeCaenV792::update_tag()
+{
+  uint32_t buf = *(--m_data_last);
+  uint32_t event_number = buf & k_event_number_mask;
+  //  std::cout << std::hex << buf << std::endl;
+
+  Tag& tag = m_tag[k_tag_current].back();
+  tag.m_local = event_number;
+  m_has_tag.set(k_local);
 }
   
 //______________________________________________________________________________

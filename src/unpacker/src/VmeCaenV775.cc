@@ -66,18 +66,34 @@ VmeCaenV775::decode()
 	}
 	break;
       case k_FOOTER_MAGIC:
+	{
+
+	}
 	break;
       case k_INVALID_MAGIC:
 	// std::cerr<<"#W VmeCaenV775::decode() not valid datum: "
 	// 	 <<std::hex<<word_type<<" ("<<buf[i]<<")"<<std::endl<<std::dec;
 	break;
       default:
-	std::cerr<<"#E VmeCaenV775::decode() unknown data type: "
-		 <<std::hex<<word_type<<"("<<buf[i]<<")"<<std::endl<<std::dec;
+	cerr<<"#E VmeCaenV775::decode() unknown data type: "
+	    <<std::hex<<word_type<<"("<<buf[i]<<")"<<std::endl<<std::dec;
       }//switch(word_type)
     }//for(i)
   }//for(f)
   return;
+}
+
+//______________________________________________________________________________
+void
+VmeCaenV775::update_tag()
+{
+  uint32_t buf = *(--m_data_last);
+  uint32_t event_number = buf & k_event_number_mask;
+  //  std::cout << event_number << std::endl;
+
+  Tag& tag = m_tag[k_tag_current].back();
+  tag.m_local = event_number;
+  m_has_tag.set(k_local);
 }
 
 //______________________________________________________________________________

@@ -27,15 +27,15 @@ namespace hddaq
     void
     APVDaq::decode()
     {
-      bool tdc_flag = true;
+      // bool tdc_flag = true;
       for(const_iterator i = m_module_data_first;i!=m_data_last;++i)
 	{
 	  int apv_value = *i;
 
-	  if(apv_value == k_data_tdc_flag){
-	    tdc_flag = false;
-	    continue;
-	  }
+	  // if(apv_value == k_data_tdc_flag){
+	  //   tdc_flag = false;
+	  //   continue;
+	  // }
 
 	  int mask = apv_value & k_data_counter_mask;
 	  if(apv_value == k_data_trailer){break;}
