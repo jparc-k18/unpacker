@@ -97,6 +97,10 @@ bin_dir		:= ../bin
 packages	:= $(filter-out -%,$(shell cat Unpacker_Packages.txt))
 rpath_dir	:= $(subst src,lib,$(src_top_dir))
 
+script_dir	:= script
+script_src	:= $(script_dir)/unpacker-config
+script_obj	:= $(bin_dir)/unpacker-config
+
 #=== following variables are filled
 #    after reading Packages.mk files in sub-directories
 sources		:=
@@ -181,10 +185,10 @@ core_links := \
 
 # --- for kekcc -------------------------------------------------
 ifeq ($(findstring $(kekcc),$(HOSTNAME)),$(kekcc))
-all: $(xercesc_include) $(headers) $(lib_pack)# $(apps)
+all: $(xercesc_include) $(headers) $(lib_pack) $(script_obj)# $(apps)
 #----------------------------------------------------------------
 else
-all: $(headers) $(lib_pack)# $(apps)
+all: $(headers) $(lib_pack) $(script_obj)# $(apps)
 endif
 
 #_______________________________________________________________________________
@@ -198,6 +202,13 @@ endif
 # ---------------------------------------------------------------
 
 #_______________________________________________________________________________
+.PHONY: script
+script: $(script_obj)
+$(script_obj): $(script_src)
+	$(QUIET) $(ECHO) "$(green)==== copy script$(default_color)"
+	$(CP) $^ $@
+
+#_______________________________________________________________________________
 .PHONY: headers
 
 # usage $(call copy-headers)
@@ -206,7 +217,6 @@ define copy-headers
    $(package_headers),\
    $(eval $(call copy-one-header,$(filename))))
 endef
-
 
 # usage $(call copy-one-header,original)
 define copy-one-header
@@ -369,7 +379,8 @@ clean:
 .PHONY: distclean
 
 distclean:
-	$(RM) *~ $(include_dir)/* $(lib_dir)/* $(schema_dir)/*~ #$(bin_dir)/*
+	$(RM) *~ $(include_dir)/* $(lib_dir)/* $(schema_dir)/*~
+	$(RM) $(bin_dir)/*
 	$(RM) app/src/*~ app/src/*.d app/src/*.o
 	for m in $(packages); \
 	do \
