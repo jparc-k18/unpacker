@@ -14,13 +14,13 @@ namespace hddaq
       : VmeModule(type),
 	module_id(0)
     {
-      
+
     }
 
     //_______________________________________________________________________
     APVDaq::~APVDaq()
     {
-      
+
     }
 
     //_______________________________________________________________________
@@ -49,21 +49,19 @@ namespace hddaq
 	      int hit_adc   = (apv_value>>k_data_adc_shift) & k_data_adc_mask;
 	      int hit_ch    = (apv_value>>k_data_ch_shift) & k_data_ch_mask;
 	      int sample    = (apv_value>>k_data_sp_shift) & k_data_sp_mask;
-	
+
 	      if(sample == 0)continue;
-	      hit_ch = ((sample-1)/6)*128 + 
+	      hit_ch = ((sample-1)/6)*128 +
 		(32*(hit_ch%4)+8*int(hit_ch/4)-31*int(hit_ch/16));
 	      fill(hit_ch, module_id, hit_adc);//<-(ch_id,module_id,data)
-	      // std::cout<<std::dec<<"Module : "<<module_id<<", Ch : "<<hit_ch
-	      // 	       <<", Adc : "<<hit_adc<<std::endl;
-	    }	  
+	      // cout << std::dec << "Module : " << module_id<< ", Ch : " << hit_ch
+	      // 	   << ", Adc : " << hit_adc << std::endl;
+	    }
 	}
       return;
       // "fill" corresponds to "push_back"
-
-
     }
-    
+
     //_______________________________________________________________________
     void
     APVDaq::resize_fe_data()

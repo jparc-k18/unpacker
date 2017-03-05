@@ -38,13 +38,13 @@ VmeCaenV820::decode()
       iterator first = *f;
       m_vme_header = reinterpret_cast<VmeModule::Header*>(&*first);
       m_module_data_first = first + VmeModule::k_header_size;
-      
+
       const uint32_t* buf = reinterpret_cast<uint32_t*>(&*m_module_data_first);
-      
+
       for (unsigned int ch=0; ch<k_n_ch; ++ch)
 	fill(ch, 0, buf[ch]);
 
-      //      std::for_each(buf, buf+k_n_ch, HexDump());
+      // std::for_each(buf, buf+k_n_ch, HexDump());
     }
   return;
 }
@@ -53,7 +53,7 @@ VmeCaenV820::decode()
 void
 VmeCaenV820::resize_fe_data()
 {
-  m_fe_data.resize(k_n_ch, FECh(k_n_data_type)); 
+  m_fe_data.resize(k_n_ch, FECh(k_n_data_type));
   return;
 }
 

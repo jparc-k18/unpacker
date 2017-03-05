@@ -43,7 +43,7 @@ VVmeCamacRm::check_data_format()
   if (lock_bit_event==0 || lock_bit_spill==0)
     {
       cerr << "\n#E " << m_type << " " << m_name
-	   << " serial link was down" << std::endl;
+      	   << " serial link was down" << std::endl;
       m_error_state.set(defines::k_bad_bit);
     }
 
@@ -66,7 +66,7 @@ VVmeCamacRm::decode()
     {
       iterator first = *f + VmeModule::k_header_size;
       data_t* d = reinterpret_cast<data_t*>(&(*first));
-      
+
       fill(0, k_event_tag, d->m_event & k_MTM_MAX_EVENT_TAG);
       fill(1, k_event_tag, d->m_event & k_LOCK_BIT_mask);
       fill(0, k_spill_tag, d->m_spill & k_MTM_MAX_SPILL_TAG);
@@ -74,7 +74,7 @@ VVmeCamacRm::decode()
       fill(0, k_2ndAcc,    d->m_input_reg & 0x1U);
       fill(0, k_FastClear, (d->m_input_reg>>1) & 0x1U);
 
-      //printf("Event : %x, Spill : %x, Reg : %x\n", 
+      //printf("Event : %x, Spill : %x, Reg : %x\n",
       //d->m_event, d->m_spill, d->m_input_reg);
     }
 
@@ -92,12 +92,12 @@ VVmeCamacRm::resize_fe_data()
 //______________________________________________________________________________
 void
 VVmeCamacRm::update_tag()
-{ 
+{
   iterator_list::const_iterator f_begin = m_first_list.begin();
   iterator_list::const_iterator f_end   = m_first_list.end();
   data_t* d = 0;
   m_tag[k_tag_current].clear();
-  
+
   for (iterator_list::const_iterator f = f_begin; f!=f_end; ++f)
     {
       iterator first = *f + VmeModule::k_header_size;
@@ -109,7 +109,7 @@ VVmeCamacRm::update_tag()
       m_tag[k_tag_current].push_back(tag);
 //       if (d->m_spill_end_flag!=0)
 // 	continue;
-//       else 
+//       else
 // 	break;
     }
 

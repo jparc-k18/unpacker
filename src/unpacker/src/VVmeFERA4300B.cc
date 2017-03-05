@@ -33,12 +33,12 @@ VVmeFERA4300B::~VVmeFERA4300B()
 void
 VVmeFERA4300B::check_data_format()
 {
-  uint32_t header = *m_module_data_first; 
+  uint32_t header = *m_module_data_first;
 
 
   if (((header >> k_data_type_shift) & k_data_type_mask) != k_HEADER_MAGIC)
     m_error_state.set(defines::k_header_bit);
-  
+
   return;
 }
 
@@ -60,18 +60,18 @@ VVmeFERA4300B::decode()
 
       for (unsigned int i=0; i<data_size; i++) {
 	uint32_t data_type = ((buf[i] >> k_data_type_shift) & k_data_type_mask);
-	if (data_type == k_HEADER_MAGIC) 
+	if (data_type == k_HEADER_MAGIC)
 	  ;
 	else if (data_type == k_DATA_MAGIC) {
 	  uint32_t ch   = ((buf[i] >> k_ch_shift) & k_ch_mask);
 	  uint32_t data = ((buf[i] >> k_data_shift) & k_data_mask);
-	  //cout << "ch-- : " << ch << ", data : " << data << "\n";	  
+	  //cout << "ch-- : " << ch << ", data : " << data << "\n";
 	  fill(ch, 0, data);
 	}
 	else {
-	  std::cerr << "VVmeFERA4300B::decode unknown data type : " << std::hex << data_type 
-		    << "(" << (buf[i]) << ")" << "\n" << std::dec;
-	  
+	  cerr << "VVmeFERA4300B::decode unknown data type : " << std::hex << data_type
+	       << "(" << (buf[i]) << ")" << "\n" << std::dec;
+
 	}
       }
 

@@ -7,6 +7,8 @@
 #include <cstdio>
 #include <iomanip>
 
+#include "std_ostream.hh"
+
 namespace hddaq
 {
 namespace unpacker
@@ -78,8 +80,8 @@ VmeAPVDaq::decode()
 	for(int chip=0; chip<nChip; ++chip){
 	  chip_data_size[chip] =
 	    (buf[i]>>data_size_shift[chip]) & data_size_mask[chip];
-	  // std::cout<<"#D VmeAPVDaq::decode() ["<<std::setfill('0')<<std::setw(8)<<std::hex<<module_id
-	  // 	   <<"] chip #"<<chip<<" data size : "<<chip_data_size[chip]<<std::endl;
+	  // cout<<"#D VmeAPVDaq::decode() ["<<std::setfill('0')<<std::setw(8)<<std::hex<<module_id
+	  //     <<"] chip #"<<chip<<" data size : "<<chip_data_size[chip]<<std::endl;
 	}
 	continue;
       case WordDataBody:
@@ -124,13 +126,12 @@ VmeAPVDaq::decode()
 	}//for(chip)
 	break;
       default:
-	std::cerr<<"#E VmeAPVDaq::decode() strange data structure"
-		 <<std::endl;
+	cerr<<"#E VmeAPVDaq::decode() strange data structure"<<std::endl;
       }//switch(i)
     }//for(i)
   }//for(f)
   return;
-}    
+}
 
 //_______________________________________________________________________
 void

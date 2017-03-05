@@ -11,10 +11,13 @@
 
 namespace hddaq
 {
-  
+  std::ostream cerr(std::cerr.rdbuf());
+  std::ostream cout(std::cout.rdbuf());
+  std::ostream tag_summary(std::cout.rdbuf());
+
   namespace
   {
-    std::ostream* 
+    std::ostream*
     get_ofs(const std::string& name,
 	    const std::string& type)
     {
@@ -37,10 +40,10 @@ namespace hddaq
 	}
       return os;
     }
-    
+
   }
-  
-  
+
+
 //______________________________________________________________________________
   void
   set_cerr(const std::string& name)
@@ -49,7 +52,7 @@ namespace hddaq
       cerr.rdbuf(get_ofs(name, "cerr")->rdbuf());
     return;
   }
-  
+
 //______________________________________________________________________________
   void
   set_cout(const std::string& name)
@@ -58,8 +61,8 @@ namespace hddaq
       cout.rdbuf(get_ofs(name, "cout")->rdbuf());
     return;
   }
-  
-  
+
+
 //______________________________________________________________________________
   void
   set_tag_summary(const std::string& name)

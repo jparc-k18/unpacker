@@ -32,7 +32,7 @@ VmeCaenV792::~VmeCaenV792()
 void
 VmeCaenV792::check_data_format()
 {
-  uint32_t header = *m_module_data_first; 
+  uint32_t header = *m_module_data_first;
   if (((header>>k_word_type_shift)&k_word_type_mask) != k_HEADER_MAGIC)
     m_error_state.set(defines::k_header_bit);
   return;
@@ -50,10 +50,10 @@ VmeCaenV792::decode()
     iterator first = *f;
     m_vme_header = reinterpret_cast<VmeModule::Header*>(&*first);
     m_module_data_first = first + VmeModule::k_header_size;
-    
+
     const uint32_t* buf = reinterpret_cast<uint32_t*>(&*m_module_data_first);
     unsigned int data_size = m_vme_header->m_data_size - VmeModule::k_header_size;
-    
+
     for (unsigned int i=0; i<data_size; i++) {
       uint32_t word_type = ((buf[i]>>k_word_type_shift)&k_word_type_mask);
       switch(word_type){
@@ -64,7 +64,7 @@ VmeCaenV792::decode()
 	  uint32_t ch   = ((buf[i]>>k_channel_shift) & k_channel_mask);
 	  uint32_t data = ((buf[i]>>k_data_shift)    & k_data_mask);
 	  //uint32_t overflow = ((buf[i]>>k_overflow_shift) & k_overflow_mask);
-	  //std::cout<<"#D VmeCaenV792::decode()   ch: "<<ch<<"\tdata: "<<data<<std::endl;
+	  //cout<<"#D VmeCaenV792::decode()   ch: "<<ch<<"\tdata: "<<data<<std::endl;
 	  fill(ch, k_adc, data);
 	  ++data_counter;
 	}
@@ -81,7 +81,7 @@ VmeCaenV792::decode()
       }//switch(word_type)
     }//for(i)
   }//for(f)
-  
+
   if(data_counter != k_n_channel){
     cerr<<"#E VmeCaenV792::decode() # of data is less than 32: "
 	<< data_counter << std::endl;
@@ -102,7 +102,7 @@ VmeCaenV792::update_tag()
   tag.m_local = event_number;
   m_has_tag.set(k_local);
 }
-  
+
 //______________________________________________________________________________
 void
 VmeCaenV792::resize_fe_data()

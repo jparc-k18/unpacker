@@ -32,7 +32,7 @@ VmeEmc::~VmeEmc()
 void
 VmeEmc::check_data_format()
 {
-  uint32_t header = *m_module_data_first; 
+  uint32_t header = *m_module_data_first;
   if (((header>>k_word_type_shift)&k_word_type_mask) != k_header_magic)
     m_error_state.set(defines::k_header_bit);
   return;
@@ -48,10 +48,10 @@ VmeEmc::decode()
     iterator first = *f;
     m_vme_header = reinterpret_cast<VmeModule::Header*>(&*first);
     m_module_data_first = first + VmeModule::k_header_size;
-    
+
     const uint32_t* buf = reinterpret_cast<uint32_t*>(&*m_module_data_first);
     unsigned int data_size = m_vme_header->m_data_size - VmeModule::k_header_size;
-    
+
     for (unsigned int i=0; i<data_size; i++) {
       uint32_t word_type = ((buf[i]>>k_word_type_shift)&k_word_type_mask);
       switch(word_type){
@@ -71,14 +71,14 @@ VmeEmc::decode()
       case k_footer_magic:
 	break;
       default:
-	std::cerr<<"#E VmeEmc::decode() unknown word type: "
-		 <<std::hex<<word_type<<" ("<<buf[i]<<")"<<std::endl<<std::dec;
+	cerr<<"#E VmeEmc::decode() unknown word type: "
+	    <<std::hex<<word_type<<" ("<<buf[i]<<")"<<std::endl<<std::dec;
       }//switch(word_type)
     }//for(i)
   }//for(f)
   return;
 }
-  
+
 //______________________________________________________________________________
 void
 VmeEmc::resize_fe_data()

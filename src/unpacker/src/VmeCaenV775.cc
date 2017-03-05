@@ -32,7 +32,7 @@ VmeCaenV775::~VmeCaenV775()
 void
 VmeCaenV775::check_data_format()
 {
-  uint32_t header = *m_module_data_first; 
+  uint32_t header = *m_module_data_first;
   if (((header>>k_word_type_shift)&k_word_type_mask)!=k_HEADER_MAGIC)
     m_error_state.set(defines::k_header_bit);
   return;
@@ -48,7 +48,7 @@ VmeCaenV775::decode()
     iterator first = *f;
     m_vme_header = reinterpret_cast<VmeModule::Header*>(&*first);
     m_module_data_first = first + VmeModule::k_header_size;
-    
+
     const uint32_t* buf = reinterpret_cast<uint32_t*>(&*m_module_data_first);
     unsigned int data_size = m_vme_header->m_data_size - VmeModule::k_header_size;
 
@@ -61,7 +61,7 @@ VmeCaenV775::decode()
 	{
 	  uint32_t ch   = ((buf[i]>>k_channel_shift) & k_channel_mask);
 	  uint32_t data = ((buf[i]>>k_data_shift)    & k_data_mask);
-	  //std::cout<<"#D VmeCaenV775::decode()   ch: "<<ch<<"\tdata: "<<data<<std::endl;
+	  //cout<<"#D VmeCaenV775::decode()   ch: "<<ch<<"\tdata: "<<data<<std::endl;
 	  fill(ch, k_tdc, data);
 	}
 	break;
@@ -71,8 +71,8 @@ VmeCaenV775::decode()
 	}
 	break;
       case k_INVALID_MAGIC:
-	// std::cerr<<"#W VmeCaenV775::decode() not valid datum: "
-	// 	 <<std::hex<<word_type<<" ("<<buf[i]<<")"<<std::endl<<std::dec;
+	// cerr<<"#W VmeCaenV775::decode() not valid datum: "
+	//     <<std::hex<<word_type<<" ("<<buf[i]<<")"<<std::endl<<std::dec;
 	break;
       default:
 	cerr<<"#E VmeCaenV775::decode() unknown data type: "

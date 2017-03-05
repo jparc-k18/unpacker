@@ -41,16 +41,16 @@ VmeRm::check_data_format()
   if ( lock_bit_event==0 || lock_bit_spill==0 )
     {
       cerr << "\n#E " << m_type << " " << m_name
-	   << " serial link was down" << std::endl;
-      //      m_error_state.set(defines::k_header_bit);
+      	   << " serial link was down" << std::endl;
+           m_error_state.set(defines::k_header_bit);
     }
 
-  // if (m_error_state[defines::k_header_bit])
-  //   {
-  //     cout << "#D________________________________________________ "
-  // 	   << m_type << "::check_data_format" << "\n";
-  //     Unpacker::dump_data(*this);
-  //   }
+  if (m_error_state[defines::k_header_bit])
+    {
+      cout << "#D________________________________________________ "
+  	   << m_type << "::check_data_format" << "\n";
+      Unpacker::dump_data(*this);
+    }
   return;
 }
 
@@ -64,7 +64,7 @@ VmeRm::decode()
     {
       iterator first = *f + VmeModule::k_header_size;
       data_t* d = reinterpret_cast<data_t*>(&(*first));
-      
+
       fill(0, k_event_tag, d->m_event & k_MTM_MAX_EVENT_TAG);
       fill(1, k_event_tag, d->m_event & k_LOCK_BIT_mask);
       fill(0, k_spill_tag, d->m_spill & k_MTM_MAX_SPILL_TAG);
@@ -89,12 +89,12 @@ VmeRm::resize_fe_data()
 //______________________________________________________________________________
 void
 VmeRm::update_tag()
-{ 
+{
   iterator_list::const_iterator f_begin = m_first_list.begin();
   iterator_list::const_iterator f_end   = m_first_list.end();
   data_t* d = 0;
   m_tag[k_tag_current].clear();
-  
+
   for (iterator_list::const_iterator f = f_begin; f!=f_end; ++f)
     {
       iterator first = *f + VmeModule::k_header_size;
@@ -106,7 +106,7 @@ VmeRm::update_tag()
       m_tag[k_tag_current].push_back(tag);
 //       if (d->m_spill_end_flag!=0)
 // 	continue;
-//       else 
+//       else
 // 	break;
     }
 

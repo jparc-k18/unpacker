@@ -10,12 +10,12 @@
 namespace hddaq
 {
 
-  // if cerr or cout is used without namespace, it means that 
+  // if cerr or cout is used without namespace, it means that
   // it belongs not to std but to namespace hddaq::unpacker
-  std::ostream cerr(std::cerr.rdbuf());
-  std::ostream cout(std::cout.rdbuf());
-  std::ostream tag_summary(std::cout.rdbuf());
-  
+  extern std::ostream cerr;
+  extern std::ostream cout;
+  extern std::ostream tag_summary;
+
   void
   set_cerr(const std::string& name);
 

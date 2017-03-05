@@ -1,4 +1,5 @@
 // -*- C++ -*-
+
 #include <stdio.h>
 #include "VmeV1290A.hh"
 
@@ -75,7 +76,7 @@ namespace hddaq
 	}
       return;
     }
-    
+
     //______________________________________________________________________
     void
     VmeV1290A::resize_fe_data()
