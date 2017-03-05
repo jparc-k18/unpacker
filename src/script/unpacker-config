@@ -52,6 +52,10 @@ libs="-Wl,-rpath,$libdir -L$libdir"
 libs="$libs -lHDDAQUnpacker"
 libs="$libs -lUnpackerManager"
 libs="$libs -lUnpacker"
+### util libs
+libs="$libs -lfilesystem_util"
+libs="$libs -lreplace_string"
+libs="$libs -lstd_ostream"
 
 #_______________________________________________________________________________
 if test $# -eq 0; then
