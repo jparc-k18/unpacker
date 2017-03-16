@@ -17,6 +17,7 @@
 
 #include "SoyTimeStamp.hh"
 #include "Hul3DMtx.hh"
+#include "HulScaler.hh"
 
 #include "VmeAPVDaq.hh"
 #include "VmeCaenV775.hh"
@@ -67,7 +68,7 @@ UnpackerRegister::UnpackerRegister()
 {
 //   cout << "#D UnpackerRegister()" << std::endl;
   UnpackerFactory& g_factory = GUnpackerFactory::get_instance();
-  
+
   g_factory.add_entry(Copper::k_type,     create<Copper>);
   g_factory.add_entry(CopperLite::k_type, create<CopperLite>);
   g_factory.add_entry(DAQNode::k_type,    create<DAQNode>);
@@ -79,6 +80,7 @@ UnpackerRegister::UnpackerRegister()
 
   g_factory.add_entry(SoyTimeStamp::k_type, create<SoyTimeStamp>);
   g_factory.add_entry(Hul3DMtx::k_type, create<Hul3DMtx>);
+  g_factory.add_entry(HulScaler::k_type, create<HulScaler>);
 
   g_factory.add_entry(Tko::k_type,          create<Tko>);
   g_factory.add_entry(TkoDrT::k_type,       create<TkoDrT>);
@@ -119,7 +121,7 @@ UnpackerRegister::UnpackerRegister()
 }
 
 //______________________________________________________________________________
-UnpackerRegister::UnpackerRegister(const id_type& type, 
+UnpackerRegister::UnpackerRegister(const id_type& type,
 				   creator_type creator)
 {
   GUnpackerFactory::get_instance().add_entry(type, creator);
