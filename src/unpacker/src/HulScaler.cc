@@ -144,25 +144,26 @@ HulScaler::update_tag( void )
   // header event number check
   uint32_t ev_counter
     = ((m_header->m_event_counter >> k_EVCOUNTER_SHIFT) & k_EVCOUNTER_MASK);
-  uint32_t ev_tag
-    = ((m_header->m_event_counter >> k_EVTAG_SHIFT) & k_EVTAG_MASK);
 
   if( m_has_rm ){
     const_iterator i = m_body_first;
-    // uint32_t event
-    //   = (( *i >> k_rm_event_shift ) & k_rm_event_mask );
+    uint32_t event
+      = (( *i >> k_rm_event_shift ) & k_rm_event_mask );
     uint32_t spill
       = (( *i >> k_rm_spill_shift ) & k_rm_spill_mask );
-    Tag tag( ev_counter, ev_tag, spill );
+    Tag tag( ev_counter, event, spill );
     m_tag[k_tag_current].push_back( tag );
     m_has_tag.set(k_local);
     m_has_tag.set(k_event);
     m_has_tag.set(k_spill);
   }
   else{
+    uint32_t ev_tag
+      = ((m_header->m_event_counter >> k_EVTAG_SHIFT) & k_EVTAG_MASK);
     Tag tag( ev_counter, ev_tag, defines::k_unassigned );
     m_tag[k_tag_current].push_back( tag );
     m_has_tag.set(k_local);
+    // m_has_tag.set(k_event);
   }
 }
 
