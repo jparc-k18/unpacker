@@ -11,16 +11,12 @@
 namespace hddaq
 {
 
-  std::string 
-  realpath(const std::string& path);
+  std::string realpath(const std::string& path);
+  std::string dirname(const std::string& path);
+  std::string basename(const std::string& path);
+  std::string readlink(const std::string& path);
+  std::string selfpath();
 
-  std::string
-  dirname(const std::string& path);
-
-  std::string
-  basename(const std::string& path);
-
-  
   class FilesystemException
     : public std::exception
   {

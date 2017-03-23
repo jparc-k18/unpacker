@@ -28,7 +28,7 @@ realpath(const std::string& path)
       std::ostringstream msg;
       msg << "\n during hddaq::realpath() \n"
 	  << " cannot resolve: " << path
-	  << "\n no sush file" ;	  
+	  << "\n no sush file" ;
       throw FilesystemException(msg.str());
     }
   return ret;
@@ -39,7 +39,7 @@ std::string
 dirname(const std::string& path)
 {
 
-  try 
+  try
     {
       std::string real = realpath(path);
       //  const std::string::size_type first_slash = real.find("/");
@@ -56,7 +56,7 @@ dirname(const std::string& path)
 	      return real.substr(0, last_slash);
 	      break;
 	    default:
-	      std::cout << "#D path = " << path 
+	      std::cout << "#D path = " << path
 			<< "is niether directory nor regular file" << std::endl;
 	      break;
 	    }
@@ -76,7 +76,7 @@ dirname(const std::string& path)
 std::string
 basename(const std::string& path)
 {
-  try 
+  try
     {
       std::string real = realpath(path);
       std::string::size_type last_slash = real.find_last_of("/");
@@ -89,11 +89,11 @@ basename(const std::string& path)
 	    case S_IFREG:
 	      if (last_slash==std::string::npos)
 		return real.substr(0);
-	      else 
+	      else
 		return real.substr(last_slash+1);
 	      break;
 	    default:
-	      std::cout << "#D path = " << path 
+	      std::cout << "#D path = " << path
 			<< "is not regular file" << std::endl;
 	      break;
 	    }
@@ -106,8 +106,43 @@ basename(const std::string& path)
       msg << " during hddaq::basename()";
       throw FilesystemException(msg.str());
     }
-  
+
   return "";
+}
+
+//______________________________________________________________________________
+std::string
+readlink(const std::string& path)
+{
+  char buf[PATH_MAX];
+  ssize_t len = ::readlink(path.c_str(), buf, sizeof(buf)-1);
+  if ( len==-1 )
+    {
+      std::ostringstream msg;
+      msg << "\n during hddaq::selfname() \n"
+	  << " cannot resolve " << path
+	  << "\n no such file";
+      throw FilesystemException(msg.str());
+    }
+
+  buf[len] = '\0';
+  return std::string(buf);
+}
+
+//______________________________________________________________________________
+std::string
+selfpath()
+{
+  try
+    {
+      return readlink("/proc/self/exe");
+    }
+  catch(const std::exception& e)
+    {
+      std::ostringstream msg;
+      msg << e.what() << " during hddaq::selfpath()";
+      throw FilesystemException(msg.str());
+    }
 }
 
 //______________________________________________________________________________
