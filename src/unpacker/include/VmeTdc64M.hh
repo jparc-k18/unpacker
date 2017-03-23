@@ -11,7 +11,7 @@ namespace hddaq
 {
   namespace unpacker
   {
-    
+
     class VmeTdc64M
       : public VmeModule,
 	private Uncopyable<VmeTdc64M>
@@ -62,18 +62,19 @@ namespace hddaq
       static const unsigned int k_error3_mask  = 0x1;
       static const unsigned int k_error4_shift = 19;
       static const unsigned int k_error4_mask  = 0x1;
-      
+
     public:
       VmeTdc64M(const unpacker_type& type);
       virtual ~VmeTdc64M();
-      
+
     protected:
       virtual void check_data_format();
       virtual void decode();
+      virtual void update_tag();
       virtual void resize_fe_data();
 
     };
-    
+
   }
 }
 #endif

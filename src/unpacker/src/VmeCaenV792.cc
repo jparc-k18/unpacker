@@ -9,6 +9,7 @@
 #include "std_ostream.hh"
 #include "HexDump.hh"
 #include "defines.hh"
+#include "Unpacker.hh"
 
 namespace hddaq
 {

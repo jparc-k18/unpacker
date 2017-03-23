@@ -32,7 +32,7 @@ VmeTdc64M::~VmeTdc64M()
 void
 VmeTdc64M::check_data_format()
 {
-  uint32_t header = *m_module_data_first; 
+  uint32_t header = *m_module_data_first;
   if (((header>>k_word_type_shift)&k_word_type_mask) != k_HEADER_MAGIC)
     m_error_state.set(defines::k_header_bit);
   return;
@@ -48,10 +48,10 @@ VmeTdc64M::decode()
     iterator first = *f;
     m_vme_header = reinterpret_cast<VmeModule::Header*>(&*first);
     m_module_data_first = first + VmeModule::k_header_size;
-    
+
     const uint32_t* buf = reinterpret_cast<uint32_t*>(&*m_module_data_first);
     unsigned int data_size = m_vme_header->m_data_size - VmeModule::k_header_size;
-    
+
     uint32_t module_id;
     for (unsigned int i=0; i<data_size; i++) {
       uint32_t word_type = ((buf[i]>>k_word_type_shift)&k_word_type_mask);
@@ -69,15 +69,17 @@ VmeTdc64M::decode()
 	  uint32_t hitnum = ((buf[i]>>k_hit_number_shift) & k_hit_number_mask);
 	  switch(edge){
 	  case k_leading:
-	    if(hitnum>16) cerr<<"#E VmeTdc64M::decode() hitnum is too much: "<<hitnum
-			      <<" ... (module_id: "<<module_id<<")"<<std::endl;
+	    if(hitnum>16)
+	      cerr << "#E VmeTdc64M::decode() hitnum is too much: " << hitnum
+		   << " ... (module_id: " << module_id << ")" << std::endl;
 	    fill(ch, k_hitnum, hitnum);
 	  case k_trailing:
 	    fill(ch, edge, data);
 	    break;
 	  default:
-	    cerr<<"#E VmeTdc64M::decode() unknown edge: "
-		<<std::hex<<edge<<"("<<buf[i]<<")"<<std::endl<<std::dec;
+	    cerr << "#E VmeTdc64M::decode() unknown edge: "
+		 << std::hex << edge << "(" << buf[i] << ")" << std::endl
+		 << std::dec;
 	    break;
 	  }//switch(edge)
 	}//case k_DATA_MAGIC
@@ -90,26 +92,43 @@ VmeTdc64M::decode()
 	  /*** error3&4 not defined yet. ***/
 	  // uint32_t error3 = ((buf[i]>>k_error3_shift) & k_error3_mask);
 	  // uint32_t error4 = ((buf[i]>>k_error4_shift) & k_error4_mask);
-	  if(error1==1) cerr<<"#W VmeTdc64M::decode() multi hit overflow ... (module id: "
-			    <<module_id<<")"<<std::endl;
-	  if(error2==1) cerr<<"#E VmeTdc64M::decode() time range is not fullfilled ... (module id:"
-			    <<module_id<<")"<<std::endl;
+	  if( error1==1 )
+	    cerr << "#W VmeTdc64M::decode() multi hit overflow ... (module id: "
+		 << module_id << ")" << std::endl;
+	  if( error2==1 )
+	    cerr << "#E VmeTdc64M::decode() time range is not fullfilled ... (module id:"
+		 << module_id << ")" << std::endl;
 	}
 	break;
       case k_INVALID_MAGIC:
-	cerr<<"#W VmeTdc64M::decode() not valid datum: "
-	    <<std::hex<<word_type<<" ("<<buf[i]<<")"<<std::endl<<std::dec;
+	cerr << "#W VmeTdc64M::decode() not valid datum: "
+	     << std::hex << word_type << " (" << buf[i] << ")" << std::endl
+	     << std::dec;
         break;
       default:
-	cerr<<"#E VmeTdc64M::decode() unknown word type: "
-	    <<std::hex<<word_type<<"("<<buf[i]<<")"<<std::endl<<std::dec;
+	cerr << "#E VmeTdc64M::decode() unknown word type: "
+	     << std::hex << word_type << "(" << buf[i] << ")" << std::endl
+	     << std::dec;
 	break;
       }//switch(word_type)
     }//for(i)
   }//for(f)
   return;
 }
-  
+
+//______________________________________________________________________________
+void
+VmeTdc64M::update_tag()
+{
+  uint32_t buf = *(--m_data_last);
+  uint32_t event_number = buf & k_event_number_mask;
+  //  std::cout << std::hex << buf << std::endl;
+
+  Tag& tag = m_tag[k_tag_current].back();
+  tag.m_local = event_number;
+  m_has_tag.set(k_local);
+}
+
 //______________________________________________________________________________
 void
 VmeTdc64M::resize_fe_data()
