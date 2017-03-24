@@ -59,7 +59,7 @@ VmeTdc64M::decode()
     const uint32_t* buf = reinterpret_cast<uint32_t*>(&*m_module_data_first);
     unsigned int data_size = m_vme_header->m_data_size - VmeModule::k_header_size;
 
-    uint32_t module_id;
+    uint32_t module_id = 0xffffffff;
     for (unsigned int i=0; i<data_size; i++) {
       uint32_t word_type = ((buf[i]>>k_word_type_shift)&k_word_type_mask);
       switch(word_type){
