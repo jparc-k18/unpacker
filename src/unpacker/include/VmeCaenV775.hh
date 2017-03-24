@@ -11,7 +11,7 @@ namespace hddaq
 {
   namespace unpacker
   {
-    
+
     class VmeCaenV775
       : public VmeModule,
 	private Uncopyable<VmeCaenV775>
@@ -21,7 +21,10 @@ namespace hddaq
       static const unpacker_type k_type;
       static const unsigned int k_n_channel   = 32;
       enum data_type { k_tdc, k_n_data_type };
-      
+
+      static const uint32_t k_local_tag_origin = 0U;
+      static const uint32_t k_local_tag_max    = 0xffffffU;
+
       static const unsigned int k_word_type_shift = 24;
       static const unsigned int k_word_type_mask  = 0x7;
       static const unsigned int k_HEADER_MAGIC    = 0x2;
@@ -57,7 +60,7 @@ namespace hddaq
     public:
       VmeCaenV775(const unpacker_type& type);
       virtual ~VmeCaenV775();
-      
+
     protected:
       virtual void check_data_format();
       virtual void decode();
@@ -65,7 +68,7 @@ namespace hddaq
       virtual void resize_fe_data();
 
     };
-    
+
   }
 }
 #endif

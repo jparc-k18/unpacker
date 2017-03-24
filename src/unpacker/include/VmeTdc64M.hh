@@ -27,6 +27,9 @@ namespace hddaq
 	k_n_data_type
       };
 
+      static const uint32_t k_local_tag_origin = 0U;
+      static const uint32_t k_local_tag_max    = 0xffffU;
+
       static const unsigned int k_word_type_shift = 28;
       static const unsigned int k_word_type_mask  = 0xf;
       static const unsigned int k_HEADER_MAGIC  = 0xa;

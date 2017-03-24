@@ -21,6 +21,13 @@ namespace unpacker
 VmeTdc64M::VmeTdc64M(const unpacker_type& type)
   : VmeModule(type)
 {
+  Tag& orig = m_tag[k_tag_origin].back();
+  orig.m_local = k_local_tag_origin;
+
+  Tag& max = m_tag[k_tag_max].back();
+  max.m_local = k_local_tag_max;
+  max.m_event = 0;
+  max.m_spill = 0;
 }
 
 //______________________________________________________________________________
