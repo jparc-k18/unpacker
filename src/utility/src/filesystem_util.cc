@@ -119,7 +119,7 @@ readlink(const std::string& path)
   if ( len==-1 )
     {
       std::ostringstream msg;
-      msg << "\n during hddaq::selfname() \n"
+      msg << "\n during hddaq::readlink() \n"
 	  << " cannot resolve " << path
 	  << "\n no such file";
       throw FilesystemException(msg.str());
