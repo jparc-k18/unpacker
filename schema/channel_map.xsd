@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema 
+<xs:schema
     attributeFormDefault="unqualified"
     elementFormDefault="unqualified"
     xmlns:xs="http://www.w3.org/2001/XMLSchema">
@@ -52,7 +52,7 @@
     <xs:attribute name="address" type="xs:string" use="required"/>
     <xs:attributeGroup ref="unpackerAttrs"/>
   </xs:attributeGroup>
-  
+
   <!-- _________________________________________________________________________
        <nodeAttrs>
   -->
@@ -153,6 +153,7 @@
     <xs:choice>
       <xs:element name="SoyTimeStamp" type="DAQNodeType"/>
       <xs:element name="Hul3DMtx"     type="DAQNodeType"/>
+      <xs:element name="HulScaler"    type="DAQNodeType"/>
       <xs:element name="VmeMaster"    type="VmeMasterType"/>
       <xs:element name="Copper"       type="CopperType"/>
       <xs:element name="CopperLite"   type="CopperType"/>
@@ -174,6 +175,7 @@
       <xs:element name="VmeMaster"          type="VmeMasterType"/>
       <xs:element name="SoyTimeStamp"       type="DAQNodeType"/>
       <xs:element name="Hul3DMtx"           type="DAQNodeType"/>
+      <xs:element name="HulScaler"          type="DAQNodeType"/>
 
       <xs:element name="VmeRpv100"          type="VmeModuleType"/>
       <xs:element name="VmeRpv130"          type="VmeModuleType"/>
@@ -286,7 +288,7 @@
     <xs:group ref="feGroup" minOccurs="0" maxOccurs="130"/>
     <xs:attributeGroup ref="tkoAttrs"/>
   </xs:complexType>
-  
+
   <!-- _________________________________________________________________________
        <TkoMHTdcCSdsType>
   -->
@@ -350,7 +352,7 @@
     <xs:group ref="nodeGroup" minOccurs="0" maxOccurs="unbounded"/>
     <xs:attributeGroup ref="nodeAttrs"/>
   </xs:complexType>
-		  
+
   <!-- _________________________________________________________________________
        <fe_forType>
   -->
