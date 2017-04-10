@@ -3,7 +3,7 @@
 # Author: Shuhei Hayakawa
 
 this=$(basename $0)
-version=20170305
+version=20170410
 
 #_______________________________________________________________________________
 readlink=readlink
@@ -117,4 +117,3 @@ while test $# -gt 0; do
 done
 
 echo $out
-
