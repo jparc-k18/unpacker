@@ -61,14 +61,14 @@ UnpackerManager::UnpackerManager()
 //______________________________________________________________________________
 UnpackerManager::~UnpackerManager()
 {
-//   cout << "#D1 GUnpacker::~UnpackerManager()" << std::endl;
+  // cout << "#D1 GUnpacker::~UnpackerManager()" << std::endl;
   std::for_each(m_unpacker.begin(), m_unpacker.end(), Delete());
 
-//   cout << "#D unpackers are cleared." << std::endl;
-//   if (m_is_esc_on)
-  tag_summary << esc::k_default_color << std::endl;
-//   cout << "#D GUnpacker::Impl::~Impl()" << std::endl;
-//   cout << "#D2 GUnpacker::~UnpackerManager()" << std::endl;
+  // cout << "#D unpackers are cleared." << std::endl;
+  // if (m_is_esc_on)
+  //   tag_summary << esc::k_default_color << std::endl;
+  // cout << "#D GUnpacker::Impl::~Impl()" << std::endl;
+  // cout << "#D2 GUnpacker::~UnpackerManager()" << std::endl;
 
   if (m_reader)
     delete m_reader;
@@ -76,7 +76,7 @@ UnpackerManager::~UnpackerManager()
 }
 
 //______________________________________________________________________________
-void 
+void
 UnpackerManager::hoge(const std::string& arg) const
 {
   cout << "#D GUnpacker::hoge()  " << arg << std::endl;
@@ -93,7 +93,7 @@ UnpackerManager::check()
 }
 
 //______________________________________________________________________________
-void 
+void
 UnpackerManager::clear()
 {
 //   cout << "#D1 GUnpacker clear" << std::endl;
@@ -102,7 +102,7 @@ UnpackerManager::clear()
   static int s_n_back = 0;
   cout << "#D1 UnpackerManager back()" << std::endl;
 #endif
-  
+
   const int n = m_unpacker.size();
   if (m_fifo.size()>1)
     {
@@ -114,7 +114,7 @@ UnpackerManager::clear()
 	  if (u) u->set_container(wpos.m_fe[i]);
 	}
     }
-  else 
+  else
     {
       for (int i=0; i<n; ++i)
 	{
@@ -128,10 +128,10 @@ UnpackerManager::clear()
   ++s_n_back;
   cout << "#D2 UnpackerManager back() " << s_n_back << std::endl;
 #endif
-  
+
   if (m_root) m_root->clear();
   m_is_good = true;
-  
+
   return;
 }
 
@@ -147,7 +147,7 @@ UnpackerManager::close()
 Unpacker*
 UnpackerManager::create(const unpacker_type& type)
 {
-  
+
   Unpacker* u = new Unpacker(type);
   m_unpacker.push_back(u);
   return u;
@@ -163,7 +163,7 @@ UnpackerManager::decode()
 }
 
 //______________________________________________________________________________
-void 
+void
 UnpackerManager::dump_data() const
 {
   if (m_dump_mode[defines::k_binary]){
@@ -179,18 +179,18 @@ UnpackerManager::dump_data() const
 }
 
 //______________________________________________________________________________
-void 
+void
 UnpackerManager::dump_data_device(int device_id, int plane_id) const
 {
   UnpackerConfig& uCon = GConfig::get_instance();
-  const UnpackerConfig::DigitInfo::NameList& nlist 
+  const UnpackerConfig::DigitInfo::NameList& nlist
     = (uCon.get_digit_info()).get_name_list();
   const std::string name_device = nlist[device_id];
   const std::string name_plane  = plane_id == -1 ? "all planes" : i2a(plane_id);
 
   std::cout << "#D UnpackerManager::dump_data_device" << std::endl;
   std::cout << " Front-end data relating to Device["
-	    << name_device << "] Plane[" 
+	    << name_device << "] Plane["
 	    << name_plane << "]"
 	    << std::endl;
 
@@ -199,12 +199,12 @@ UnpackerManager::dump_data_device(int device_id, int plane_id) const
   for(unsigned int i = 0; i<uvect.size(); ++i){
     uvect[i]->dump_data(defines::k_hex);
   }
-  
+
   return;
 }
 
 //______________________________________________________________________________
-void 
+void
 UnpackerManager::dump_data_fe(int node_id, int address, int ma) const
 {
   Unpacker* parent = get_root();
@@ -284,7 +284,7 @@ UnpackerManager::find(unsigned int device_id) const
     }
   catch (...)
     {
-      cerr << "\n#E UnpackerManager::find()\n" 
+      cerr << "\n#E UnpackerManager::find()\n"
 	   << " device id = " << device_id
 	   << std::endl;
       throw;
@@ -308,7 +308,7 @@ UnpackerManager::find(const std::string& name) const
     {
       UnpackerConfig& g_config = GConfig::get_instance();
       const UnpackerConfig::DigitInfo& digit_info = g_config.get_digit_info();
-      
+
       return find(digit_info.get_device_id(name));
     }
   catch (...)
@@ -331,7 +331,7 @@ UnpackerManager::find(unsigned int device_id, unsigned int plane_id) const
     }
   catch (...)
     {
-      cerr << "\n#E UnpackerManager::find()\n" 
+      cerr << "\n#E UnpackerManager::find()\n"
 	   << " device id = " << device_id
 	   << std::endl;
       throw;
@@ -357,10 +357,10 @@ UnpackerManager::find(const std::string& device_name,
     {
       UnpackerConfig& g_config = GConfig::get_instance();
       const UnpackerConfig::DigitInfo& digit_info = g_config.get_digit_info();
-      
+
       unsigned int device_id = digit_info.get_device_id(device_name);
       unsigned int plane_id  = digit_info.get_plane_id(device_id, plane_name);
-      
+
       return find(device_id, plane_id);
     }
   catch (...)
@@ -625,11 +625,11 @@ UnpackerManager::get_entries(unsigned int device_id,
       std::ostringstream err;
       try
 	{
-	  err << " ["  << device_id 
+	  err << " ["  << device_id
 	      << " / " << digit_list.size() << "] ";
-	  err << " ["  << plane_id 
+	  err << " ["  << plane_id
 	      << " / " << digit_list.at(device_id).size() << "] ";
-	  err << " ["  << segment_id 
+	  err << " ["  << segment_id
 	      << " / " << digit_list.at(device_id).at(plane_id).size() << "] ";
 	  err << " ["  << ch
 	      << " / " << digit_list.at(device_id).at(plane_id).at(segment_id).size() << "] ";
@@ -661,7 +661,7 @@ UnpackerManager::get_entries(const std::string& name,
 
   UnpackerConfig& g_config = GConfig::get_instance();
   const UnpackerConfig::DigitInfo& digit_info = g_config.get_digit_info();
-  
+
   int device_id = digit_info.get_device_id(name);
   return get_entries(device_id, plane_id, segment_id, ch, data_type);
 
@@ -707,7 +707,7 @@ UnpackerManager::get_node_header(int node_id, int header_data_type) const
   Unpacker* result = NULL;
   result = search_fe(parent, node_id);
 
-  if(true 
+  if(true
      && result
      && result->is_ready()
      && result->is_node()
@@ -744,7 +744,7 @@ UnpackerManager::get_root() const
 }
 
 //______________________________________________________________________________
-void 
+void
 UnpackerManager::initialize()
 {
   static bool s_is_initialized = false;
@@ -760,7 +760,7 @@ UnpackerManager::initialize()
 //   if (is_online() && !m_reader->is_open())
   if (!m_reader->is_open())
     reset();
-  
+
   if (s_is_initialized)
     {
       cout << "#D UnpackerManager::initialize()\n"
@@ -793,8 +793,8 @@ UnpackerManager::initialize()
     {
       m_front = &m_digit_list;
     }
-    
-  
+
+
   m_reader->read();
 
   if (m_dump_mode[defines::k_binary]){
@@ -817,9 +817,9 @@ UnpackerManager::initialize()
 	}
       m_reader->read();
     }
-  cout << "#D GUnpacker skipped " << skipped << " events" 
+  cout << "#D GUnpacker skipped " << skipped << " events"
        << std::endl;
-  
+
   const unsigned int node_id = m_reader->get_root_id();
   if (node_id!=m_unpacker[0]->get_id())
 //   if (node_id!=get_root()->get_id())
@@ -827,8 +827,8 @@ UnpackerManager::initialize()
       cerr << "#Warning UnpackerManager::initialize()\n"
 	   << " wrong unpacker ID for root node\n data = "
 	   << std::hex << std::showbase
-	   << node_id 
-	   << "\n configuration file = " << m_unpacker[0]->get_id() 
+	   << node_id
+	   << "\n configuration file = " << m_unpacker[0]->get_id()
 	   << std::dec << std::noshowbase << std::endl;
       for (int i=0; i<n_unpacker; ++i)
 	{
@@ -842,7 +842,7 @@ UnpackerManager::initialize()
       if (!m_root)
 	{
 	  cerr << "\n#E UnpackerManager::initialize()\n"
-	       << " cannot find root node in the configuration file" 
+	       << " cannot find root node in the configuration file"
 	       << std::endl;
 	  m_reader->close();
 	}
@@ -999,7 +999,7 @@ void
 UnpackerManager::print_tag() const
 {
   cout << "#D GUnpacker::print_tag()\n"
-       << "=============================================================" 
+       << "============================================================="
        << std::endl;
 
   m_root->print_tag();
@@ -1024,7 +1024,7 @@ UnpackerManager::push_event()
     }
   else
     m_is_data_ready = true;
-  
+
 
 #ifdef DEBUG_FIFO
   ++s_n_push;
@@ -1081,13 +1081,13 @@ UnpackerManager::set_config_file(const std::string& config_file,
       std::string channel_map_file_resolved = realpath(channel_map_file);
 
       g_config.initialize(m_digit_list,
-			  config_file_resolved, 
+			  config_file_resolved,
 			  digit_file_resolved,
 			  channel_map_file_resolved);
 
       set_parameter("first",       g_config.get_control_param("first"));
       set_parameter("skip",        g_config.get_control_param("skip"));
-      set_parameter("max_loop",    g_config.get_control_param("max_loop")); 
+      set_parameter("max_loop",    g_config.get_control_param("max_loop"));
       set_parameter("last",        g_config.get_control_param("last"));
       set_parameter("esc",         g_config.get_control_param("esc"));
       set_parameter("print_cycle", g_config.get_control_param("print_cycle"));
@@ -1134,9 +1134,9 @@ UnpackerManager::set_istream(const std::string& name)
   m_input_stream = name;
   if (!is_online())
     m_input_stream = realpath(name);
-  
+
   cout << "\n"
-       << "#D ___________ GUnpacker::set_istream() __________\n" 
+       << "#D ___________ GUnpacker::set_istream() __________\n"
        << "   input stream = " << m_input_stream
        << std::endl;
   return;
@@ -1176,8 +1176,8 @@ UnpackerManager::set_parameter(const std::string& name,
     }else{
       last += m_max_loop;
     }
-      
-    cout << " max_loop = " << m_max_loop 
+
+    cout << " max_loop = " << m_max_loop
 	 << std::endl;
     if (0<m_max_loop){
       cout << " (last = " << last << ")" << std::endl;
@@ -1191,7 +1191,7 @@ UnpackerManager::set_parameter(const std::string& name,
     m_fifo.resize(a2i(value));
     m_fifo.initialize();
   }
-    
+
 
   return;
 }
@@ -1204,10 +1204,10 @@ UnpackerManager::show_event_number() const
   std::stringstream ev_ss;
   ev_ss << ev_data << " (" << std::hex << std::showbase << ev_data << ")";
   cout << "#D UnpackerManager::show_event_number()\n"
-       << "   (daq root data) " 
+       << "   (daq root data) "
        << ((ev_data==defines::k_unassignedU) ? "----------" : ev_ss.str())
        << "\n"
-       << "   (counter)       " << m_counter 
+       << "   (counter)       " << m_counter
        << " (" << std::hex << std::showbase << m_counter
        << std::dec << std::noshowbase << ")"
        << std::endl;
@@ -1225,39 +1225,39 @@ UnpackerManager::show_summary(bool is_forced)
   //  bool is_consistent=false;
   bool is_slipped=false;
   m_is_good = root->is_good();
-  is_consistent 
+  is_consistent
     = root->is_bad(defines::k_local_tag_bit)
-    | root->is_bad(defines::k_event_tag_bit) 
+    | root->is_bad(defines::k_event_tag_bit)
     | root->is_bad(defines::k_spill_tag_bit);
-  is_slipped 
+  is_slipped
     = root->is_bad(defines::k_local_slip_bit)
     | root->is_bad(defines::k_event_slip_bit)
     | root->is_bad(defines::k_spill_slip_bit);
 
   const bool is_slip_allowed
     = !(root->get_check_mode()[defines::k_slip2]);
-  is_forced 
+  is_forced
     |= root->get_check_mode()[defines::k_show_always];
-  if (is_forced 
-      || 
+  if (is_forced
+      ||
       (!(m_is_good || (is_slip_allowed & is_slipped & is_consistent))))
     {
-      tag_summary << "\n"; 
+      tag_summary << "\n";
       tag_summary << "======================================"
-		  << "======================================" 
+		  << "======================================"
 		  << std::endl;
       tag_summary.setf(std::ios_base::left);
-      tag_summary << std::setfill(' ') 
+      tag_summary << std::setfill(' ')
 		  << std::setw(24) << "nick-name";
       tag_summary.unsetf(std::ios_base::left);
       tag_summary.setf(std::ios_base::right);
-      tag_summary << std::setw(defines::k_n_error_state + 3) 
+      tag_summary << std::setw(defines::k_n_error_state + 3)
 		  << "error-state"
 		  << std::setw(7)  << "size"
 		  << " "
-		  << std::setw(12) << "local" 
+		  << std::setw(12) << "local"
 		  << " "
-		  << std::setw(12) << "event(3bit)" 
+		  << std::setw(12) << "event(3bit)"
 		  << " "
 		  << std::setw(12) << "spill(2bit)"
 #if 0
@@ -1269,11 +1269,11 @@ UnpackerManager::show_summary(bool is_forced)
 	// 	 << std::endl;
 	   << "\n";
       tag_summary << std::setfill(' ')
-		  << std::setw(24 + defines::k_n_error_state + 3) 
+		  << std::setw(24 + defines::k_n_error_state + 3)
 		  << "bUuSELselthdg"
 		  << "\n";
       tag_summary.unsetf(std::ios_base::right);
-      
+
       root->show_summary();
       tag_summary << std::endl;
 
@@ -1289,7 +1289,7 @@ UnpackerManager::show_summary(bool is_forced)
 }
 
 //______________________________________________________________________________
-void 
+void
 UnpackerManager::search_device(Unpacker* u,
 			       std::vector<Unpacker*>& uvect,
 			       int device_id, int plane_id
