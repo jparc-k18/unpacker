@@ -151,14 +151,15 @@
   -->
   <xs:group name="nodeGroup">
     <xs:choice>
-      <xs:element name="SoyTimeStamp" type="DAQNodeType"/>
-      <xs:element name="Hul3DMtx"     type="DAQNodeType"/>
-      <xs:element name="HulScaler"    type="DAQNodeType"/>
-      <xs:element name="VmeMaster"    type="VmeMasterType"/>
-      <xs:element name="Copper"       type="CopperType"/>
-      <xs:element name="CopperLite"   type="CopperType"/>
-      <xs:element name="Easiroc"      type="DAQNodeType"/>
-      <xs:element name="DAQNode"      type="DAQNodeType"/>
+      <xs:element name="SoyTimeStamp"    type="DAQNodeType"/>
+      <xs:element name="Hul3DMtx"        type="DAQNodeType"/>
+      <xs:element name="HulScaler"       type="DAQNodeType"/>
+      <xs:element name="HulMassTrigFera" type="DAQNodeType"/>
+      <xs:element name="VmeMaster"       type="VmeMasterType"/>
+      <xs:element name="Copper"          type="CopperType"/>
+      <xs:element name="CopperLite"      type="CopperType"/>
+      <xs:element name="Easiroc"         type="DAQNodeType"/>
+      <xs:element name="DAQNode"         type="DAQNodeType"/>
       <xs:group   ref="feGroup"/>
     </xs:choice>
   </xs:group>
@@ -176,6 +177,7 @@
       <xs:element name="SoyTimeStamp"       type="DAQNodeType"/>
       <xs:element name="Hul3DMtx"           type="DAQNodeType"/>
       <xs:element name="HulScaler"          type="DAQNodeType"/>
+      <xs:element name="HulMassTrigFera"    type="DAQNodeType"/>
 
       <xs:element name="VmeRpv100"          type="VmeModuleType"/>
       <xs:element name="VmeRpv130"          type="VmeModuleType"/>

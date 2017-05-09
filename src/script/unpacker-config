@@ -3,7 +3,7 @@
 # Author: Shuhei Hayakawa
 
 this=$(basename $0)
-version=20170410
+version=20170510
 
 #_______________________________________________________________________________
 readlink=readlink
