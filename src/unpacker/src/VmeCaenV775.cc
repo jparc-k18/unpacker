@@ -100,7 +100,7 @@ VmeCaenV775::update_tag()
 
   Tag& tag = m_tag[k_tag_current].back();
   tag.m_local = event_number;
-  m_has_tag.set(k_local);
+  // m_has_tag.set(k_local);
 }
 
 //______________________________________________________________________________
