@@ -100,8 +100,10 @@ VmeTdc64M::decode()
 	  // uint32_t error3 = ((buf[i]>>k_error3_shift) & k_error3_mask);
 	  // uint32_t error4 = ((buf[i]>>k_error4_shift) & k_error4_mask);
 	  if( error1==1 )
-	    cerr << "#W VmeTdc64M::decode() multi hit overflow ... (module id: "
-		 << module_id << ")" << std::endl;
+	    cerr << "#W VmeTdc64M::decode() multi hit overflow"
+		 << " ... (address: " << std::hex
+		 << m_vme_header->m_vme_address << ")" << std::endl;
+	  //<< " ... (module id: " << module_id << ")" << std::endl;
 	  if( error2==1 )
 	    cerr << "#E VmeTdc64M::decode() time range is not fullfilled ... (module id:"
 		 << module_id << ")" << std::endl;
@@ -133,7 +135,7 @@ VmeTdc64M::update_tag()
 
   Tag& tag = m_tag[k_tag_current].back();
   tag.m_local = event_number;
-  // m_has_tag.set(k_local);
+  m_has_tag.set(k_local);
 }
 
 //______________________________________________________________________________
