@@ -20,15 +20,15 @@ namespace hddaq
   namespace
   {
 //______________________________________________________________________________
-    uint32_t xor32(uint32_t so_far,
-		   uint32_t new_face)
-    {
-      return so_far ^ new_face;
-    };
+    // uint32_t xor32(uint32_t so_far,
+    // 		   uint32_t new_face)
+    // {
+    //   return so_far ^ new_face;
+    // };
 
   }
-    
-    const defines::unpacker_type FinesseEncoderInverse::k_type 
+
+    const defines::unpacker_type FinesseEncoderInverse::k_type
     = "FinesseEncoderInverse";
 
 //______________________________________________________________________________

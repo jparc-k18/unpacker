@@ -5,7 +5,7 @@
 #include "UnpackerXMLReadDigit.hh"
 
 #include <algorithm>
-
+#include <map>
 #include <cstdlib>
 
 #include "std_ostream.hh"
@@ -136,7 +136,7 @@ UnpackerXMLReadDigit::UnpackerXMLReadDigit(DOMElement* e,
 		  std::map<std::string, int>& data_ref
 		    = m_data_ref[device_id][plane_id][segment_id][ch_id];
 		  if (data_ref.empty())
-		    data_ref.insert(std::make_pair<std::string, int>("0",0));
+		    data_ref.insert(std::make_pair("0",0));
 
 		  const int n_data 
 		    = get_n_data(device_id, plane_id, segment_id, ch_id);
@@ -851,7 +851,7 @@ UnpackerXMLReadDigit::read_ch_digit(DOMElement* e)
   ChRef::value_type::value_type::reference cccref = ccref[m_segment_id];
 
 
-  cccref.insert(std::make_pair<std::string, int>(ref, m_ch_id));
+  cccref.insert(std::make_pair(ref, m_ch_id));
 
   if (dref.size()<=m_plane_id)
     {
@@ -927,7 +927,7 @@ UnpackerXMLReadDigit::read_data_digit(DOMElement* e)
 
   Ref& ddddref = dddref[m_ch_id];
 
-  ddddref.insert(std::make_pair<std::string, int>(ref, data_id));
+  ddddref.insert(std::make_pair(ref, data_id));
 
 #ifdef DIGIT_DATA
   cout << " data_id = " << id
@@ -972,7 +972,7 @@ UnpackerXMLReadDigit::read_device_digit(DOMElement* e)
   }
 
   std::pair<Ref::iterator, bool> insert_result
-    = m_device_ref.insert(std::make_pair<std::string, int>(ref, m_device_id));
+    = m_device_ref.insert(std::make_pair(ref, m_device_id));
   if(!insert_result.second){
     cout << "#E " << ks_class_name << "::read_device_digit()\n ";
     cout << " Multiple declaration of Device Name\n";
@@ -1033,7 +1033,7 @@ UnpackerXMLReadDigit::read_plane_digit(DOMElement* e)
   ChRef::reference      cref = m_ch_ref[m_device_id];
   DataRef::reference    dref = m_data_ref[m_device_id];
 
-  pref.insert(std::make_pair<std::string, int>(ref, m_plane_id));
+  pref.insert(std::make_pair(ref, m_plane_id));
 
   const unsigned int n_plane = get_n_plane(m_device_id);
   if (m_plane_id>=n_plane)
@@ -1082,7 +1082,7 @@ UnpackerXMLReadDigit::read_segment_digit(DOMElement* e)
   if (m_plane_id==0 && sref.empty())
     {
       if (m_plane_ref[m_device_id].empty())
-	pref.insert(std::make_pair<std::string, int>("0", 0));
+	pref.insert(std::make_pair("0", 0));
 //       cout << "#W " << ks_class_name
 // 	   << "::read_segment_digit()\n"
 // 	   << " automatically add plane = " << m_plane_id << " to "
@@ -1099,7 +1099,7 @@ UnpackerXMLReadDigit::read_segment_digit(DOMElement* e)
     }
 
   SegmentRef::value_type::reference ssref = sref[m_plane_id];
-  ssref.insert(std::make_pair<std::string, int>(ref, m_segment_id));
+  ssref.insert(std::make_pair(ref, m_segment_id));
 
   const unsigned int n_segment = get_n_segment(m_device_id, m_plane_id);
   if (m_segment_id>=n_segment)

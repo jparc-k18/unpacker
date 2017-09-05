@@ -20,11 +20,11 @@ namespace hddaq
   namespace
   {
 //______________________________________________________________________________
-    uint32_t xor32(uint32_t so_far,
-		   uint32_t new_face)
-    {
-      return so_far ^ new_face;
-    };
+    // uint32_t xor32(uint32_t so_far,
+    // 		   uint32_t new_face)
+    // {
+    //   return so_far ^ new_face;
+    // };
 
   }
 
@@ -50,7 +50,7 @@ FinesseEncoderPPG::decode()
   const_iterator last  = m_body_last;
   for (const_iterator i = first; i!=last; ++i)
     fill(0, 0, *i);
-  
+
   return;
 }
 

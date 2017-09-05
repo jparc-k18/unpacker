@@ -51,7 +51,7 @@ Unpacker::~Unpacker()
 }
 
 //______________________________________________________________________________
-void 
+void
 Unpacker::hoge(const std::string& arg) const
 {
   cout << "#D Unpacker::hoge() " << m_impl << " " << arg << std::endl;
@@ -84,8 +84,8 @@ Unpacker::add_channel_map(int fe_ch,
       try
 	{
 	  ch_ref.at(fe_data) = &data;
-	  
-	  Impl::DigitId& d 
+
+	  Impl::DigitId& d
 	    = m_impl->m_digit_id_list.at(fe_ch).at(fe_data);
 	  d.m_device    = device;
 	  d.m_plane     = plane;
@@ -97,12 +97,12 @@ Unpacker::add_channel_map(int fe_ch,
 	}
       catch (const std::out_of_range& e)
 	{
-	  cerr << "\n#E Unpacker::add_channel_map() " 
+	  cerr << "\n#E Unpacker::add_channel_map() "
 	       << "\n what = " << e.what() << "\n "
 	       << m_impl->m_name << "\n"
-	       << " FrontEnd data type ID : " << fe_data 
+	       << " FrontEnd data type ID : " << fe_data
 	       << " exceeds the size of FECh container: "
-	       << n_data_type << "\n" 
+	       << n_data_type << "\n"
 	       << "     check <FE> in <front_end>";
 	  throw;
 	}
@@ -111,23 +111,23 @@ Unpacker::add_channel_map(int fe_ch,
     {
       cerr << "\n#E Unpacker::add_channel_map() " << m_impl->m_name
 	   << "\n what = " << e.what() << "\n "
-	  << " FrontEnd channel ID : " << fe_ch 
+	  << " FrontEnd channel ID : " << fe_ch
 	  << " exceeds the size of FrontEndData container: "
-	  << n_ch << "\n" 
+	  << n_ch << "\n"
 	  << "     check  <FE ch=..... > in <front_end>\n"
 	  << "         or <sub ch_num=...> in <digit_data>";
       throw;
     }
   catch (const std::exception& e)
     {
-      cerr  << "\n#E Unpacker::add_channel_map() " << m_impl->m_name 
-	    << "\n what = " << e.what() 
+      cerr  << "\n#E Unpacker::add_channel_map() " << m_impl->m_name
+	    << "\n what = " << e.what()
 	    << "\n exception occurred";
       throw;
     }
   catch (...)
     {
-      cerr << "\n#E Unpacker::add_channel_map() " << m_impl->m_name 
+      cerr << "\n#E Unpacker::add_channel_map() " << m_impl->m_name
 	  << "\n unknown error occurred";
       throw;
     }
@@ -153,9 +153,9 @@ Unpacker::add_channel_map(FrontEndData& fe_data,
       const int n_type = ch_ref.size();
       for (int type=0; type<n_type; ++type)
 	{
-	  const Impl::DigitId& d 
+	  const Impl::DigitId& d
 	    = m_impl->m_digit_id_list[ch][type];
-	  ch_ref[type] 
+	  ch_ref[type]
 	    = &(digit_list
 		[d.m_device]
 		[d.m_plane]
@@ -178,7 +178,7 @@ Unpacker::check()
 //   m_impl->print();
   if (m_impl->m_data_size==0) return;
   if (!m_impl->m_is_unpack_mode) return;
-  
+
   ChildList::const_iterator cend = m_impl->m_child_list.end();
   for (ChildList::const_iterator i=m_impl->m_child_list.begin(); i!=cend; ++i)
     {
@@ -236,7 +236,7 @@ Unpacker::clear()
   if (!m_impl) return;
 
   if (!is_good()) m_impl->m_error_state.reset();
-  
+
 
 //   Tag& pre = m_impl->m_tag[k_tag_prev];
   m_impl->m_tag[k_tag_prev].swap(m_impl->m_tag[k_tag_current]);
@@ -280,7 +280,7 @@ Unpacker::clear()
 }
 
 //______________________________________________________________________________
-void 
+void
 Unpacker::decode()
 {
   if (!m_impl) return;
@@ -292,17 +292,17 @@ Unpacker::decode()
 
   if (!m_impl->m_is_unpack_mode) return;
 
-  
+
   if (m_impl->m_is_decode_mode){
     bool data_format_is_bad = false;
-    data_format_is_bad = 
+    data_format_is_bad =
        is_bad(defines::k_data_size_bit)
       |is_bad(defines::k_header_bit)
       |is_bad(defines::k_trailer_bit);
     if(!data_format_is_bad){
       m_impl->decode();
     }else{
-      cerr << "#E Unpacker::decode Skip the decode process" 
+      cerr << "#E Unpacker::decode Skip the decode process"
 	   << " because data format is probaly broken"
 	   << std::endl;
       m_impl->dump_in_hexadecimal();
@@ -342,13 +342,13 @@ Unpacker::dump_data(const Impl& impl,
 }
 
 //______________________________________________________________________________
-void 
+void
 Unpacker::dump_data(defines::e_dump_mode mode) const
 {
   if (!m_impl)
     return;
 
-  if (false 
+  if (false
       || m_impl->m_dump_mode[defines::k_binary]
       || mode == defines::k_binary
       ){
@@ -361,7 +361,7 @@ Unpacker::dump_data(defines::e_dump_mode mode) const
       ){
     m_impl->dump_in_decimal();
   }
-  
+
   if (false
       || m_impl->m_dump_mode[defines::k_hex]
       || mode == defines::k_hex
@@ -403,12 +403,12 @@ Unpacker::get(unsigned int ch,
     }
   catch (const std::out_of_range& e)
     {
-      std::ostringstream err;
-      try 
+      std::stringstream err;
+      try
 	{
 	  err << "[" << ch
 	      << " / " << m_impl->m_fe_data.size()  << "]";
-	  err << "[" << data_type 
+	  err << "[" << data_type
 	      << " / " << m_impl->m_fe_data.at(ch).size() << "]";
 	  err << "[" << hit_id
 	      << " / " << m_impl->m_fe_data.at(ch).at(data_type)->size() << "]";
@@ -416,8 +416,8 @@ Unpacker::get(unsigned int ch,
 	}
       catch (const std::out_of_range& e1)
 	{
-	  cerr << "#E Unpacker::get() " << m_impl->m_type 
-	       << " invalid access " << err  << " "
+	  cerr << "#E Unpacker::get() " << m_impl->m_type
+	       << " invalid access " << err.str()  << " "
 	       << e.what() << std::endl;
 	}
     }
@@ -477,7 +477,7 @@ const std::map<uint64_t, Unpacker*>&
 Unpacker::get_child_list() const
 {
   return m_impl->m_child_list;
-}    
+}
 
 //______________________________________________________________________________
 const hddaq::unpacker::FrontEndData&
@@ -531,19 +531,19 @@ Unpacker::get_entries(unsigned int ch,
     }
   catch (const std::out_of_range& e)
     {
-      std::ostringstream err;
+      std::stringstream err;
       try
 	{
 	  err << "[" << ch
 	      << " / " << m_impl->m_fe_data.size()  << "]";
-	  err << "[" << data_type 
+	  err << "[" << data_type
 	      << " / " << m_impl->m_fe_data.at(ch).size() << "]";
 	  throw;
 	}
       catch (const std::out_of_range& e1)
 	{
 	  cerr << "#E Unpacker::get_entries() " << m_impl->m_type
-	       << " invalid access " << err << " "
+	       << " invalid access " << err.str() << " "
 	       << e.what() << std::endl;
 	}
     }
@@ -560,7 +560,7 @@ Unpacker::get_error_state()
 
   if (m_impl->m_error_state.none())
     m_impl->m_error_state.set(defines::k_good_bit);
-  else 
+  else
     m_impl->m_error_state.set(defines::k_bad_bit);
   return m_impl->m_error_state;
 }
@@ -580,7 +580,7 @@ Unpacker::get_header(int data_type) const
 }
 
 //______________________________________________________________________________
-uint64_t 
+uint64_t
 Unpacker::get_id() const
 {
   return m_impl->m_id;
@@ -621,7 +621,7 @@ Unpacker::get_tag(int tag_type) const
 void
 Unpacker::get_tag(std::vector<Tag>& tag_current) const
 {
-  tag_current.assign(m_impl->m_tag[k_tag_current].begin(), 
+  tag_current.assign(m_impl->m_tag[k_tag_current].begin(),
 		     m_impl->m_tag[k_tag_current].end());
   return;
 }
@@ -730,7 +730,7 @@ Unpacker::is_unpack_mode() const
 }
 
 //______________________________________________________________________________
-void 
+void
 Unpacker::print() const
 {
   cout << "#D Unpacker ";
@@ -751,7 +751,7 @@ Unpacker::print() const
 }
 
 //______________________________________________________________________________
-void 
+void
 Unpacker::print_tag() const
 {
   if (m_impl->m_has_tag.any())
@@ -873,7 +873,7 @@ Unpacker::set_data(unsigned int data)
 }
 
 //______________________________________________________________________________
-void 
+void
 Unpacker::set_data(const iterator& data_first,
 		   const iterator& data_last)
 {
@@ -925,14 +925,14 @@ Unpacker::set_id(uint64_t id)
 }
 
 //______________________________________________________________________________
-void 
+void
 Unpacker::set_impl(Impl* impl)
 {
-  if (m_impl) 
+  if (m_impl)
     {
       delete m_impl;
       m_impl = 0;
-    } 
+    }
   m_impl = impl;
   return;
 }
@@ -947,7 +947,7 @@ Unpacker::set_name(const std::string& name)
 
   if (!name.empty())
     m_impl->m_name = name;
-  else 
+  else
     {
       if (m_impl->m_is_node)
 	{
@@ -955,8 +955,8 @@ Unpacker::set_name(const std::string& name)
 	  return;
 	}
       std::stringstream s;
-      s << std::hex 
-// 	<< std::showbase 
+      s << std::hex
+// 	<< std::showbase
 	<< "0x"
 	<< m_impl->m_id;
       m_impl->m_name = m_impl->m_parent->m_impl->m_name + "_" + s.str();
@@ -964,7 +964,7 @@ Unpacker::set_name(const std::string& name)
 //   cout << " : " << m_impl->m_name << "  created" << std::endl;
   return;
 }
-    
+
 //______________________________________________________________________________
 void
 Unpacker::set_null_device_id(int device_id)
@@ -1015,7 +1015,7 @@ Unpacker::show_summary()
 
   bool inherit_event = m_impl->m_tag_status[k_event_inherit];
   bool inherit_spill = m_impl->m_tag_status[k_spill_inherit];
-  if (true 
+  if (true
       && !Impl::gm_check_mode[defines::k_show_all]
       && (!m_impl->m_is_node)
       && (!is_bad(defines::k_bad_bit)))
@@ -1040,7 +1040,7 @@ Unpacker::show_summary()
   std::string local_prev = i2a(prev.m_local - tag_org.m_local);
 
   std::string event_tag  = i2a(tag.m_event) + "(" + i2a(masked.m_event) + ")";
-  std::string event_prev 
+  std::string event_prev
     = i2a(prev.m_event) + "("
     + i2a(prev.m_event & k_FINESSE_MAX_EVENT_TAG) + ")";
 
@@ -1051,14 +1051,14 @@ Unpacker::show_summary()
 
   tag_summary.setf(std::ios_base::left);
   // name
-  tag_summary << std::setfill(' ') 
+  tag_summary << std::setfill(' ')
 	      << std::setw(24) << m_impl->m_name;
   tag_summary.unsetf(std::ios_base::left);
   tag_summary.setf(std::ios_base::right);
   // error state
   tag_summary << ((is_bad() && Impl::gm_is_esc_on)
 		  ? esc::k_yellow : "")
-	      << std::setw(defines::k_n_error_state + 3) 
+	      << std::setw(defines::k_n_error_state + 3)
     // 		<< m_impl->m_error_state
 	      << state
     // data size
@@ -1084,7 +1084,7 @@ Unpacker::show_summary()
 	      << (Impl::gm_is_esc_on ? esc::k_default_color : "")
 	      << "\n";
   tag_summary.unsetf(std::ios_base::right);
-  
+
   ChildList::const_iterator cend = m_impl->m_child_list.end();
   for (ChildList::const_iterator i=m_impl->m_child_list.begin(); i!=cend; ++i)
     {
@@ -1109,7 +1109,7 @@ Unpacker::sort_child()
       if (u)
 	u->sort_child();
     }
-  
+
   return;
 }
 

@@ -40,7 +40,7 @@ CPPFLAGS	+= $(addprefix -I,$(include_dir))
 
 #AR	:= ar
 CP	:= cp -f
-ECHO	:= echo -e
+ECHO	:= /bin/echo -e
 MV	:= mv -f
 RM	:= rm -f
 SED	:= sed

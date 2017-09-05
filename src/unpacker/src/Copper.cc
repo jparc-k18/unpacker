@@ -41,11 +41,11 @@ Copper::~Copper()
 }
 
 //______________________________________________________________________________
-void 
+void
 Copper::do_check()
 {
   // copper header
-  if (k_COPPER_HEADER_MAGIC != m_header->m_magic) 
+  if (k_COPPER_HEADER_MAGIC != m_header->m_magic)
     m_error_state.set(defines::k_bad_bit);
 
   // trailer
@@ -70,13 +70,13 @@ Copper::print_header() const
        << std::hex
        << " magic       = " << m_header->m_magic << "\n"
        << " data size   = " << m_header->m_data_size << "\n"
-       << " slot A size = " 
+       << " slot A size = "
        << m_header->m_finesse_data_size[0] << "\n"
-       << " slot B size = " 
+       << " slot B size = "
        << m_header->m_finesse_data_size[1] << "\n"
        << " slot C size = "
        << m_header->m_finesse_data_size[2] << "\n"
-       << " slot D size = " 
+       << " slot D size = "
        << m_header->m_finesse_data_size[3] << "\n"
        << std::dec
        << std::endl;
@@ -117,7 +117,7 @@ bool
 Copper::unpack()
 {
   m_node_header = reinterpret_cast<DAQNode::Header*>(&(*m_data_first));
-  m_header 
+  m_header
     = reinterpret_cast<Header*>
     (&(*(m_data_first+sizeof(DAQNode::Header)/sizeof(uint32_t))));
   m_trailer
@@ -130,15 +130,15 @@ Copper::unpack()
 
   iterator copper_data_first = m_data_first + DAQNode::k_header_size;
 //   const unsigned int k_copper_data_size = m_node_header->m_data_size;
-//   cout << "#D size = " << std::hex 
+//   cout << "#D size = " << std::hex
 // 	  << k_copper_data_size << std::dec << std::endl;
 
-  iterator finesse_data_first 
+  iterator finesse_data_first
     = copper_data_first + sizeof(Header)/sizeof(unsigned int);
-  std::deque<Unpacker*>::iterator fend = m_child.end();
-  for (int slot=0; slot<4; ++slot) 
+  // std::deque<Unpacker*>::iterator fend = m_child.end();
+  for (int slot=0; slot<4; ++slot)
     {
-      if (0<m_header->m_finesse_data_size[slot]) 
+      if (0<m_header->m_finesse_data_size[slot])
 	{
  	  Unpacker* child = m_child[slot];
 	  if (!child)
