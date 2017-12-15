@@ -16,6 +16,8 @@ namespace unpacker
   {
 
   public:
+    static const unsigned int  k_LOCAL_TAG_ORIGIN = 0x1U;
+
     static const unpacker_type k_type;
     static const unsigned int  k_LOCK_BIT_mask = 0x80000000U;
     static const unsigned int  k_n_ch = 2;

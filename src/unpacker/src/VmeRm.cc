@@ -22,6 +22,10 @@ VmeRm::VmeRm(const unpacker_type& type)
   : VmeModule(type),
     m_data(0)
 {
+
+  Tag& orig = m_tag[k_tag_origin].back();
+  orig.m_local = k_LOCAL_TAG_ORIGIN;
+
 }
 
 //______________________________________________________________________________
@@ -102,7 +106,8 @@ VmeRm::update_tag()
       Tag tag;
       tag.m_event = (d->m_event) & k_MTM_MAX_EVENT_TAG;
       tag.m_spill = (d->m_spill) & k_MTM_MAX_SPILL_TAG;
-      tag.m_local = defines::k_unassigned;
+      if(!d->m_time) tag.m_local = defines::k_unassigned;
+      else           tag.m_local = d->m_serial;
       m_tag[k_tag_current].push_back(tag);
 //       if (d->m_spill_end_flag!=0)
 // 	continue;
@@ -115,6 +120,7 @@ VmeRm::update_tag()
 //   tag.m_event = (d->m_event) & k_MTM_MAX_EVENT_TAG;
 //   tag.m_spill = (d->m_spill) & k_MTM_MAX_SPILL_TAG;
 
+  if(d->m_time) m_has_tag[k_local] = true;
   m_has_tag[k_event] = true;
   m_has_tag[k_spill] = true;
   m_data = d;
