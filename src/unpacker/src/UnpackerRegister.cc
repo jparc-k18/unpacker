@@ -18,6 +18,7 @@
 #include "SoyTimeStamp.hh"
 #include "Hul3DMtx.hh"
 #include "HulScaler.hh"
+#include "HulMHTdc.hh"
 #include "HulMassTrigFera.hh"
 
 #include "VmeAPVDaq.hh"
@@ -82,6 +83,7 @@ UnpackerRegister::UnpackerRegister()
   g_factory.add_entry(SoyTimeStamp::k_type, create<SoyTimeStamp>);
   g_factory.add_entry(Hul3DMtx::k_type, create<Hul3DMtx>);
   g_factory.add_entry(HulScaler::k_type, create<HulScaler>);
+  g_factory.add_entry(HulMHTdc::k_type, create<HulMHTdc>);
   g_factory.add_entry(HulMassTrigFera::k_type, create<HulMassTrigFera>);
 
   g_factory.add_entry(Tko::k_type,          create<Tko>);
