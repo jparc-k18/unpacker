@@ -197,8 +197,8 @@ public:
   static const uint32_t k_hr_nword_mask   = 0x3ffU;
   static const uint32_t k_hr_nword_shift  = 0U;
 
-  static const uint32_t k_HR_MAGIC        = 0x7U;
-  static const uint32_t k_hr_magic_mask   = 0x6U;
+  static const uint32_t k_HR_MAGIC        = 0x6U;
+  static const uint32_t k_hr_magic_mask   = 0x7U;
   static const uint32_t k_hr_magic_shift  = 29U;
   static const uint32_t k_hr_ch_mask      = 0x3fU;
   static const uint32_t k_hr_ch_shift     = 24U;
