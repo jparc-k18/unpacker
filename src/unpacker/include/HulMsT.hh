@@ -98,12 +98,15 @@ class HulMsT : public DAQNode, public Uncopyable<HulMsT>
 public:
   static const unpacker_type k_type;
   static const uint32_t      k_n_one_block =  32U; // per 1 block
+  static const uint32_t      k_n_channel   =  64U;
   enum e_data_type
     {
+      k_hr_leading,
+      k_lr_leading,
       k_mst_clear,
       k_mst_accept,
       k_mst_final_clear,
-      k_mst_cosolation_accept,
+      k_mst_consolation_accept,
       k_mst_fast_clear,
       k_mst_level2,
       k_mst_no_decision,
@@ -111,8 +114,6 @@ public:
       k_rm_spill,
       k_rm_sinc,
       k_rm_lock,
-      k_hr_leading,
-      k_lr_leading,
       k_n_data_type
     };
 
@@ -185,14 +186,19 @@ public:
   static const uint32_t k_mst_clear_mask               = 0x1U;
   static const uint32_t k_mst_clear_shift              = 0U;
 
+  // Data block ----------------------------------------------------
+  static const uint32_t k_block_header_mask  = 0xffffU;
+  static const uint32_t k_block_header_shift = 16U;
+
   // HR-TDC block --------------------------------------------------
+
   static const uint32_t k_HR_HEADER_MAGIC = 0xf800;
-  static const uint32_t k_hr_header_mask  = 0xffffU;
-  static const uint32_t k_hr_header_shift = 16U;
+
   static const uint32_t k_hr_nword_mask   = 0x3ffU;
   static const uint32_t k_hr_nword_shift  = 0U;
 
-  static const uint32_t k_hr_magic_mask   = 0x3U;
+  static const uint32_t k_HR_MAGIC        = 0x7U;
+  static const uint32_t k_hr_magic_mask   = 0x6U;
   static const uint32_t k_hr_magic_shift  = 29U;
   static const uint32_t k_hr_ch_mask      = 0x3fU;
   static const uint32_t k_hr_ch_shift     = 24U;
@@ -203,12 +209,11 @@ public:
   static const uint32_t k_LR1_HEADER_MAGIC = 0xfc10;
   static const uint32_t k_LR2_HEADER_MAGIC = 0xfc20;
 
-  static const uint32_t k_lr_header_mask  = 0xffffU;
-  static const uint32_t k_lr_header_shift = 16U;
   static const uint32_t k_lr_nword_mask   = 0x3ffU;
   static const uint32_t k_lr_nword_shift  = 0U;
 
-  static const uint32_t k_lr_magic_mask   = 0xccU;
+  static const uint32_t k_LR_MAGIC        = 0xccU;
+  static const uint32_t k_lr_magic_mask   = 0xffU;
   static const uint32_t k_lr_magic_shift  = 24U;
   static const uint32_t k_lr_ch_mask      = 0x3fU;
   static const uint32_t k_lr_ch_shift     = 16U;

@@ -76,7 +76,7 @@ HulMsT::decode( void )
       fill( 0, k_mst_consolation_accept, consolation_accept);
       fill( 0, k_mst_fast_clear,         fast_clear);
       fill( 0, k_mst_level2,             level2);
-      fill( 0, k_mst_no_decision,        decision);
+      fill( 0, k_mst_no_decision,        no_decision);
       itr_body++;
     }else{
       cerr << "#W " << func_name << " Unknown data type ("
@@ -88,20 +88,48 @@ HulMsT::decode( void )
   }// MsT
 
   // TDC data -----------------------------------------------
+  enum DataMode{k_HR, k_LR};
+  DataMode mode = k_HR;
   for(; itr_body != m_data_last; ++itr_body){
-    uint32_t data_type = (*itr_body >> k_data_header_shift) & k_data_header_mask;
-    uint32_t ch        = (*itr_body >> k_tdc_ch_shift)      & k_tdc_ch_mask;
-    uint32_t val       = (*itr_body >> k_tdc_data_shift)    & k_tdc_data_mask;
-    if(data_type == k_LEADING_MAGIC){
-      fill( ch, k_leading, val );
-    }else if(data_type == k_TRAILING_MAGIC){
-      fill( ch, k_trailing, val );
+    // Block type check
+    uint32_t block_type = (*itr_body >> k_block_header_shift) & k_block_header_mask;
+    if(block_type == k_HR_HEADER_MAGIC){
+      mode = k_HR;
+      continue;
+    }else if(block_type == k_LR1_HEADER_MAGIC || block_type == k_LR2_HEADER_MAGIC){
+      mode = k_LR;
+      continue;
+    }
+
+    // Data decode
+    if(mode == k_HR){
+      uint32_t data_type = (*itr_body >> k_hr_magic_shift) & k_hr_magic_mask;
+      uint32_t ch        = (*itr_body >> k_hr_ch_shift)    & k_hr_ch_mask;
+      uint32_t val       = (*itr_body >> k_hr_data_shift)  & k_hr_data_mask;
+
+      if(data_type == k_HR_MAGIC){
+	fill( ch, k_hr_leading, val);
+      }else{
+	cerr << "#W " << func_name << " Unknown data type ("
+	     << std::hex << *itr_body << std::dec
+	     << ")"
+	     << std::endl;
+	Unpacker::dump_data(*this);
+      }
     }else{
-      cerr << "#W " << func_name << " Unknown data type ("
-	   << std::hex << *itr_body << std::dec
-	   << ")"
-	   << std::endl;
-      Unpacker::dump_data(*this);
+      uint32_t data_type = (*itr_body >> k_lr_magic_shift) & k_lr_magic_mask;
+      uint32_t ch        = (*itr_body >> k_lr_ch_shift)    & k_lr_ch_mask;
+      uint32_t val       = (*itr_body >> k_lr_data_shift)  & k_lr_data_mask;
+
+      if(data_type == k_LR_MAGIC){
+	fill( ch, k_lr_leading, val);
+      }else{
+	cerr << "#W " << func_name << " Unknown data type ("
+	     << std::hex << *itr_body << std::dec
+	     << ")"
+	     << std::endl;
+	Unpacker::dump_data(*this);
+      }
     }
   }//for(i)
 

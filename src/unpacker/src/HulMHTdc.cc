@@ -44,7 +44,7 @@ HulMHTdc::decode( void )
   static const std::string func_name("["+k_type+"::"+__func__+"()]");
 
   //  std::size_t n_word_body = ((m_header->m_event_size >> k_EVSIZE_SHIFT) & k_EVSIZE_MASK);
-  int32_t over_flow = ((m_header->m_event_size >> k_OVERFLOW_SFHIT) & k_OVERFLOW_MASK);
+  int32_t over_flow = ((m_header->m_event_size >> k_OVERFLOW_SHIFT) & k_OVERFLOW_MASK);
   fill( 0, k_overflow, over_flow );
 
   const_iterator itr_body = m_body_first;

@@ -155,6 +155,7 @@
       <xs:element name="Hul3DMtx"        type="DAQNodeType"/>
       <xs:element name="HulScaler"       type="DAQNodeType"/>
       <xs:element name="HulMHTdc"        type="DAQNodeType"/>
+      <xs:element name="HulMsT"          type="DAQNodeType"/>
       <xs:element name="HulMassTrigFera" type="DAQNodeType"/>
       <xs:element name="VmeMaster"       type="VmeMasterType"/>
       <xs:element name="Copper"          type="CopperType"/>
@@ -178,6 +179,8 @@
       <xs:element name="SoyTimeStamp"       type="DAQNodeType"/>
       <xs:element name="Hul3DMtx"           type="DAQNodeType"/>
       <xs:element name="HulScaler"          type="DAQNodeType"/>
+      <xs:element name="HulMHTdc"           type="DAQNodeType"/>
+      <xs:element name="HulMsT"             type="DAQNodeType"/>
       <xs:element name="HulMassTrigFera"    type="DAQNodeType"/>
 
       <xs:element name="VmeRpv100"          type="VmeModuleType"/>
