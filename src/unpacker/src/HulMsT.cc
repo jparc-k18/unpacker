@@ -1,6 +1,6 @@
 // -*- C++ -*-
 
-#include "HulMHTdc.hh"
+#include "HulMsT.hh"
 
 #include <iterator>
 
@@ -14,10 +14,10 @@ namespace hddaq
 namespace unpacker
 {
 
-const defines::unpacker_type HulMHTdc::k_type = "HulMHTdc";
+const defines::unpacker_type HulMsT::k_type = "HulMsT";
 
 //______________________________________________________________________________
-HulMHTdc::HulMHTdc( const unpacker_type& uType )
+HulMsT::HulMsT( const unpacker_type& uType )
   : DAQNode(uType),
     m_header(0),
     m_body_first(),
@@ -33,22 +33,19 @@ HulMHTdc::HulMHTdc( const unpacker_type& uType )
 }
 
 //______________________________________________________________________________
-HulMHTdc::~HulMHTdc( void )
+HulMsT::~HulMsT( void )
 {
 }
 
 //______________________________________________________________________________
 void
-HulMHTdc::decode( void )
+HulMsT::decode( void )
 {
   static const std::string func_name("["+k_type+"::"+__func__+"()]");
 
-  //  std::size_t n_word_body = ((m_header->m_event_size >> k_EVSIZE_SHIFT) & k_EVSIZE_MASK);
-  int32_t over_flow = ((m_header->m_event_size >> k_OVERFLOW_SFHIT) & k_OVERFLOW_MASK);
-  fill( 0, k_overflow, over_flow );
-
   const_iterator itr_body = m_body_first;
 
+  // HRM ----------------------------------------------------
   if( m_has_rm ){
     uint32_t event = (*itr_body >> k_rm_event_shift) & k_rm_event_mask;
     uint32_t spill = (*itr_body >> k_rm_spill_shift) & k_rm_spill_mask;
@@ -59,9 +56,38 @@ HulMHTdc::decode( void )
     fill( 0, k_rm_sinc,  sinc  );
     fill( 0, k_rm_lock,  lock  );
     itr_body++;
-    //    n_word_body--;
   }
 
+  // MsT ---------------------------------------------------
+  {
+    uint32_t data_type          = (*itr_body >> k_mst_header_shift)             & k_mst_header_mask;
+    uint32_t clear              = (*itr_body >> k_mst_clear_shift)              & k_mst_clear_mask;
+    uint32_t accept             = (*itr_body >> k_mst_accept_shift)             & k_mst_accept_mask;
+    uint32_t final_clear        = (*itr_body >> k_mst_final_clear_shift)        & k_mst_final_clear_mask;
+    uint32_t consolation_accept = (*itr_body >> k_mst_consolation_accept_shift) & k_mst_consolation_accept_mask;
+    uint32_t fast_clear         = (*itr_body >> k_mst_fast_clear_shift)         & k_mst_fast_clear_mask;
+    uint32_t level2             = (*itr_body >> k_mst_level2_shift)             & k_mst_level2_mask;
+    uint32_t no_decision        = (*itr_body >> k_mst_no_decision_shift)        & k_mst_no_decision_mask;
+
+    if(data_type == k_MST_MAGIC){
+      fill( 0, k_mst_clear,              clear);
+      fill( 0, k_mst_accept,             accept);
+      fill( 0, k_mst_final_clear,        final_clear);
+      fill( 0, k_mst_consolation_accept, consolation_accept);
+      fill( 0, k_mst_fast_clear,         fast_clear);
+      fill( 0, k_mst_level2,             level2);
+      fill( 0, k_mst_no_decision,        decision);
+      itr_body++;
+    }else{
+      cerr << "#W " << func_name << " Unknown data type ("
+	   << std::hex << *itr_body << std::dec
+	   << ")"
+	   << std::endl;
+      Unpacker::dump_data(*this);
+    }
+  }// MsT
+
+  // TDC data -----------------------------------------------
   for(; itr_body != m_data_last; ++itr_body){
     uint32_t data_type = (*itr_body >> k_data_header_shift) & k_data_header_mask;
     uint32_t ch        = (*itr_body >> k_tdc_ch_shift)      & k_tdc_ch_mask;
@@ -84,7 +110,7 @@ HulMHTdc::decode( void )
 
 //______________________________________________________________________________
 void
-HulMHTdc::check_data_format( void )
+HulMsT::check_data_format( void )
 {
   static const std::string func_name("["+k_type+"::"+__func__+"()]");
 
@@ -117,7 +143,7 @@ HulMHTdc::check_data_format( void )
 
 //______________________________________________________________________________
 void
-HulMHTdc::resize_fe_data( void )
+HulMsT::resize_fe_data( void )
 {
   m_fe_data.resize(k_n_channel);
   for(uint32_t i = 0; i<k_n_channel; ++i){
@@ -127,7 +153,7 @@ HulMHTdc::resize_fe_data( void )
 
 //______________________________________________________________________________
 bool
-HulMHTdc::unpack( void )
+HulMsT::unpack( void )
 {
   m_node_header = reinterpret_cast<DAQNode::Header*>(&(*m_data_first));
   m_header
@@ -135,14 +161,14 @@ HulMHTdc::unpack( void )
 
   m_body_first = m_data_first
     + DAQNode::k_header_size
-    + HulMHTdc::k_header_size;
+    + HulMsT::k_header_size;
 
   return true;
 }
 
 //______________________________________________________________________________
 void
-HulMHTdc::update_tag( void )
+HulMsT::update_tag( void )
 {
   m_tag[k_tag_current].clear();
 

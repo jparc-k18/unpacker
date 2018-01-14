@@ -1,7 +1,7 @@
 // -*- C++ -*-
 
 /**
- * Data structure of HUL Scaler
+ * Data structure of HUL MH-TDC
  *
  * Header (3 words)
  *
@@ -60,6 +60,7 @@ public:
     {
       k_leading,
       k_trailing,
+      k_overflow,
       k_rm_event,
       k_rm_spill,
       k_rm_sinc,
@@ -75,22 +76,31 @@ public:
     uint32_t m_event_counter;
   };
 
+  // Event header ----------------------------------------------------------
+  // Header 1
   static const uint32_t k_header_size     = sizeof(Header)/sizeof(uint32_t);
   static const uint32_t k_HEADER_MAGIC    = 0xffff30ccU;
 
-  static const uint32_t k_EVCOUNTER_MASK  = 0xffffU;
-  static const uint32_t k_EVCOUNTER_SHIFT = 0U;
+  // Header 2
+  static const uint32_t k_OVERFLOW_MASK   = 0x1U;
+  static const uint32_t k_OVERFLOW_SHIFT  = 15U;
   static const uint32_t k_EVSIZE_MASK     = 0xfffU;
   static const uint32_t k_EVSIZE_SHIFT    = 0U;
+
+  // Header 3
   static const uint32_t k_HRM_MASK        = 0x1U;
   static const uint32_t k_HRM_SHIFT       = 23U;
   static const uint32_t k_EVTAG_MASK      = 0xfU;
   static const uint32_t k_EVTAG_SHIFT     = 16U;
+  static const uint32_t k_EVCOUNTER_MASK  = 0xffffU;
+  static const uint32_t k_EVCOUNTER_SHIFT = 0U;
 
+  // TAG -------------------------------------------------------------------
   static const uint32_t k_LOCAL_TAG_ORIGIN = 0U;
   static const uint32_t k_MAX_LOCAL_TAG    = 0xffffU;
   static const uint32_t k_MAX_EVENT_TAG    = 0xfU;
 
+  // HRM -------------------------------------------------------------------
   static const uint32_t k_rm_data_index  = 4;
 
   static const uint32_t k_rm_magic       = 0xf9U;
@@ -106,6 +116,7 @@ public:
   static const uint32_t k_rm_lock_mask   = 0x1U;
   static const uint32_t k_rm_lock_shift  = 21U;
 
+  // TDC -------------------------------------------------------------------
   static const uint32_t k_LEADING_MAGIC     = 0xcc;
   static const uint32_t k_TRAILING_MAGIC    = 0xcd;
   static const uint32_t k_data_header_mask  = 0xffU;
