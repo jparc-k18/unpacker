@@ -69,19 +69,37 @@ public:
     uint32_t m_event_counter;
   };
 
+  // Event header ----------------------------------------------------------
+  // Header 1
   static const uint32_t k_header_size     = sizeof(Header)/sizeof(uint32_t);
   static const uint32_t k_HEADER_MAGIC    = 0xffff4ca1U;
 
-  static const uint32_t k_EVCOUNTER_MASK  = 0xffffU;
-  static const uint32_t k_EVCOUNTER_SHIFT = 0U;
+  // Header 2
   static const uint32_t k_EVSIZE_MASK     = 0x7ffU;
   static const uint32_t k_EVSIZE_SHIFT    = 0U;
-  static const uint32_t k_EVTAG_MASK      = 0xfU;
-  static const uint32_t k_EVTAG_SHIFT     = 16U;
 
-  static const uint32_t k_LOCAL_TAG_ORIGIN = 0U;
-  static const uint32_t k_MAX_LOCAL_TAG    = 0xffffU;
-  static const uint32_t k_MAX_EVENT_TAG    = 0xfU;
+  // Header 3
+  static const uint32_t k_HRM_MASK          = 0x1U;
+  static const uint32_t k_HRM_SHIFT         = 23U;
+  static const uint32_t k_J0TAG_EVENT_MASK  = 0x7U;
+  static const uint32_t k_J0TAG_EVENT_SHIFT = 16U;
+  static const uint32_t k_J0TAG_SPILL_MASK  = 0x1U;
+  static const uint32_t k_J0TAG_SPILL_SHIFT = 19U;
+  static const uint32_t k_EVCOUNTER_MASK  = 0xffffU;
+  static const uint32_t k_EVCOUNTER_SHIFT = 0U;
+
+  // TAG -------------------------------------------------------------------
+  static const uint32_t k_LOCAL_TAG_ORIGIN  = 0U;
+  static const uint32_t k_MAX_LOCAL_TAG     = 0xffffU;
+  // HRM
+  static const uint32_t k_MAX_EVENT_HRM_TAG = 0xfffU;
+  static const uint32_t k_MAX_SPILL_HRM_TAG = 0xfU;
+  // J0
+  static const uint32_t k_MAX_EVENT_J0_TAG  = 0x7U;
+  static const uint32_t k_MAX_SPILL_J0_TAG  = 0x1U;
+
+  // HRM -------------------------------------------------------------------
+  static const uint32_t k_rm_data_index  = 4;
 
   static const uint32_t k_rm_magic       = 0xf9U;
   static const uint32_t k_rm_magic_mask  = 0xffU;
@@ -96,6 +114,7 @@ public:
   static const uint32_t k_rm_lock_mask  = 0x1U;
   static const uint32_t k_rm_lock_shift = 21U;
 
+  // SCR -------------------------------------------------------------------
   static const uint32_t k_scaler_block_mask  = 0xf;
   static const uint32_t k_scaler_block_shift = 28U;
 

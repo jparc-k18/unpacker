@@ -89,22 +89,28 @@ public:
   static const uint32_t k_HEADER_MAGIC    = 0xffff800bU;
 
   // Header 2
-
   static const uint32_t k_OVERFLOW_MASK   = 0x1U;
   static const uint32_t k_OVERFLOW_SHIFT  = 15U;
   static const uint32_t k_EVSIZE_MASK     = 0xfffU;
   static const uint32_t k_EVSIZE_SHIFT    = 0U;
 
   // Header 3
-  static const uint32_t k_EVTAG_MASK      = 0xfU;
-  static const uint32_t k_EVTAG_SHIFT     = 16U;
-  static const uint32_t k_EVCOUNTER_MASK  = 0xffffU;
-  static const uint32_t k_EVCOUNTER_SHIFT = 0U;
+  static const uint32_t k_J0TAG_EVENT_MASK  = 0x7U;
+  static const uint32_t k_J0TAG_EVENT_SHIFT = 16U;
+  static const uint32_t k_J0TAG_SPILL_MASK  = 0x1U;
+  static const uint32_t k_J0TAG_SPILL_SHIFT = 19U;
+  static const uint32_t k_EVCOUNTER_MASK    = 0xffffU;
+  static const uint32_t k_EVCOUNTER_SHIFT   = 0U;
 
   // TAG -----------------------------------------------------------
   static const uint32_t k_LOCAL_TAG_ORIGIN = 0U;
-  static const uint32_t k_MAX_LOCAL_TAG    = 0xffffU;
-  static const uint32_t k_MAX_EVENT_TAG    = 0xfU;
+  static const uint32_t k_MAX_LOCAL_TAG     = 0xffffU;
+  // HRM
+  static const uint32_t k_MAX_EVENT_HRM_TAG = 0xfffU;
+  static const uint32_t k_MAX_SPILL_HRM_TAG = 0xfU;
+  // J0
+  static const uint32_t k_MAX_EVENT_J0_TAG  = 0x7U;
+  static const uint32_t k_MAX_SPILL_J0_TAG  = 0x1U;
 
   // Data block ----------------------------------------------------
   static const uint32_t k_block_header_mask  = 0xffffU;

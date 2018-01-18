@@ -27,8 +27,8 @@ HulHRTdc::HulHRTdc( const unpacker_type& uType )
 
   Tag& max    = m_tag[k_tag_max].back();
   max.m_local = k_MAX_LOCAL_TAG;
-  max.m_event = k_MAX_EVENT_TAG;
-  max.m_spill = 0;
+  max.m_event = k_MAX_EVENT_HRM_TAG;
+  max.m_spill = k_MAX_SPILL_HRM_TAG;
 }
 
 //______________________________________________________________________________
@@ -124,14 +124,22 @@ HulHRTdc::update_tag( void )
   m_tag[k_tag_current].clear();
 
   // header event number check
+  Tag& max    = m_tag[k_tag_max].back();
+  max.m_event = k_MAX_EVENT_J0_TAG;
+  max.m_spill = k_MAX_SPILL_J0_TAG;
+
   uint32_t ev_counter
     = ((m_header->m_event_counter >> k_EVCOUNTER_SHIFT) & k_EVCOUNTER_MASK);
+  uint32_t j0_ev_tag
+    = ((m_header->m_event_counter >> k_J0TAG_EVENT_SHIFT) & k_J0TAG_EVENT_MASK);
+  uint32_t j0_spill_tag
+    = ((m_header->m_event_counter >> k_J0TAG_SPILL_SHIFT) & k_J0TAG_SPILL_MASK);
 
-  uint32_t ev_tag
-    = ((m_header->m_event_counter >> k_EVTAG_SHIFT) & k_EVTAG_MASK);
-  Tag tag( ev_counter, ev_tag, defines::k_unassigned );
+  Tag tag( ev_counter, j0_ev_tag, j0_spill_tag );
   m_tag[k_tag_current].push_back( tag );
   m_has_tag.set(k_local);
+  m_has_tag.set(k_event);
+  m_has_tag.set(k_spill);
 
 }
 
