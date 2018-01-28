@@ -3,7 +3,9 @@
 # Author: Shuhei Hayakawa
 
 this=$(basename $0)
-version=20170510
+path=$(dirname $(readlink -f $0))
+cd $path
+version=`git log --pretty=format:'%cd' --date=short -n 1`
 
 #_______________________________________________________________________________
 readlink=readlink
