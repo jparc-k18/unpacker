@@ -21,25 +21,19 @@ namespace unpacker
 VmeCaenV1724::VmeCaenV1724(const unpacker_type& type)
   : VmeModule(type)
 {
+  Tag& orig = m_tag[k_tag_origin].back();
+  orig.m_local = k_local_tag_origin;
+
+  Tag& max = m_tag[k_tag_max].back();
+  max.m_local = k_local_tag_max;
+  max.m_event = 0;
+  max.m_spill = 0;
 }
 
 //______________________________________________________________________________
 VmeCaenV1724::~VmeCaenV1724()
 {
 }
-
-//______________________________________________________________________________
-// void
-// VmeCaenV1724::check_data_format()
-// {
-//   uint32_t header = *m_module_data_first;
-
-
-//   if (((header >> k_data_type_shift) & k_data_type_mask) != k_HEADER_MAGIC)
-//     m_error_state.set(defines::k_header_bit);
-
-//   return;
-// }
 
 //______________________________________________________________________________
 void
@@ -54,57 +48,116 @@ VmeCaenV1724::decode()
       m_module_data_first = first + VmeModule::k_header_size;
 
       const uint32_t* buf = reinterpret_cast<uint32_t*>(&*m_module_data_first);
-
-      // decode from here
-
-      uint32_t header_id  = ((buf[0] >> k_headerid_shift) & k_headerid_mask);
-      if(header_id != 0x0A){
-	//where is header!?
+      
+      uint32_t header_type = ((buf[0] >> k_header_shift) & k_header_mask);
+      if(header_type != k_HEADER_MAGIC){
+	cerr << "\n#E " << header_type << " vme module header \n"  << std::endl;
+	return;
       }
-      uint32_t event_size = ((buf[0] >> k_evsize_shift)   & k_evsize_mask);
-      uint32_t data_format= ((buf[1] >> k_format_shift)   & k_format_mask);
-      uint32_t ch_mask    = ((buf[1] >> k_chmask_shift)   & k_chmask_mask);
+
+      uint32_t event_size  = (buf[0] & k_event_size_mask);
+      uint32_t mode = ((buf[1] >> k_mode_shift) & k_mode_mask);
+      uint32_t ch_mask = (buf[1] & k_ch_mask_mask);
 
       unsigned int ch_num = 0;
-      for(unsigned int i=0;i<k_n_ch;i++){
+      for(int i=0; i<24; i++)
 	ch_num += ((ch_mask>>i) & 0x01);
-      }
 
-      //default mode
-      if(data_format == 0){
-	uint32_t sample_size = (event_size-4)/ch_num;
-	uint32_t i=4;
-	for(uint32_t ch = 0 ; ch<k_n_ch; ch++ ){
-	  uint32_t ch_sample = ((ch_mask >> ch) & 0x01 ) *sample_size;
-	  for(unsigned int j=0; j<ch_sample; j++, i++){
-	    uint32_t data_even = ((buf[i] >> k_data_shift_even) & k_data_mask);
-	    fill(ch, 0, data_even);
-	    uint32_t data_odd = ((buf[i] >> k_data_shift_odd) & k_data_mask);
-	    fill(ch, 0, data_odd);
+      //defaule mode
+      if(mode == k_MODE_FALSE_MAGIC){
+
+	unsigned int sample_size;
+	if(ch_num!=0)
+	  sample_size = (event_size-4)/ch_num;
+	else
+	  sample_size = 0;
+	
+	unsigned int i = 4;
+	unsigned int d_size[24];
+
+	for(unsigned int ch = 0 ; ch<8; ch++ ){
+	  int tch = ch;// + 8*no;
+	  d_size[tch] = ((ch_mask >> ch) & 0x01 ) *sample_size;
+	  for(unsigned int j=0; j<d_size[tch]; j++, i++){
+	    unsigned int data_even = ((buf[i] >> 0) & k_data_mask);
+	    fill(tch, 0  , data_even);
+	    unsigned int data_odd = ((buf[i] >> 16) & k_data_mask);
+	    fill(tch, 0, data_odd);
 	  }
 	}
+
+	
       }
+      else if(mode == k_MODE_TRUE_MAGIC){//PedSup mode
+	unsigned int ZLEdata[24][20000];
+	unsigned int line=4;
+	bool control =true;
+	bool good = false;
+	unsigned int nword=0,nread=0,nwrite=0;
+	unsigned int d_size[24];
 
-      /*
-      unsigned int data_size = m_vme_header->m_data_size-VmeModule::k_header_size;;
-      for (int i=0; i<data_size; i++) {
-	uint32_t ch          = ((buf[i] >> k_ch_shift) & k_ch_mask);
-	uint32_t sample_size = ((buf[i] >> k_sample_shift) & k_sample_mask);
-	for (int j=0; j<sample_size; j++, i++) {
-	  uint32_t data_even = ((buf[i] >> k_data_shift_even) & k_data_mask);
-	  fill(ch, 0, data_even);
-	  uint32_t data_odd = ((buf[i] >> k_data_shift_odd) & k_data_mask);
-	  fill(ch, 0, data_odd);
-// 	  std::cerr << "VmeCaenV1724::decode unknown data type : " << std::hex << data_type
-// 		    << "(" << (buf[i]) << ")" << "\n" << std::dec;
+	for(int ch =0;ch<8;ch++){
+	  int tch = ch;// + 8*no;
+	  if( (ch_mask>>ch &0x01 )==0x01){
+	    d_size[tch]=buf[line++]-1;
+	    for(unsigned int j=0;j<d_size[tch];j++)
+	      ZLEdata[tch][j] = buf[line++];
+	  }
+	  else
+	    d_size[tch] =0;
+	  
+	  nwrite=0;
+	  for(unsigned int j=0;j<d_size[tch];j++){
+	    if(control){
+	      good = (ZLEdata[tch][j]>>31)&0x01;
+	      nword =(ZLEdata[tch][j])&0xFFFFF;
+	      nread=0;
+	      if(good)
+		control = false;
+	      else{
+		for(unsigned int k=0;k<nword;k++){
+		  fill(tch, 0, 0xFFFF);
+		  fill(tch, 0, 0xFFFF);
+		  nwrite++;
+		}
+	      }
+	      continue;
+	    }
+	    if(good){
+	      unsigned int data_even = ((ZLEdata[tch][j] >> 0) & k_data_mask);
+	      fill(tch, 0, data_even);
+	      unsigned int data_odd = ((ZLEdata[tch][j] >> 16) & k_data_mask);
+	      fill(tch, 0, data_odd);
+	      nread++;
+	      nwrite++;
+	    }
 
+	    if(nread == nword)
+	      control =true;
+	  }
+	  d_size[tch] = nwrite;
 	}
+	
       }
-      */
 
+	
+      
     }
   return;
 }
+//______________________________________________________________________________
+void
+VmeCaenV1724::update_tag()
+{
+  uint32_t buf = *(--m_data_last);
+  uint32_t event_number = buf & k_event_number_mask;
+  //  std::cout << event_number << std::endl;
+
+  Tag& tag = m_tag[k_tag_current].back();
+  tag.m_local = event_number;
+  m_has_tag.set(k_local);
+}
+
 
 //______________________________________________________________________________
 void
@@ -117,6 +170,6 @@ VmeCaenV1724::resize_fe_data()
 
   return;
 }
-}
-}
 
+}
+}

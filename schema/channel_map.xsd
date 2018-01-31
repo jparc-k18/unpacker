@@ -162,6 +162,7 @@
       <xs:element name="Copper"          type="CopperType"/>
       <xs:element name="CopperLite"      type="CopperType"/>
       <xs:element name="Easiroc"         type="DAQNodeType"/>
+      <xs:element name="VmeEasiroc"      type="DAQNodeType"/>
       <xs:element name="DAQNode"         type="DAQNodeType"/>
       <xs:group   ref="feGroup"/>
     </xs:choice>
@@ -176,6 +177,7 @@
       <xs:element name="Copper"             type="CopperType"/>
       <xs:element name="CopperLite"         type="CopperType"/>
       <xs:element name="Easiroc"            type="DAQNodeType"/>
+      <xs:element name="VmeEasiroc"         type="DAQNodeType"/>
       <xs:element name="VmeMaster"          type="VmeMasterType"/>
       <xs:element name="SoyTimeStamp"       type="DAQNodeType"/>
       <xs:element name="Hul3DMtx"           type="DAQNodeType"/>

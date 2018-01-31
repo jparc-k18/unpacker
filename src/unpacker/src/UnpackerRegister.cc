@@ -47,6 +47,7 @@
 #include "TkoRm.hh"
 
 #include "Easiroc.hh"
+#include "VmeEasiroc.hh"
 
 #include "VmeAmt.hh"
 #include "VmeUmemAD413A.hh"
@@ -113,6 +114,7 @@ UnpackerRegister::UnpackerRegister()
   g_factory.add_entry(VmeSmp::k_type,      create<VmeSmp>);
   g_factory.add_entry(VmeV1290A::k_type,   create<VmeV1290A>);
   g_factory.add_entry(Easiroc::k_type,     create<Easiroc>);
+  g_factory.add_entry(VmeEasiroc::k_type,     create<VmeEasiroc>);
 
   g_factory.add_entry(VmeAmt::k_type,        create<VmeAmt>);
   g_factory.add_entry(VmeUmemAD413A::k_type, create<VmeUmemAD413A>);
