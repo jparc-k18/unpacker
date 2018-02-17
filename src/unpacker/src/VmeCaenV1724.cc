@@ -48,7 +48,7 @@ VmeCaenV1724::decode()
       m_module_data_first = first + VmeModule::k_header_size;
 
       const uint32_t* buf = reinterpret_cast<uint32_t*>(&*m_module_data_first);
-      
+
       uint32_t header_type = ((buf[0] >> k_header_shift) & k_header_mask);
       if(header_type != k_HEADER_MAGIC){
 	cerr << "\n#E " << header_type << " vme module header \n"  << std::endl;
@@ -71,7 +71,7 @@ VmeCaenV1724::decode()
 	  sample_size = (event_size-4)/ch_num;
 	else
 	  sample_size = 0;
-	
+
 	unsigned int i = 4;
 	unsigned int d_size[24];
 
@@ -86,7 +86,7 @@ VmeCaenV1724::decode()
 	  }
 	}
 
-	
+
       }
       else if(mode == k_MODE_TRUE_MAGIC){//PedSup mode
 	unsigned int ZLEdata[24][20000];
@@ -105,7 +105,7 @@ VmeCaenV1724::decode()
 	  }
 	  else
 	    d_size[tch] =0;
-	  
+
 	  nwrite=0;
 	  for(unsigned int j=0;j<d_size[tch];j++){
 	    if(control){
@@ -137,11 +137,11 @@ VmeCaenV1724::decode()
 	  }
 	  d_size[tch] = nwrite;
 	}
-	
+
       }
 
-	
-      
+
+
     }
   return;
 }
@@ -149,7 +149,9 @@ VmeCaenV1724::decode()
 void
 VmeCaenV1724::update_tag()
 {
-  uint32_t buf = *(--m_data_last);
+  m_module_data_first = m_data_first + VmeModule::k_header_size;
+
+  uint32_t buf = *(m_module_data_first+2);
   uint32_t event_number = buf & k_event_number_mask;
   //  std::cout << event_number << std::endl;
 
