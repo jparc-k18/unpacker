@@ -813,7 +813,7 @@ UnpackerManager::initialize()
 	  !m_reader->is_open())
 	{
 	  cerr << "\n#E too much event skipped" << std::endl;
-	  std::exit(0);
+	  return;
 	}
       m_reader->read();
     }
