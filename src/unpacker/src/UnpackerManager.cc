@@ -689,6 +689,13 @@ UnpackerManager::get_fifo_length() const
 }
 
 //______________________________________________________________________________
+std::string
+UnpackerManager::get_istream() const
+{
+  return m_input_stream;
+}
+
+//______________________________________________________________________________
 int
 UnpackerManager::get_max_loop() const
 {

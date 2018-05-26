@@ -24,11 +24,11 @@ namespace hddaq
 
     class EventReader;
 
-    
-    class Unpacker;
-    
 
-  class UnpackerManager 
+    class Unpacker;
+
+
+  class UnpackerManager
     : private Uncopyable<UnpackerManager>
   {
 
@@ -49,7 +49,7 @@ namespace hddaq
     typedef fifo_t::iterator        fifo_iterator;
     typedef fifo_t::const_iterator  const_fifo_iterator;
 
-    
+
   private:
     friend class Singleton<UnpackerManager>;
     EventReader*           m_reader;
@@ -72,7 +72,7 @@ namespace hddaq
 
   public:
     ~UnpackerManager();
-  
+
     void            hoge(const std::string& arg="") const;
     void            add_entry(Unpacker* entry);
     void            check();
@@ -85,7 +85,7 @@ namespace hddaq
 				     int plane_id=-1) const;
     void            dump_data_fe(int node_id,
 				 int address=-1,
-				 int ma=-1) const; 
+				 int ma=-1) const;
     bool            empty() const;
     bool            eof() const;
 
@@ -150,7 +150,7 @@ namespace hddaq
 				 const char* plane_name ) const;;
     int             get_plane_id(const std::string& device_name,
 				 const std::string& plane_name ) const;
-    int             get_data_id(const char* device_name, 
+    int             get_data_id(const char* device_name,
 				const char* data_name ) const;
     int             get_data_id(const std::string& device_name,
 				const std::string& data_name ) const;
@@ -167,6 +167,7 @@ namespace hddaq
     uint32_t        get_event_number() const;
     fifo_t::size_type get_fifo_entries() const;
     fifo_t::size_type get_fifo_length() const;
+    std::string     get_istream() const;
     int             get_max_loop() const;
     unsigned int    get_node_header(int node_id, int header_data_type) const;
     Unpacker*       get_root() const;
