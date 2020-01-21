@@ -72,7 +72,6 @@ VmeCaenV792::decode()
 	  uint32_t ch   = ((buf[i]>>k_channel_shift) & k_channel_mask);
 	  uint32_t data = ((buf[i]>>k_data_shift)    & k_data_mask);
 	  //uint32_t overflow = ((buf[i]>>k_overflow_shift) & k_overflow_mask);
-	  //cout<<"#D VmeCaenV792::decode()   ch: "<<ch<<"\tdata: "<<data<<std::endl;
 	  fill(ch, k_adc, data);
 	  ++data_counter;
 	}
@@ -81,7 +80,7 @@ VmeCaenV792::decode()
 	break;
       case k_INVALID_MAGIC:
 	// cerr<<"#W VmeCaenV792::decode() not valid datum: "
-	// 	 <<std::hex<<word_type<<" ("<<buf[i]<<")"<<std::endl<<std::dec;
+	//     <<std::hex<<word_type<<" ("<<buf[i]<<")"<<std::endl<<std::dec;
 	break;
       default:
 	cerr<<"#E VmeCaenV792::decode() unknown word type: "
@@ -90,10 +89,10 @@ VmeCaenV792::decode()
     }//for(i)
   }//for(f)
 
-  if(data_counter != k_n_channel){
-    cerr<<"#E VmeCaenV792::decode() # of data is less than 32: "
-	<< data_counter << std::endl;
-  }
+  // if(data_counter != k_n_channel){
+  //   cerr<<"#E VmeCaenV792::decode() # of data is less than 32: "
+  // 	<< data_counter << std::endl;
+  // }
 
   return;
 }

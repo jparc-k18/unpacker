@@ -23,7 +23,7 @@ namespace hddaq
 {
   namespace unpacker
   {
-    namespace 
+    namespace
     {
       enum e_ref
 	{
@@ -50,25 +50,24 @@ print(int idevice,
       const std::string& ch="",
       const std::string& data="")
 {
-  cout << "\n#E UnpackerXMLChannelMap::generate_content()\n"
+  cout << "\n#D UnpackerXMLChannelMap::generate_content()\n"
        << name << "\n"
        << " FE ch_id = " << fe_ch << ", data_id =  " << fe_data << "\n"
-       << " D device_id = " << idevice 
-       << ", plane_id = " << iplane 
-       << ", segmend_id =  " << isegment 
-       << ", ch_id = " << ich 
+       << " D device_id = " << idevice
+       << ", plane_id = " << iplane
+       << ", segmend_id =  " << isegment
+       << ", ch_id = " << ich
        << ", data_id = " << idata
-       << "\n Dref " << device 
-       << ", " << plane 
+       << "\n Dref " << device
+       << ", " << plane
        << ", " << segment
        << ", " << ch
        << ", " << data
        << std::endl;
-
   return;
 }
-      
-    } // end of anonymous namespace 
+
+    } // end of anonymous namespace
 //______________________________________________________________________________
 UnpackerXMLChannelMap::UnpackerXMLChannelMap(DOMElement* e,
 					     DigitList& digit_list)
@@ -91,11 +90,11 @@ UnpackerXMLChannelMap::UnpackerXMLChannelMap(DOMElement* e,
       || value.find("x")!=std::string::npos
       || value.find("X")!=std::string::npos)
     g_unpacker.set_dump_mode(defines::k_hex);
-  else if (false 
+  else if (false
 	   || value.find("d")==0
 	   || value.find("D")==0)
     g_unpacker.set_dump_mode(defines::k_dec);
-  else if (false 
+  else if (false
 	   || value.find("b")==0
 	   || value.find("B")==0)
     g_unpacker.set_dump_mode(defines::k_binary);
@@ -172,7 +171,7 @@ UnpackerXMLChannelMap::generate_content(DOMElement* e)
   //  read attributes and replace loop variables(characters) with integers
   static int s_n=0;
   if (s_n%100==0)
-    {  
+    {
       //    cout << "#D " << s_n << std::endl;
       if (s_n%8000==0) cout << std::endl;
       cout << ".";
@@ -184,7 +183,7 @@ UnpackerXMLChannelMap::generate_content(DOMElement* e)
   std::vector<std::string> values;
   xml::get_attributes(e, names, values);
   const int n_attr_fe = names.size();
-  
+
   DOMElement* d=0;
   for (DOMNode* n=e->getFirstChild(); n!=0;n=n->getNextSibling())
     {
@@ -202,7 +201,7 @@ UnpackerXMLChannelMap::generate_content(DOMElement* e)
       for (int i=0; i<n_attr_fe; ++i) replace_loop_variables(values[i]);
 //       for (int i=0; i<n_attr_fe; ++i)
 // 	{
-// 	  cout << " attr_fe name[" << i << "] = " << names[i]  
+// 	  cout << " attr_fe name[" << i << "] = " << names[i]
 // 	       << ", val = " << values[i] << std::endl;
 // 	}
 
@@ -210,7 +209,7 @@ UnpackerXMLChannelMap::generate_content(DOMElement* e)
       for (int i=0; i<n_attr_device; ++i) replace_loop_variables(d_values[i]);
 //       for (int i=0; i<n_attr_device; ++i)
 // 	{
-// 	  cout << " attr_device name[" << i << "] = " << d_names[i]  
+// 	  cout << " attr_device name[" << i << "] = " << d_names[i]
 // 	       << ", val = " << d_values[i] << std::endl;
 // 	}
 
@@ -218,7 +217,7 @@ UnpackerXMLChannelMap::generate_content(DOMElement* e)
       for (int i=0; i<n_attr_fe; ++i) xml::evaluate_attribute(values[i]);
       //      for (int i=0; i<n_attr_fe; ++i)
       //       	{
-      //       	  cout << " attr_fe name[" << i << "] = " << names[i]  
+      //       	  cout << " attr_fe name[" << i << "] = " << names[i]
       //       	       << ", val = " << values[i] << std::endl;
       //       	}
 
@@ -226,17 +225,17 @@ UnpackerXMLChannelMap::generate_content(DOMElement* e)
       for (int i=0; i<n_attr_device; ++i) xml::evaluate_attribute(d_values[i]);
       //             for (int i=0; i<n_attr_device; ++i)
       //       	{
-      //       	  cout << " attr_device name[" << i << "] = " << d_names[i]  
+      //       	  cout << " attr_device name[" << i << "] = " << d_names[i]
       //       	       << ", val = " << d_values[i] << std::endl;
       //      }
     }
 
   int fe_ch   = 0;
   int fe_data = 0;
-  
+
 for (int i=0; i<n_attr_fe; ++i)
     if  (names[i]=="ch") fe_ch = a2i(values[i]);
-    else if (false 
+    else if (false
 	     || names[i]=="Data"
 	     || names[i]=="dataref"
 	     || names[i]=="data_ref"
@@ -247,7 +246,7 @@ for (int i=0; i<n_attr_fe; ++i)
       {
 	fe_data = u->get_data_id(values[i]);
       }
-    else if (false 
+    else if (false
 	     || names[i]=="data"
 	     || names[i]=="data_id"
 	     )
@@ -270,7 +269,7 @@ for (int i=0; i<n_attr_fe; ++i)
 
   for (int i=0; i<n_attr_device; ++i)
     {
-      if      (false 
+      if      (false
 	       || d_names[i]=="Device"
 	       || d_names[i]=="ref"
 	       || d_names[i]=="deviceref"
@@ -282,7 +281,7 @@ for (int i=0; i<n_attr_fe; ++i)
 	  use_ref[k_device] = true;
 	  device = d_values[i];
 	}
-      else if (false 
+      else if (false
 	       || d_names[i]=="device"
 	       || d_names[i]=="id"
 	       || d_names[i]=="deviceid"
@@ -290,11 +289,11 @@ for (int i=0; i<n_attr_fe; ++i)
 	{
 	  idevice = a2i(d_values[i]);
 	}
-      else if (false 
+      else if (false
 	       || d_names[i]=="Plane"
-	       || d_names[i]=="planeref" 
+	       || d_names[i]=="planeref"
 	       || d_names[i]=="plane_ref"
-	       || d_names[i]=="planename" 
+	       || d_names[i]=="planename"
 	       || d_names[i]=="plane_name")
         {
 	  use_ref[k_plane] = true;
@@ -309,10 +308,10 @@ for (int i=0; i<n_attr_fe; ++i)
 	  iplane = a2i(d_values[i]);
         }
       else if (d_names[i]=="Segment"
-	       || d_names[i]=="segmentref" 
+	       || d_names[i]=="segmentref"
 	       || d_names[i]=="segment_ref"
 	       || d_names[i]=="segmentname"
-	       || d_names[i]=="segment_name") 
+	       || d_names[i]=="segment_name")
         {
 	  use_ref[k_segment] = true;
 	  segment = d_values[i];
@@ -332,16 +331,16 @@ for (int i=0; i<n_attr_fe; ++i)
 	       || d_names[i]=="ch_name")
         {
 	  use_ref[k_ch] = true;
-	  ch = d_values[i]; 
+	  ch = d_values[i];
         }
-      else if (false 
+      else if (false
 	       || d_names[i]=="ch"
 	       || d_names[i]=="chid"
 	       || d_names[i]=="ch_id")
         {
 	  ich = a2i(d_values[i]);
         }
-      else if (false 
+      else if (false
 	       || d_names[i]=="Data"
 	       || d_names[i]=="dataref"
 	       || d_names[i]=="data_ref"
@@ -352,7 +351,7 @@ for (int i=0; i<n_attr_fe; ++i)
 	  use_ref[k_data] = true;
 	  data = d_values[i];
         }
-      else if (false 
+      else if (false
 	       || d_names[i]=="data"
 	       || d_names[i]=="dataid"
 	       || d_names[i]=="data_id")
@@ -360,7 +359,7 @@ for (int i=0; i<n_attr_fe; ++i)
 	  idata = a2i(d_values[i]);
         }
     }
-  
+
   try
     {
       if (use_ref[k_device]){
@@ -368,7 +367,7 @@ for (int i=0; i<n_attr_fe; ++i)
       }
 
       if (use_ref[k_plane]){
-	iplane = digit_info.get_plane_id(idevice, plane);      
+	iplane = digit_info.get_plane_id(idevice, plane);
       }
 
       if (use_ref[k_segment]){
@@ -393,7 +392,7 @@ for (int i=0; i<n_attr_fe; ++i)
     }
 
   // ###########################################################################
-#ifdef CHANNEL_MAP 
+#ifdef CHANNEL_MAP
   print(idevice, iplane, isegment, ich, idata, fe_ch, fe_data,
 	u->get_name(), device, plane, segment, ch, data);
 #endif
@@ -402,7 +401,7 @@ for (int i=0; i<n_attr_fe; ++i)
 
   try
     {
-      u->add_channel_map(fe_ch, fe_data, 
+      u->add_channel_map(fe_ch, fe_data,
 			 m_digit_list,
 			 idevice,
 			 iplane,
@@ -416,31 +415,31 @@ for (int i=0; i<n_attr_fe; ++i)
 	   << e.what() << "\n"
 	   << " failed to call Unpacker::add_channel_map() of "
 	   << u->get_type() << " (name = "
-	   << u->get_name() << ")\n" 
-	   << " FE ch_id = " << fe_ch << ", data_id = " << fe_data 
+	   << u->get_name() << ")\n"
+	   << " FE ch_id = " << fe_ch << ", data_id = " << fe_data
 	   << std::endl;
-      cerr << " D device_id = " << idevice 
-	   << " / " << m_digit_list.size() 
+      cerr << " D device_id = " << idevice
+	   << " / " << m_digit_list.size()
 	   << std::endl;
-      cerr << " plane_id = " << iplane 
-	   << " / " << m_digit_list.at(idevice).size() 
+      cerr << " plane_id = " << iplane
+	   << " / " << m_digit_list.at(idevice).size()
 	   << std::endl;
       cerr << " segment_id = " << isegment
-	   << " / " << m_digit_list.at(idevice).at(iplane).size() 
+	   << " / " << m_digit_list.at(idevice).at(iplane).size()
 	   << std::endl;
-      cerr << " ch_id = " << ich 	
+      cerr << " ch_id = " << ich
 	   << " / " << m_digit_list.at(idevice).at(iplane).at(isegment).size()
 	   << std::endl;
       cerr << " data_id = " << idata
-	   << " / " 
+	   << " / "
 	   << m_digit_list.at(idevice).at(iplane).at(isegment).at(ich).size()
 	   << std::endl;
-      cerr << "\n Dref " << device 
-	   << " " << plane 
+      cerr << "\n Dref " << device
+	   << " " << plane
 	   << " " << segment
 	   << " " << ch
 	   << " " << data
-	   << "\n some indeces exceed the range of digit list\n" 
+	   << "\n some indeces exceed the range of digit list\n"
 	   << "     check <front_end> or <digit_data> in xml files\n"
 	   << std::endl;
       std::exit(1);
@@ -513,13 +512,13 @@ UnpackerXMLChannelMap::read_front_end(DOMElement* e)
       //cout << " name = " << name
       //<< ", value = " << value  << std::endl;
       if (false
-	  || name=="node_id" || name=="NODE_ID" 
+	  || name=="node_id" || name=="NODE_ID"
 	  || name=="ID" || name=="id"
 //		  || name=="IP" || name=="ip"
 	  // for COPPER
 	  || name=="slot" || name=="SLOT"
 	  // for VME
-	  || name=="address" 
+	  || name=="address"
 	  // for TKO
 	  || name=="MA" || name=="ma"
 	  // for CAMAC
@@ -527,40 +526,40 @@ UnpackerXMLChannelMap::read_front_end(DOMElement* e)
 	  || name=="STATION"||name=="station"||name=="N"||name=="n")
 	{
 	  uint64_t id = a2ull(value);
-//  		  cout << " set id = " 
-// 		       << std::showbase << std::hex << id 
+//  		  cout << " set id = "
+// 		       << std::showbase << std::hex << id
 // 		       << std::noshowbase << std::dec << std::endl;
 	  u->set_id(id);
 	  u->set_parent(parent);
 	}
       else if (name=="name")
 	{
-	  u->set_name(value);	
+	  u->set_name(value);
 	}
       else if (name=="dump")
 	{
-	  if (false 
-	      || (value.find("y")==0) 
+	  if (false
+	      || (value.find("y")==0)
 	      || (value.find("Y")==0)
 	      || (value.find("h")==0)
 	      || (value.find("H")==0)
 	      || (value.find("x")!=std::string::npos)
 	      || (value.find("X")!=std::string::npos))
 	    u->set_dump_mode(defines::k_hex);
-	  if (false 
+	  if (false
 	      || (value.find("d")==0)
 	      || (value.find("D")==0))
 	    {
 	      u->set_dump_mode(defines::k_dec);
 	    }
-	  if (false 
+	  if (false
 	      || (value.find("b")==0)
 	      || (value.find("B")==0))
 	    {
 	      u->set_dump_mode(defines::k_binary);
 	    }
 	}
-      else if (name=="decode" 
+      else if (name=="decode"
 	       && ((value.find("n")==0) || (value.find("N")==0)))
 	{
 	  u->set_decode_mode(false);
@@ -581,7 +580,7 @@ UnpackerXMLChannelMap::read_front_end(DOMElement* e)
     {
       m_felist_name2id[u->get_name()] = u->get_id();
     }
-  
+
   u->resize_fe_data();
   m_unpacker_list.push_back(u);
 //   std::cout << "#D create unpacker  " << u->get_name() << std::endl;
