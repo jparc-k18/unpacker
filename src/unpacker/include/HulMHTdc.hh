@@ -9,8 +9,8 @@
  *  Header2 : [31:24] 0xff
  *            [23:16] 0
  *            [15:15] Overflow bit
- *            [14:12] 0
- *            [11: 0] Number of Word
+ *            [14:13] 0
+ *            [12: 0] Number of Word
  *  Header3 : [31:24] 0xff
  *            [23:23] HRM enable bit (HRM exists)
  *            [22:20] 0
@@ -84,7 +84,7 @@ public:
   // Header 2
   static const uint32_t k_OVERFLOW_MASK   = 0x1U;
   static const uint32_t k_OVERFLOW_SHIFT  = 15U;
-  static const uint32_t k_EVSIZE_MASK     = 0xfffU;
+  static const uint32_t k_EVSIZE_MASK     = 0x1fffU;
   static const uint32_t k_EVSIZE_SHIFT    = 0U;
 
   // Header 3
