@@ -128,7 +128,7 @@ public:
   static const uint32_t k_STOP_MAGIC         = 0x4U;
   static const uint32_t k_magic_mask         = 0x7U;
   static const uint32_t k_magic_shift        = 29U;
-  static const uint32_t k_ch_mask            = 0x3fU;
+  static const uint32_t k_ch_mask            = 0x1fU;
   static const uint32_t k_ch_shift           = 24U;
   static const uint32_t k_data_mask          = 0xffffffU;
   static const uint32_t k_data_shift         = 0U;
