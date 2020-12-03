@@ -22,6 +22,8 @@
 #include "HulHRTdc.hh"
 #include "HulMsT.hh"
 #include "HulMassTrigFera.hh"
+#include "HulResetTime.hh"
+#include "HulUmem.hh"
 
 #include "VmeAPVDaq.hh"
 #include "VmeCaenV775.hh"
@@ -90,6 +92,8 @@ UnpackerRegister::UnpackerRegister()
   g_factory.add_entry(HulHRTdc::k_type,        create<HulHRTdc>);
   g_factory.add_entry(HulMsT::k_type,          create<HulMsT>);
   g_factory.add_entry(HulMassTrigFera::k_type, create<HulMassTrigFera>);
+  g_factory.add_entry(HulResetTime::k_type,    create<HulResetTime>);
+  g_factory.add_entry(HulUmem::k_type,         create<HulUmem>);
 
   g_factory.add_entry(Tko::k_type,          create<Tko>);
   g_factory.add_entry(TkoDrT::k_type,       create<TkoDrT>);
