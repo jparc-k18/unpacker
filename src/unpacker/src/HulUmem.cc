@@ -76,7 +76,7 @@ HulUmem::decode( void )
       i++;
       //std::cout << std::hex << "wrdcnt "  << wrdcnt << std::endl;
       //std::cout << std::hex << "vsn "  << vsn << std::endl;
-      
+
       for(unsigned int j=0; j<wrdcnt; j++){
 	uint32_t subaddr = (*i >> k_subaddr_shift)  & k_subaddr_mask;
 	uint32_t val     = (*i >> k_adc_data_shift) & k_adc_data_mask;
@@ -85,26 +85,22 @@ HulUmem::decode( void )
 	//std::cout << std::hex << "subaddr "  << subaddr << std::endl;
 	//std::cout << std::hex << "val "  << val << std::endl;
 	//std::cout << std::hex << "ch "  << ch << std::endl;
-	
-	//if(subaddr == 0) ch = ((vsn/2-1)*4) + 4;
-	//else             ch = ((vsn/2-1)*4) + subaddr;
+
 	fill( ch, k_adc, val );
 	if(j<wrdcnt-1) i++;
       }//for(j)
 
 
     }else{
-      
+
       cerr << "#W " << func_name << " Unknown data type ("
 	   << std::hex << *i << std::dec
 	   << ")"
 	   << std::endl;
-      Unpacker::dump_data(*this);      
-      //i++;   
-      getchar();      
+      Unpacker::dump_data(*this);
     }
 
-  
+
   }//for(i)
 
   return;
