@@ -158,6 +158,8 @@
       <xs:element name="HulHRTdc"        type="DAQNodeType"/>
       <xs:element name="HulMsT"          type="DAQNodeType"/>
       <xs:element name="HulMassTrigFera" type="DAQNodeType"/>
+      <xs:element name="HulResetTime"    type="DAQNodeType"/>
+      <xs:element name="HulUmem"         type="DAQNodeType"/>
       <xs:element name="VmeMaster"       type="VmeMasterType"/>
       <xs:element name="Copper"          type="CopperType"/>
       <xs:element name="CopperLite"      type="CopperType"/>
