@@ -63,6 +63,9 @@
 #include "VVmeFERA4300B.hh"
 #include "VVmeCoinReg.hh"
 
+#include "GetCoBoMaster.hh"
+#include "GetAsAd.hh"
+
 #include "std_ostream.hh"
 
 namespace hddaq
@@ -131,6 +134,9 @@ UnpackerRegister::UnpackerRegister()
   g_factory.add_entry(VVmeCamacRm::k_type,   create<VVmeCamacRm>);
   g_factory.add_entry(VVmeFERA4300B::k_type, create<VVmeFERA4300B>);
   g_factory.add_entry(VVmeCoinReg::k_type,   create<VVmeCoinReg>);
+
+  g_factory.add_entry(GetCoBoMaster::k_type,   create<GetCoBoMaster>);
+  g_factory.add_entry(GetAsAd::k_type,         create<GetAsAd>);
 
 }
 
