@@ -751,6 +751,13 @@ UnpackerManager::get_root() const
 }
 
 //______________________________________________________________________________
+int
+UnpackerManager::get_skip() const
+{
+  return m_skip;
+}
+
+//______________________________________________________________________________
 void
 UnpackerManager::initialize()
 {
