@@ -23,7 +23,7 @@ namespace hddaq
   namespace unpacker
   {
 
-  namespace 
+  namespace
   {
     const unsigned int k_word_size = sizeof(uint32_t);
   }
@@ -50,7 +50,7 @@ EventReader::~EventReader()
 }
 
 //______________________________________________________________________________
-void 
+void
 EventReader::hoge(const std::string& arg) const
 {
   cout << "#D EventReader::hoge()  " << arg << std::endl;
@@ -58,7 +58,7 @@ EventReader::hoge(const std::string& arg) const
 }
 
 //______________________________________________________________________________
-void 
+void
 EventReader::clear()
 {
 #ifndef BUFFER_REUSE
@@ -71,7 +71,7 @@ EventReader::clear()
 }
 
 //______________________________________________________________________________
-void 
+void
 EventReader::close()
 {
   if (m_stream)
@@ -90,7 +90,7 @@ EventReader::dump_header() const
 {
   if (!m_header)
     {
-      cerr << "#D EventReader::dump_header() got null pointer" 
+      cerr << "#D EventReader::dump_header() got null pointer"
 	     << std::endl;
       return;
     }
@@ -131,7 +131,7 @@ EventReader::dump_in_hexadecimal() const
 }
 
 //______________________________________________________________________________
-bool 
+bool
 EventReader::eof() const
 {
   if (m_stream){
@@ -142,11 +142,11 @@ EventReader::eof() const
 }
 
 //______________________________________________________________________________
-unsigned int 
+unsigned int
 EventReader::get_daq_root_event_number() const
 {
 //   cout << "#D EventReader::get_daq_root_event_number()\n   "
-// 	    << m_header->m_event_number 
+// 	    << m_header->m_event_number
 // 	    << std::hex << "(" << m_header->m_event_number << ")"
 // 	    << std::dec << std::endl;
 //   dump_header();
@@ -171,7 +171,7 @@ EventReader::get_root_id() const
 }
 
 //______________________________________________________________________________
-bool 
+bool
 EventReader::is_open() const
 {
   if (m_stream)
@@ -182,15 +182,15 @@ EventReader::is_open() const
 }
 
 //______________________________________________________________________________
-void 
+void
 EventReader::open(const std::string& stream_name)
 {
-  if (!m_stream) 
+  if (!m_stream)
     m_stream = new IStream(stream_name);
-  
-  if (m_stream->fail()) 
+
+  if (m_stream->fail())
     {
-      cerr << "\n#E ERROR : CANNOT OPEN " 
+      cerr << "\n#E ERROR : CANNOT OPEN "
 	     << stream_name << std::endl;
 //       if (m_steam)
 // 	{
@@ -220,7 +220,7 @@ EventReader::unpack()
   if (!m_header)
     {
       cerr << "#E EventReader::unpack() no header" << std::endl;
-//   cout << "#D EventReader::unpack() size = " << m_header->m_data_size 
+//   cout << "#D EventReader::unpack() size = " << m_header->m_data_size
 //        << " ( buf = " << m_buffer.size() << ")"
 //        << std::endl;
       return false;
@@ -238,8 +238,8 @@ EventReader::unpack()
 }
 
 //______________________________________________________________________________
-bool 
-EventReader::read()
+bool
+EventReader::read(bool skip_flag)
 {
 //   cout << "#D0 ER::read() : " << DAQNode::k_header_size << std::endl;
   if (!is_open()) return true;
@@ -256,7 +256,7 @@ EventReader::read()
   if (m_stream->read(reinterpret_cast<char*>(&(m_buffer[0])),
 		     (DAQNode::k_header_size * k_word_size)))
     {
-      if (is_open() && !m_stream->good()) 
+      if (is_open() && !m_stream->good())
 	{
 	  cerr << "\n#E1 stream is not good " << std::endl;
 	  cout << "#D1 EventReader::read()\n"
@@ -281,7 +281,7 @@ EventReader::read()
     {
       cerr << "\n#E EventReader::read() no data" << std::endl;
       //       std::exit(1);
-      //       cout << "#D show event number"; 
+      //       cout << "#D show event number";
       //       show_event_number();
       //       cout << eof() << std::endl;
       cout << "#D EventReader::read()\n"
@@ -300,7 +300,7 @@ EventReader::read()
   const std::streamsize nbytes_to_read
     = (nwords - DAQNode::k_header_size) * k_word_size;
 //   cout << "#D5 ER::read() : " << nbytes_to_read << std::endl;
-  if (is_open() && !m_stream->good()) 
+  if (is_open() && !m_stream->good())
     {
       cerr << "\n#E2 stream is not good " << std::endl;
       cout << "#D2 EventReader::read()\n"
@@ -308,16 +308,21 @@ EventReader::read()
       close();
       return true;
     }
-  
+
   if (!m_stream)
     {
       cerr << "\n#E null stream" << std::endl;
       return true;
     }
 
+  if (skip_flag){
+    m_stream->ignore(nbytes_to_read);
+    return true;
+  }
+
   m_stream->read(reinterpret_cast<char*>(&(m_buffer[DAQNode::k_header_size])),
 		 nbytes_to_read);
-  // the pointer to the first address of m_buffer must be changed 
+  // the pointer to the first address of m_buffer must be changed
   m_header = reinterpret_cast<DAQNode::Header*>(&m_buffer[0]);
   if (!m_header)
     {
@@ -342,8 +347,8 @@ EventReader::read()
       // 	    << " eof = " << eof() << std::endl;
       return true;
     }
-  
-  //   cout << "#D end of read() : gcount =  " << m_stream->gcount() 
+
+  //   cout << "#D end of read() : gcount =  " << m_stream->gcount()
   // 	       << " bytes" << std::endl;
 
   return true;

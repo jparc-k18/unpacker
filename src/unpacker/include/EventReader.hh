@@ -19,7 +19,7 @@ namespace hddaq
 
   class IStream;
 
-  class EventReader 
+  class EventReader
     : private Uncopyable<EventReader>
   {
 
@@ -28,7 +28,7 @@ namespace hddaq
     typedef std::vector<uint32_t>::iterator       iterator;
     typedef std::vector<uint32_t>::const_iterator const_iterator;
     typedef std::vector<uint32_t>::size_type      size_type;
-    
+
   private:
     std::string                         m_stream_name;
     event_buf_t                         m_buffer;
@@ -36,7 +36,7 @@ namespace hddaq
     iterator                            m_end;
     IStream*                            m_stream;
     DAQNode::Header*                    m_header;
-    
+
   public:
      EventReader();
     ~EventReader();
@@ -53,10 +53,10 @@ namespace hddaq
     unsigned int get_root_id() const;
     bool         is_open() const;
     void         open(const std::string& stream_name);
-    bool         read();
+    bool         read(bool skip_flag=false);
     bool         unpack();
 
-    
+
   };
 
   }

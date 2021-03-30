@@ -821,16 +821,17 @@ UnpackerManager::initialize()
 
   int skipped=0;
   for (int i=0; i<m_skip; ++i, ++skipped)
+  {
+    if (m_reader->eof()
+        ||
+        !m_reader->is_open())
     {
-      if (m_reader->eof()
-	  ||
-	  !m_reader->is_open())
-	{
-	  cerr << "\n#E too much event skipped" << std::endl;
-	  return;
-	}
-      m_reader->read();
+      cerr << "\n#E too much event skipped" << std::endl;
+      return;
     }
+    m_reader->read(i != m_skip -1);
+  }
+
   cout << "#D GUnpacker skipped " << skipped << " events"
        << std::endl;
 

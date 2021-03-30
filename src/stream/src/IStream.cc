@@ -17,7 +17,7 @@ namespace hddaq
   namespace unpacker
   {
 
-    namespace 
+    namespace
     {
 //______________________________________________________________________________
 void
@@ -39,21 +39,21 @@ resolve_stream_type(const std::string& stream_name,
     stream_type = k_stream_type_std_cin;
   else if (std::string::npos!=stream_name.find_last_of(":"))
     stream_type = k_stream_type_socket;
-  else 
+  else
     {
       const std::string::size_type suffix_position
 	= stream_name.find_last_of(".");
       try
 	{
 	  const std::string suffix
-	    = stream_name.substr(suffix_position, 
+	    = stream_name.substr(suffix_position,
 				 (stream_name.length() - suffix_position));
 	  std::set<std::string>::iterator i = known_type.find(suffix);
 	  if (i!=known_type.end())
 	    stream_type = *i;
 	  else
 	    {
-	      std::cerr << "#E unknown data source type" 
+	      std::cerr << "#E unknown data source type"
 			<< stream_name
 			<< std::endl;
 	    }
@@ -68,7 +68,7 @@ resolve_stream_type(const std::string& stream_name,
 	}
     }
 //   std::cout << " -> " << stream_type << std::endl;
-  
+
   return;
 }
     }
@@ -177,7 +177,10 @@ IStream::ignore()
 IStream::istream_type&
 IStream::ignore(std::streamsize n)
 {
-  return m_stream->ignore(n);
+  if (m_stream_type == ".dat")
+    return m_stream->seekg(n, std::ios::cur);
+  else
+    return m_stream->ignore(n);
 }
 
 //______________________________________________________________________________
@@ -208,7 +211,7 @@ IStream::open(const std::string& stream_name,
 
   resolve_stream_type(stream_name, m_stream_type);
   IStreamFactory& g_factory = GIStreamFactory::get_instance();
-  m_stream = g_factory.create(m_stream_type, stream_name, mode);  
+  m_stream = g_factory.create(m_stream_type, stream_name, mode);
   return;
 }
 
