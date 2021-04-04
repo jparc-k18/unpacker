@@ -81,7 +81,7 @@ namespace hddaq
 //     stream_type& seekg(off_type off, std::ios_base::seekdir way);
     int              sync();
 //     stream_type& unget();
-//     pos_type     tellg();
+    pos_type         tellg();
 
   };
 

@@ -262,5 +262,12 @@ IStream::sync()
   return (!m_stream) ? 0 : (m_stream->sync());
 }
 
+//______________________________________________________________________________
+IStream::pos_type
+IStream::tellg()
+{
+  return (!m_stream) ? IStream::pos_type(0) : (m_stream->tellg());
+}
+
   }
 }

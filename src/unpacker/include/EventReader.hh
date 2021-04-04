@@ -54,8 +54,8 @@ namespace hddaq
     bool         is_open() const;
     void         open(const std::string& stream_name);
     bool         read(bool skip_flag=false);
+    uint64_t     tellg();
     bool         unpack();
-
 
   };
 

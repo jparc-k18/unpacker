@@ -23,7 +23,7 @@ namespace hddaq
   {
 
     class EventReader;
-
+    class IStream;
 
     class Unpacker;
 
@@ -170,6 +170,7 @@ namespace hddaq
     std::string     get_istream() const;
     int             get_max_loop() const;
     unsigned int    get_node_header(int node_id, int header_data_type) const;
+    uint64_t        get_reader_position() const;
     Unpacker*       get_root() const;
     int             get_skip() const;
     void            initialize();

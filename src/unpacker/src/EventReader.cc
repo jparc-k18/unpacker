@@ -354,5 +354,15 @@ EventReader::read(bool skip_flag)
   return true;
 }
 
+//______________________________________________________________________________
+uint64_t
+EventReader::tellg()
+{
+  if(!m_stream || !m_stream->is_open())
+    return 0;
+  else
+    return m_stream->tellg();
+}
+
   }
 }

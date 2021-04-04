@@ -730,6 +730,16 @@ UnpackerManager::get_node_header(int node_id, int header_data_type) const
 }
 
 //______________________________________________________________________________
+uint64_t
+UnpackerManager::get_reader_position() const
+{
+  if (!m_reader || !m_reader->is_open())
+    return 0;
+  else
+    return m_reader->tellg();
+}
+
+//______________________________________________________________________________
 Unpacker*
 UnpackerManager::get_root() const
 {
