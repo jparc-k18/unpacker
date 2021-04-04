@@ -69,6 +69,7 @@ namespace hddaq
     bool                   m_decode_mode;
     dump_mode_t            m_dump_mode;
     int                    m_run_number;
+    std::string            m_seek_file;
 
   public:
     ~UnpackerManager();
@@ -168,9 +169,9 @@ namespace hddaq
     fifo_t::size_type get_fifo_entries() const;
     fifo_t::size_type get_fifo_length() const;
     std::string     get_istream() const;
+    uint64_t        get_istream_position() const;
     int             get_max_loop() const;
     unsigned int    get_node_header(int node_id, int header_data_type) const;
-    uint64_t        get_reader_position() const;
     Unpacker*       get_root() const;
     int             get_skip() const;
     void            initialize();
@@ -191,6 +192,7 @@ namespace hddaq
     void            set_decode_mode(bool flag);
     void            set_dump_mode(unsigned int dump_mode);
     void            set_istream(const std::string& name);
+    void            set_istream_position(uint64_t position);
     void            set_parameter(const std::string& name,
 				  const std::string& value);
     void            show_event_number() const;

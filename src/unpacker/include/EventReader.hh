@@ -36,6 +36,8 @@ namespace hddaq
     iterator                            m_end;
     IStream*                            m_stream;
     DAQNode::Header*                    m_header;
+    std::string                         m_position_stream_name;
+    IStream*                            m_position_stream;
 
   public:
      EventReader();
@@ -54,6 +56,8 @@ namespace hddaq
     bool         is_open() const;
     void         open(const std::string& stream_name);
     bool         read(bool skip_flag=false);
+    void         seekg(uint64_t position);
+    void         set_position_stream(const std::string& stream_name);
     uint64_t     tellg();
     bool         unpack();
 

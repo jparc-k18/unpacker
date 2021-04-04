@@ -52,7 +52,8 @@ UnpackerManager::UnpackerManager()
     m_counter(0),
     m_decode_mode(true),
     m_dump_mode(),
-    m_run_number(-1)
+    m_run_number(-1),
+    m_seek_file()
 {
   UnpackerRegister unpacker_register;
   IStreamRegister  istream_register;
@@ -696,6 +697,16 @@ UnpackerManager::get_istream() const
 }
 
 //______________________________________________________________________________
+uint64_t
+UnpackerManager::get_istream_position() const
+{
+  if (m_reader && m_reader->is_open())
+    return m_reader->tellg();
+  else
+    return 0;
+}
+
+//______________________________________________________________________________
 int
 UnpackerManager::get_max_loop() const
 {
@@ -727,16 +738,6 @@ UnpackerManager::get_node_header(int node_id, int header_data_type) const
     // 	      << std::dec << std::endl;
     return 0;
   }
-}
-
-//______________________________________________________________________________
-uint64_t
-UnpackerManager::get_reader_position() const
-{
-  if (!m_reader || !m_reader->is_open())
-    return 0;
-  else
-    return m_reader->tellg();
 }
 
 //______________________________________________________________________________
@@ -1164,6 +1165,13 @@ UnpackerManager::set_istream(const std::string& name)
        << "#D ___________ GUnpacker::set_istream() __________\n"
        << "   input stream = " << m_input_stream
        << std::endl;
+  return;
+}
+
+//______________________________________________________________________________
+void
+UnpackerManager::set_istream_position(uint64_t position)
+{
   return;
 }
 
