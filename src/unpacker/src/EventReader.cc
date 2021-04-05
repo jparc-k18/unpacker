@@ -173,6 +173,15 @@ EventReader::get_root_id() const
 }
 
 //______________________________________________________________________________
+const std::string&
+EventReader::get_stream_type() const
+{
+  static std::string ret;
+  if (m_stream) ret = m_stream->get_stream_type();
+  return ret;
+}
+
+//______________________________________________________________________________
 bool
 EventReader::is_open() const
 {

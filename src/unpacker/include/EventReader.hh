@@ -43,23 +43,23 @@ namespace hddaq
      EventReader();
     ~EventReader();
 
-    void         hoge(const std::string& arg="") const;
-    void         clear();
-    void         close();
-    void         dump_header() const;
-    void         dump_in_binary() const;
-    void         dump_in_decimal() const;
-    void         dump_in_hexadecimal() const;
-    bool         eof() const;
-    unsigned int get_daq_root_event_number() const;
-    unsigned int get_root_id() const;
-    bool         is_open() const;
-    void         open(const std::string& stream_name);
-    bool         read(bool skip_flag=false);
-    void         seekg(uint64_t position);
-    void         set_position_stream(const std::string& stream_name);
-    uint64_t     tellg();
-    bool         unpack();
+    void               hoge(const std::string& arg="") const;
+    void               clear();
+    void               close();
+    void               dump_header() const;
+    void               dump_in_binary() const;
+    void               dump_in_decimal() const;
+    void               dump_in_hexadecimal() const;
+    bool               eof() const;
+    unsigned int       get_daq_root_event_number() const;
+    unsigned int       get_root_id() const;
+    const std::string& get_stream_type() const;
+    bool               is_open() const;
+    void               open(const std::string& stream_name);
+    bool               read(bool skip_flag=false);
+    void               seekg(uint64_t position);
+    uint64_t           tellg();
+    bool               unpack();
 
   };
 

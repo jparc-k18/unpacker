@@ -5,11 +5,13 @@
 #include "UnpackerManager.hh"
 
 #include <algorithm>
+// #include <filesystem>
 #include <fstream>
 #include <iomanip>
 #include <iterator>
 #include <stdexcept>
 #include <cstdlib>
+#include <sstream>
 
 #include "std_ostream.hh"
 #include "Clear.hh"
@@ -26,6 +28,7 @@
 #include "UnpackerXMLChannelMap.hh"
 #include "EventReader.hh"
 #include "filesystem_util.hh"
+#include "replace_string.hh"
 
 #include "MemFuncThread.hh"
 
@@ -53,7 +56,7 @@ UnpackerManager::UnpackerManager()
     m_decode_mode(true),
     m_dump_mode(),
     m_run_number(-1),
-    m_seek_file()
+    m_enable_istream_position(false)
 {
   UnpackerRegister unpacker_register;
   IStreamRegister  istream_register;
@@ -165,6 +168,14 @@ UnpackerManager::decode()
 
 //______________________________________________________________________________
 void
+UnpackerManager::disable_istream_position()
+{
+  m_enable_istream_position = false;
+  return;
+}
+
+//______________________________________________________________________________
+void
 UnpackerManager::dump_data() const
 {
   if (m_dump_mode[defines::k_binary]){
@@ -245,6 +256,14 @@ bool
 UnpackerManager::empty() const
 {
   return (m_fifo.get_entries()==0);
+}
+
+//______________________________________________________________________________
+void
+UnpackerManager::enable_istream_position()
+{
+  m_enable_istream_position = true;
+  return;
 }
 
 //______________________________________________________________________________
@@ -831,19 +850,48 @@ UnpackerManager::initialize()
   }
 
   int skipped=0;
-  for (int i=0; i<m_skip; ++i, ++skipped)
+
+  if (m_skip>0 && m_enable_istream_position &&
+      m_reader->get_stream_type() == ".dat")
   {
-    if (m_reader->eof()
-        ||
-        !m_reader->is_open())
+    std::string base = hddaq::basename(m_input_stream);
+    replace_all(base, ".dat", "_streamposition.dat");
+    std::ostringstream path_oss;
+    path_oss << hddaq::dirname(m_input_stream)
+             << "/stream/" << base;
+    std::ifstream ifs(path_oss.str());
+    if (ifs.eof() || !ifs.is_open())
     {
-      cerr << "\n#E too much event skipped" << std::endl;
-      return;
+      std::ostringstream msg;
+      msg << "\n#E failed to open stream position file: "
+          << path_oss.str();
+      // cerr << msg.str() << std::endl;
+      throw FilesystemException(msg.str());
+    }else{
+      cout << "#D open stream position file: "
+           << path_oss.str() << std::endl;
+      ifs.seekg(m_skip*sizeof(uint64_t));
+      uint64_t position;
+      ifs.read(reinterpret_cast<char*>(&position), sizeof(uint64_t));
+      m_reader->seekg(position);
+      skipped = m_skip;
     }
-    m_reader->read(i != m_skip -1);
   }
 
-  cout << "#D GUnpacker skipped " << skipped << " events"
+  if (skipped != m_skip)
+  {
+    for (int i=0; i<m_skip; ++i, ++skipped)
+    {
+      if (m_reader->eof() || !m_reader->is_open())
+      {
+        cerr << "\n#E too much event skipped" << std::endl;
+        return;
+      }
+      m_reader->read(i != m_skip -1);
+    }
+  }
+
+  cout << "#D GUnpacker skipped " << m_skip << " events"
        << std::endl;
 
   const unsigned int node_id = m_reader->get_root_id();
@@ -1172,6 +1220,7 @@ UnpackerManager::set_istream(const std::string& name)
 void
 UnpackerManager::set_istream_position(uint64_t position)
 {
+
   return;
 }
 

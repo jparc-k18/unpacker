@@ -69,7 +69,7 @@ namespace hddaq
     bool                   m_decode_mode;
     dump_mode_t            m_dump_mode;
     int                    m_run_number;
-    std::string            m_seek_file;
+    bool                   m_enable_istream_position;
 
   public:
     ~UnpackerManager();
@@ -81,6 +81,7 @@ namespace hddaq
     void            close();
     Unpacker*       create(const unpacker_type& type);
     void            decode();
+    void            disable_istream_position();
     void            dump_data() const; // all data are displayed
     void            dump_data_device(int device_id,
 				     int plane_id=-1) const;
@@ -88,6 +89,7 @@ namespace hddaq
 				 int address=-1,
 				 int ma=-1) const;
     bool            empty() const;
+    void            enable_istream_position();
     bool            eof() const;
 
     const Device&   find(const char* name) const;       // char*
