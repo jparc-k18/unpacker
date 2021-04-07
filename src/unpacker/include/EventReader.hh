@@ -52,6 +52,7 @@ namespace hddaq
     void               dump_in_hexadecimal() const;
     bool               eof() const;
     unsigned int       get_daq_root_event_number() const;
+    unsigned int       get_daq_root_run_number() const;
     unsigned int       get_root_id() const;
     const std::string& get_stream_type() const;
     bool               is_open() const;

@@ -781,6 +781,13 @@ UnpackerManager::get_root() const
 }
 
 //______________________________________________________________________________
+uint32_t
+UnpackerManager::get_run_number() const
+{
+  return m_reader->get_daq_root_run_number();
+}
+
+//______________________________________________________________________________
 int
 UnpackerManager::get_skip() const
 {
@@ -795,63 +802,64 @@ UnpackerManager::initialize()
   cout << "\n#D GUnpacker::initialize()" << std::endl;
 
   if (m_input_stream.empty())
-    {
-      cerr << "\n#E GUnpacker::initialize()\n"
-	   << " input data stream is not specified\n\n exit" << std::endl;
-      std::exit(1);
-    }
+  {
+    cerr << "\n#E GUnpacker::initialize()\n"
+         << " input data stream is not specified\n\n exit" << std::endl;
+    std::exit(1);
+  }
 
 //   if (is_online() && !m_reader->is_open())
   if (!m_reader->is_open())
     reset();
 
   if (s_is_initialized)
-    {
-      cout << "#D UnpackerManager::initialize()\n"
-	   << " already initialized" << std::endl;
-      return;
-    }
-
+  {
+    cerr << "#W UnpackerManager::initialize()\n"
+         << " already initialized" << std::endl;
+    return;
+  }
 
   const int n_unpacker = m_unpacker.size();
 
   if (m_fifo.size()>1)
+  {
+    cout << "#D UnpackerManager::initialize()\n"
+         << " initialize fifo " << m_fifo.size() << std::endl;
+    for (fifo_t::iterator itr=m_fifo.begin(); itr!=m_fifo.end(); ++itr)
     {
-      cout << "#D UnpackerManager::initialize()\n"
-	   << " initialize fifo " << m_fifo.size() << std::endl;
-      for (fifo_t::iterator itr=m_fifo.begin(); itr!=m_fifo.end(); ++itr)
-	{
-	  itr->m_digit = m_digit_list;
-	  itr->m_fe.resize(n_unpacker);
-	  for (int i=0; i<n_unpacker; ++i)
-	    {
-	      Unpacker* u = m_unpacker[i];
-	      if (u){
-		u->add_channel_map(itr->m_fe[i], itr->m_digit);
-	      }
-	    }
-	}
-      cout << "#D initialize fifo --> done" << std::endl;
+      itr->m_digit = m_digit_list;
+      itr->m_fe.resize(n_unpacker);
+      for (int i=0; i<n_unpacker; ++i)
+      {
+        Unpacker* u = m_unpacker[i];
+        if (u){
+          u->add_channel_map(itr->m_fe[i], itr->m_digit);
+        }
+      }
     }
+    cout << "#D initialize fifo --> done" << std::endl;
+  }
   else
-    {
-      m_front = &m_digit_list;
-    }
-
+  {
+    m_front = &m_digit_list;
+  }
 
   m_reader->read();
 
-  if (m_dump_mode[defines::k_binary]){
+  if (m_dump_mode[defines::k_binary])
+  {
     m_reader->dump_in_binary();
-  }else if (m_dump_mode[defines::k_dec]){
+  }else if (m_dump_mode[defines::k_dec])
+  {
     m_reader->dump_in_decimal();
-  }else if (m_dump_mode[defines::k_hex]){
+  }else if (m_dump_mode[defines::k_hex])
+  {
     m_reader->dump_in_hexadecimal();
   }
 
   int skipped=0;
 
-  if (m_skip>0 && m_enable_istream_position &&
+  if (m_skip>1 && m_enable_istream_position &&
       m_reader->get_stream_type() == ".dat")
   {
     std::string base = hddaq::basename(m_input_stream);
@@ -870,10 +878,11 @@ UnpackerManager::initialize()
     }else{
       cout << "#D open stream position file: "
            << path_oss.str() << std::endl;
-      ifs.seekg(m_skip*sizeof(uint64_t));
+      ifs.seekg((m_skip - 1)*sizeof(uint64_t));
       uint64_t position;
       ifs.read(reinterpret_cast<char*>(&position), sizeof(uint64_t));
       m_reader->seekg(position);
+      m_reader->read();
       skipped = m_skip;
     }
   }

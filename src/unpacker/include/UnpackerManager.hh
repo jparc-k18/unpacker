@@ -175,6 +175,7 @@ namespace hddaq
     int             get_max_loop() const;
     unsigned int    get_node_header(int node_id, int header_data_type) const;
     Unpacker*       get_root() const;
+    uint32_t        get_run_number() const;
     int             get_skip() const;
     void            initialize();
     bool            is_data_ready();

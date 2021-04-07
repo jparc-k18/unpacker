@@ -163,6 +163,24 @@ EventReader::get_daq_root_event_number() const
 
 //______________________________________________________________________________
 unsigned int
+EventReader::get_daq_root_run_number() const
+{
+//   cout << "#D EventReader::get_daq_root_run_number()\n   "
+// 	    << m_header->m_run_number
+// 	    << std::hex << "(" << m_header->m_run_number << ")"
+// 	    << std::dec << std::endl;
+//   dump_header();
+  if (m_buffer.empty() || m_begin == m_buffer.end()){
+    return defines::k_unassignedU;
+  }else if (m_header){
+    return m_header->m_run_number;
+  }else{
+    return 0;
+  }
+}
+
+//______________________________________________________________________________
+unsigned int
 EventReader::get_root_id() const
 {
   if (m_header) return m_header->m_node_id;
@@ -326,7 +344,7 @@ EventReader::read(bool skip_flag)
       return true;
     }
 
-  if (skip_flag){
+  if (skip_flag) {
     m_stream->ignore(nbytes_to_read);
     return true;
   }
