@@ -56,7 +56,7 @@ UnpackerManager::UnpackerManager()
     m_decode_mode(true),
     m_dump_mode(),
     m_run_number(-1),
-    m_enable_istream_position(false)
+    m_enable_istream_bookmark(false)
 {
   UnpackerRegister unpacker_register;
   IStreamRegister  istream_register;
@@ -168,9 +168,9 @@ UnpackerManager::decode()
 
 //______________________________________________________________________________
 void
-UnpackerManager::disable_istream_position()
+UnpackerManager::disable_istream_bookmark()
 {
-  m_enable_istream_position = false;
+  m_enable_istream_bookmark = false;
   return;
 }
 
@@ -260,9 +260,9 @@ UnpackerManager::empty() const
 
 //______________________________________________________________________________
 void
-UnpackerManager::enable_istream_position()
+UnpackerManager::enable_istream_bookmark()
 {
-  m_enable_istream_position = true;
+  m_enable_istream_bookmark = true;
   return;
 }
 
@@ -691,7 +691,10 @@ UnpackerManager::get_entries(const std::string& name,
 uint32_t
 UnpackerManager::get_event_number() const
 {
-  return m_reader->get_daq_root_event_number();
+  if (m_reader)
+    return m_reader->get_daq_root_event_number();
+  else
+    return 0;
 }
 
 //______________________________________________________________________________
@@ -717,7 +720,7 @@ UnpackerManager::get_istream() const
 
 //______________________________________________________________________________
 uint64_t
-UnpackerManager::get_istream_position() const
+UnpackerManager::get_istream_bookmark() const
 {
   if (m_reader && m_reader->is_open())
     return m_reader->tellg();
@@ -784,7 +787,10 @@ UnpackerManager::get_root() const
 uint32_t
 UnpackerManager::get_run_number() const
 {
-  return m_reader->get_daq_root_run_number();
+  if (m_reader)
+    return m_reader->get_daq_root_run_number();
+  else
+    return 0;
 }
 
 //______________________________________________________________________________
@@ -859,29 +865,29 @@ UnpackerManager::initialize()
 
   int skipped=0;
 
-  if (m_skip>1 && m_enable_istream_position &&
+  if (m_skip>1 && m_enable_istream_bookmark &&
       m_reader->get_stream_type() == ".dat")
   {
     std::string base = hddaq::basename(m_input_stream);
-    replace_all(base, ".dat", "_streamposition.dat");
+    replace_all(base, ".dat", "_bookmark.dat");
     std::ostringstream path_oss;
     path_oss << hddaq::dirname(m_input_stream)
-             << "/stream/" << base;
+             << "/bookmark/" << base;
     std::ifstream ifs(path_oss.str());
     if (ifs.eof() || !ifs.is_open())
     {
       std::ostringstream msg;
-      msg << "\n#E failed to open stream position file: "
+      msg << "\n#E failed to open stream bookmark file: "
           << path_oss.str();
       // cerr << msg.str() << std::endl;
       throw FilesystemException(msg.str());
     }else{
-      cout << "#D open stream position file: "
+      cout << "#D open stream bookmark file: "
            << path_oss.str() << std::endl;
       ifs.seekg((m_skip - 1)*sizeof(uint64_t));
-      uint64_t position;
-      ifs.read(reinterpret_cast<char*>(&position), sizeof(uint64_t));
-      m_reader->seekg(position);
+      uint64_t bookmark;
+      ifs.read(reinterpret_cast<char*>(&bookmark), sizeof(uint64_t));
+      m_reader->seekg(bookmark);
       m_reader->read();
       skipped = m_skip;
     }
@@ -1227,7 +1233,7 @@ UnpackerManager::set_istream(const std::string& name)
 
 //______________________________________________________________________________
 void
-UnpackerManager::set_istream_position(uint64_t position)
+UnpackerManager::set_istream_bookmark(uint64_t bookmark)
 {
 
   return;

@@ -69,7 +69,7 @@ namespace hddaq
     bool                   m_decode_mode;
     dump_mode_t            m_dump_mode;
     int                    m_run_number;
-    bool                   m_enable_istream_position;
+    bool                   m_enable_istream_bookmark;
 
   public:
     ~UnpackerManager();
@@ -81,7 +81,7 @@ namespace hddaq
     void            close();
     Unpacker*       create(const unpacker_type& type);
     void            decode();
-    void            disable_istream_position();
+    void            disable_istream_bookmark();
     void            dump_data() const; // all data are displayed
     void            dump_data_device(int device_id,
 				     int plane_id=-1) const;
@@ -89,7 +89,7 @@ namespace hddaq
 				 int address=-1,
 				 int ma=-1) const;
     bool            empty() const;
-    void            enable_istream_position();
+    void            enable_istream_bookmark();
     bool            eof() const;
 
     const Device&   find(const char* name) const;       // char*
@@ -171,7 +171,7 @@ namespace hddaq
     fifo_t::size_type get_fifo_entries() const;
     fifo_t::size_type get_fifo_length() const;
     std::string     get_istream() const;
-    uint64_t        get_istream_position() const;
+    uint64_t        get_istream_bookmark() const;
     int             get_max_loop() const;
     unsigned int    get_node_header(int node_id, int header_data_type) const;
     Unpacker*       get_root() const;
@@ -195,7 +195,7 @@ namespace hddaq
     void            set_decode_mode(bool flag);
     void            set_dump_mode(unsigned int dump_mode);
     void            set_istream(const std::string& name);
-    void            set_istream_position(uint64_t position);
+    void            set_istream_bookmark(uint64_t bookmark);
     void            set_parameter(const std::string& name,
 				  const std::string& value);
     void            show_event_number() const;

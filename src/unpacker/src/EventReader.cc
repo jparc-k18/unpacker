@@ -35,9 +35,7 @@ EventReader::EventReader()
     m_begin(),
     m_end(),
     m_stream(0),
-    m_header(0),
-    m_position_stream_name(),
-    m_position_stream(0)
+    m_header(0)
 {
   m_begin = m_buffer.end();
   m_end   = m_buffer.end();
@@ -385,11 +383,11 @@ EventReader::read(bool skip_flag)
 
 //______________________________________________________________________________
 void
-EventReader::seekg(uint64_t position)
+EventReader::seekg(uint64_t bookmark)
 {
   if(m_stream && m_stream->is_open()){
-    cout << "#D EventReader::seekg() " << position << std::endl;
-    m_stream->ignore(position);
+    cout << "#D EventReader::seekg() " << bookmark << std::endl;
+    m_stream->ignore(bookmark);
   }  else
     cerr << "#W EventReader::seekg()" << std::endl
          << "   failed (is open ? = " << is_open() << " "
