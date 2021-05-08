@@ -5,10 +5,12 @@
 #include "EventReader.hh"
 
 #include <algorithm>
-
 #include <cstdlib>
+#include <fstream>
+#include <sstream>
 #include <unistd.h>
 
+#include "filesystem_util.hh"
 #include "std_ostream.hh"
 #include "BitDump.hh"
 #include "HexDump.hh"
@@ -35,7 +37,8 @@ EventReader::EventReader()
     m_begin(),
     m_end(),
     m_stream(0),
-    m_header(0)
+    m_header(0),
+    m_bookmark(0)
 {
   m_begin = m_buffer.end();
   m_end   = m_buffer.end();
@@ -212,8 +215,12 @@ EventReader::is_open() const
 void
 EventReader::open(const std::string& stream_name)
 {
-  if (!m_stream)
+  if (!m_stream) {
     m_stream = new IStream(stream_name);
+    m_stream_name = stream_name;
+  }else{
+    cerr << "\n#W stream is already open : " << m_stream_name << std::endl;
+  }
 
   if (m_stream->fail())
     {
@@ -383,16 +390,63 @@ EventReader::read(bool skip_flag)
 
 //______________________________________________________________________________
 void
-EventReader::seekg(uint64_t bookmark)
+EventReader::set_bookmark(const std::string& bookmark_name)
 {
-  if(m_stream && m_stream->is_open()){
-    cout << "#D EventReader::seekg() " << bookmark << std::endl;
-    m_stream->ignore(bookmark);
-  }  else
-    cerr << "#W EventReader::seekg()" << std::endl
-         << "   failed (is open ? = " << is_open() << " "
-         << " eof = " << eof() << ")" << std::endl;
+  if(m_bookmark){
+    cout << "#W bookmark is already open " << bookmark_name << std::endl;
+    return;
+  }
+  if(!std::ifstream(bookmark_name).is_open())
+    return;
+  m_bookmark = new IStream(bookmark_name);
+  if(m_bookmark->eof() || !m_bookmark->is_open()){
+    std::ostringstream msg;
+    msg << "\n#E failed to open stream bookmark file: "
+        << bookmark_name << std::endl;
+    // cerr << msg.str() << std::endl;
+    throw FilesystemException(msg.str());
+  }else{
+    cout << "#D EventReader::set_bookmark() bookmark "
+         << bookmark_name << std::endl;
+  }
   return;
+}
+
+//______________________________________________________________________________
+int
+EventReader::skip(int n_skip)
+{
+  if (n_skip <= 0)
+    return 0;
+  if (m_bookmark && get_stream_type() == ".dat") {
+    if (m_bookmark->eof() || !m_bookmark->is_open()) {
+      std::ostringstream msg;
+      msg << "\n#E failed to open stream bookmark file" << std::endl;
+      throw FilesystemException(msg.str());
+    } else {
+      m_bookmark->ignore((n_skip - 1)*sizeof(uint64_t));
+      uint64_t bookmark;
+      m_bookmark->read(reinterpret_cast<char*>(&bookmark), sizeof(uint64_t));
+      if (m_bookmark->eof() || !m_bookmark->is_open()) {
+        std::ostringstream msg;
+        msg << "\n#E too much event skipped : " << n_skip << std::endl;
+        throw FilesystemException(msg.str());
+      }
+      cout << "#D skipping to " << bookmark << " ..." << std::endl;
+      m_stream->ignore(bookmark);
+      read();
+      return n_skip;
+    }
+  } else {
+    for (int i=0; i<n_skip; ++i) {
+      if (eof() || !is_open()) {
+        cerr << "\n#E too much event skipped" << std::endl;
+        return i-1;
+      }
+      read(i != n_skip -1);
+    }
+    return n_skip;
+  }
 }
 
 //______________________________________________________________________________

@@ -863,50 +863,17 @@ UnpackerManager::initialize()
     m_reader->dump_in_hexadecimal();
   }
 
-  int skipped=0;
-
-  if (m_skip>1 && m_enable_istream_bookmark &&
-      m_reader->get_stream_type() == ".dat")
-  {
+  if (m_enable_istream_bookmark) {
     std::string base = hddaq::basename(m_input_stream);
     replace_all(base, ".dat", "_bookmark.dat");
     std::ostringstream path_oss;
     path_oss << hddaq::dirname(m_input_stream)
              << "/bookmark/" << base;
-    std::ifstream ifs(path_oss.str());
-    if (ifs.eof() || !ifs.is_open())
-    {
-      std::ostringstream msg;
-      msg << "\n#E failed to open stream bookmark file: "
-          << path_oss.str();
-      // cerr << msg.str() << std::endl;
-      throw FilesystemException(msg.str());
-    }else{
-      cout << "#D open stream bookmark file: "
-           << path_oss.str() << std::endl;
-      ifs.seekg((m_skip - 1)*sizeof(uint64_t));
-      uint64_t bookmark;
-      ifs.read(reinterpret_cast<char*>(&bookmark), sizeof(uint64_t));
-      m_reader->seekg(bookmark);
-      m_reader->read();
-      skipped = m_skip;
-    }
+    m_reader->set_bookmark(path_oss.str());
   }
 
-  if (skipped != m_skip)
-  {
-    for (int i=0; i<m_skip; ++i, ++skipped)
-    {
-      if (m_reader->eof() || !m_reader->is_open())
-      {
-        cerr << "\n#E too much event skipped" << std::endl;
-        return;
-      }
-      m_reader->read(i != m_skip -1);
-    }
-  }
-
-  cout << "#D GUnpacker skipped " << m_skip << " events"
+  int n_skipped = m_reader->skip(m_skip);
+  cout << "#D GUnpacker skipped " << n_skipped << " events"
        << std::endl;
 
   const unsigned int node_id = m_reader->get_root_id();
@@ -1235,7 +1202,6 @@ UnpackerManager::set_istream(const std::string& name)
 void
 UnpackerManager::set_istream_bookmark(uint64_t bookmark)
 {
-
   return;
 }
 

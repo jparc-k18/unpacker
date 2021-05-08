@@ -36,6 +36,7 @@ namespace hddaq
     iterator                            m_end;
     IStream*                            m_stream;
     DAQNode::Header*                    m_header;
+    IStream*                            m_bookmark;
 
   public:
      EventReader();
@@ -49,6 +50,7 @@ namespace hddaq
     void               dump_in_decimal() const;
     void               dump_in_hexadecimal() const;
     bool               eof() const;
+    unsigned int       get_bookmark(int event_number);
     unsigned int       get_daq_root_event_number() const;
     unsigned int       get_daq_root_run_number() const;
     unsigned int       get_root_id() const;
@@ -56,7 +58,9 @@ namespace hddaq
     bool               is_open() const;
     void               open(const std::string& stream_name);
     bool               read(bool skip_flag=false);
-    void               seekg(uint64_t bookmark);
+    bool               read_multi_events(int n_events);
+    void               set_bookmark(const std::string& bookmark_name);
+    int                skip(int n_skip);
     uint64_t           tellg();
     bool               unpack();
 
