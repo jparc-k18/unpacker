@@ -103,6 +103,7 @@ protected:
   uint32_t m_asad_id;
   uint32_t m_n_padded;
   uint32_t m_event_offset;
+  uint32_t m_prev_run_number;
 
 public:
   GetAsAd(const unpacker_type& type);
