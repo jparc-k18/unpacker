@@ -396,8 +396,13 @@ EventReader::set_bookmark(const std::string& bookmark_name)
     cout << "#W bookmark is already open " << bookmark_name << std::endl;
     return;
   }
-  if(!std::ifstream(bookmark_name).is_open())
-    return;
+  if(!std::ifstream(bookmark_name).is_open()){
+    std::ostringstream msg;
+    msg << "\n#E failed to open stream bookmark file: "
+        << bookmark_name << std::endl;
+    throw FilesystemException(msg.str());
+    // return;
+  }
   m_bookmark = new IStream(bookmark_name);
   if(m_bookmark->eof() || !m_bookmark->is_open()){
     std::ostringstream msg;
