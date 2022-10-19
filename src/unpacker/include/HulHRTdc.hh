@@ -5,7 +5,7 @@
  *
  * Header (3 words)
  *
- *  Header1 : [31: 0] Magic word 0xffff800b
+ *  Header1 : [31: 0] Magic word 0xffff80eb
  *  Header2 : [31:24] 0xff
  *            [23:16] 0
  *            [15:15] Overflow bit
@@ -86,7 +86,7 @@ public:
   // Event header -------------------------------------------------
   // Header 1
   static const uint32_t k_header_size     = sizeof(Header)/sizeof(uint32_t);
-  static const uint32_t k_HEADER_MAGIC    = 0xffff800bU;
+  static const uint32_t k_HEADER_MAGIC    = 0xffff80ebU;
 
   // Header 2
   static const uint32_t k_OVERFLOW_MASK   = 0x1U;
