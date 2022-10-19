@@ -45,7 +45,7 @@ namespace hddaq
     bool            m_is_fail;
     bool            m_is_good;
     std::streamsize m_gcount;
-    
+
   public:
      IStream();
      IStream(const std::string& stream_name = "",
@@ -67,11 +67,11 @@ namespace hddaq
     const std::string& get_stream_type() const;
     bool             good() const;
     istream_type&    ignore();
-    istream_type&    ignore(std::streamsize n = 1);
-    istream_type&    ignore(std::streamsize n = 1, 
-			    int_type delim = traits_type::eof());
+    istream_type&    ignore(std::streamsize n);
+    istream_type&    ignore(std::streamsize n,
+			    int_type delim /*= traits_type::eof()*/);
     bool             is_open() const;
-    void             open(const std::string& stream_name, 
+    void             open(const std::string& stream_name,
 			  std::ios_base::openmode mode = std::ios_base::in);
 //     int_type     peek();
 //     stream_type& putback();
@@ -81,7 +81,7 @@ namespace hddaq
 //     stream_type& seekg(off_type off, std::ios_base::seekdir way);
     int              sync();
 //     stream_type& unget();
-//     pos_type     tellg();
+    pos_type         tellg();
 
   };
 

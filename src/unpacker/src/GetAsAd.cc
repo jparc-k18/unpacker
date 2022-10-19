@@ -19,8 +19,8 @@ const defines::unpacker_type GetAsAd::k_type = "GetAsAd";
 
 //_____________________________________________________________________________
 GetAsAd::GetAsAd(const unpacker_type& type)
-  : UnpackerImpl( type ),
-    m_header( nullptr ),
+  : UnpackerImpl(type),
+    m_header(nullptr),
     m_module_data_first(),
     m_frame_size(),
     m_frame_type(),
@@ -34,8 +34,10 @@ GetAsAd::GetAsAd(const unpacker_type& type)
     m_cobo_id(),
     m_asad_id(),
     m_n_padded(),
-    m_event_offset( 0xffffffff )
+    m_event_offset(0xffffffff),
+    m_prev_run_number(0)
 {
+  // cout << "created" << std::endl;
   Tag& orig = m_tag[k_tag_origin].back();
   orig.m_local = k_local_tag_origin;
   Tag& max = m_tag[k_tag_max].back();
@@ -54,18 +56,18 @@ void
 GetAsAd::check_data_format()
 {
   // check header
-  if( !m_header ){
+  if(!m_header){
     cerr << "\n#E " << m_type << " " << m_name << " does not have "
          << " AsAd header \n"  << std::endl;
-    m_error_state.set( defines::k_header_bit );
-  } else if ( m_header->m_magic  != k_ASAD_HEADER_MAGIC ||
-              m_header->Revision != kRevision           ){
+    m_error_state.set(defines::k_header_bit);
+  }else if(m_header->m_magic != k_ASAD_HEADER_MAGIC ||
+           m_header->Revision != kRevision){
     print_header();
-    m_error_state.set( defines::k_header_bit );
+    m_error_state.set(defines::k_header_bit);
   }
 
   // data size
-  m_word_count = std::distance( m_module_data_first, m_data_last );
+  m_word_count = std::distance(m_module_data_first, m_data_last);
 
   return;
 }
@@ -74,32 +76,32 @@ GetAsAd::check_data_format()
 void
 GetAsAd::decode()
 {
-  fill( 0, k_tdc_high, m_event_time_high );
-  fill( 0, k_tdc_low, m_event_time_low );
+  fill(0, k_tdc_high, m_event_time_high);
+  fill(0, k_tdc_low, m_event_time_low);
 
-  const uint32_t* buf = reinterpret_cast<uint32_t*>( &*m_module_data_first );
+  const uint32_t* buf = reinterpret_cast<uint32_t*>(&*m_module_data_first);
 
   std::map<uint32_t, uint32_t> filled_time_bucket;
 
-  switch( m_frame_type ){
+  switch(m_frame_type){
   case kPartialRead: {
-    for( uint32_t i=0, n=m_n_data; i<n; ++i ){
-      uint32_t aget_id     = ( buf[i] >> AGetShift ) & AGetMask;
-      uint32_t adc_high    = ( buf[i] >> AdcHighShiftPartial ) & AdcHighMask;
-      uint32_t adc_low     = ( buf[i] >> AdcLowShiftPartial ) & AdcLowMask;
-      uint32_t adc         = ( adc_high << ( AdcLowShiftPartial -
-                                             AdcHighShiftPartial ) ) | adc_low;
-      uint32_t channel_high = ( buf[i] >> ChannelHighShift ) & ChannelHighMask;
-      uint32_t channel_low  = ( buf[i] >> ChannelLowShift ) & ChannelLowMask;
-      uint32_t channel      = ( channel_high << ChannelLowMask ) | channel_low;
+    for(uint32_t i=0, n=m_n_data; i<n; ++i){
+      uint32_t aget_id     = (buf[i] >> AGetShift) & AGetMask;
+      uint32_t adc_high    = (buf[i] >> AdcHighShiftPartial) & AdcHighMask;
+      uint32_t adc_low     = (buf[i] >> AdcLowShiftPartial) & AdcLowMask;
+      uint32_t adc         = (adc_high << (AdcLowShiftPartial -
+                                           AdcHighShiftPartial)) | adc_low;
+      uint32_t channel_high = (buf[i] >> ChannelHighShift) & ChannelHighMask;
+      uint32_t channel_low  = (buf[i] >> ChannelLowShift) & ChannelLowMask;
+      uint32_t channel      = (channel_high << ChannelLowMask) | channel_low;
       uint32_t fe_channel = channel + aget_id*NumOfChannelAGET;
 #if 0
-      uint32_t time_bucket_high = ( ( buf[i] >> TimeBucketHighShift )
-                                    & TimeBucketHighMask );
-      uint32_t time_bucket_low  = ( ( buf[i] >> TimeBucketLowShift )
-                                    & TimeBucketLowMask );
-      uint32_t time_bucket = ( ( time_bucket_high << TimeBucketHighOffset )
-                               | time_bucket_low );
+      uint32_t time_bucket_high = ((buf[i] >> TimeBucketHighShift)
+                                   & TimeBucketHighMask);
+      uint32_t time_bucket_low  = ((buf[i] >> TimeBucketLowShift)
+                                   & TimeBucketLowMask);
+      uint32_t time_bucket = ((time_bucket_high << TimeBucketHighOffset)
+                              | time_bucket_low);
 #endif
 #if 0
       cout << "#D GetAsAd::decode() aget_id=" << aget_id << ", "
@@ -109,7 +111,7 @@ GetAsAd::decode()
            << "adc=" << adc << std::endl;
 #endif
 
-      if( fe_channel >= k_n_channel ){
+      if(fe_channel >= k_n_channel){
         cerr << "#W GetAsAd::decode() found invalid channel: "
              << channel
              << ", aget_id=" << aget_id
@@ -119,7 +121,7 @@ GetAsAd::decode()
       {
         FrontEndData& fe_data = *m_back;
         Data* data = fe_data.at(fe_channel).at(k_adc);
-        if( data && ( data->size() != time_bucket ) ){
+        if(data && (data->size() != time_bucket)){
           cerr << "#W GetAsAd::decode() found invalid time bucket: "
                <<"(fe_channel,time)=("
                << fe_channel << ", " << time_bucket << ")"
@@ -129,7 +131,7 @@ GetAsAd::decode()
       }
 #endif
       // filled_time_bucket[fe_channel]++;
-      fill( fe_channel, k_adc, adc );
+      fill(fe_channel, k_adc, adc);
     }
     break;
   }
@@ -150,34 +152,40 @@ GetAsAd::decode()
 void
 GetAsAd::decode_header()
 {
-  m_frame_size = ( (m_header->FrameSize[0] << 16) |
-                   (m_header->FrameSize[1] <<  8) |
-                   (m_header->FrameSize[2] <<  0) );
+  m_frame_size = ((m_header->FrameSize[0] << 16) |
+                  (m_header->FrameSize[1] <<  8) |
+                  (m_header->FrameSize[2] <<  0));
   m_frame_type = m_header->FrameType[1];
   m_revision = m_header->Revision;
-  m_header_size = ( (m_header->HeaderSize[0] << 8) |
-                    (m_header->HeaderSize[1] << 0) );
-  m_item_size = ( (m_header->ItemSize[0] << 8) |
-                  (m_header->ItemSize[1] << 0) );
-  m_n_data = ( (m_header->nItems[0] << 24) |
-               (m_header->nItems[1] << 16) |
-               (m_header->nItems[2] <<  8) |
-               (m_header->nItems[3] <<  0) );
-  m_event_time_high = ( (m_header->EventTime[0] <<  8) |
-                        (m_header->EventTime[1] <<  0) );
-  m_event_time_low = ( (m_header->EventTime[2] << 24) |
-                       (m_header->EventTime[3] << 16) |
-                       (m_header->EventTime[4] <<  8) |
-                       (m_header->EventTime[5] <<  0) );
-  m_event_id = ( (m_header->EventIdx[0] << 24) |
-                 (m_header->EventIdx[1] << 16) |
-                 (m_header->EventIdx[2] <<  8) |
-                 (m_header->EventIdx[3] <<  0) );
+  m_header_size = ((m_header->HeaderSize[0] << 8) |
+                   (m_header->HeaderSize[1] << 0));
+  m_item_size = ((m_header->ItemSize[0] << 8) |
+                 (m_header->ItemSize[1] << 0));
+  m_n_data = ((m_header->nItems[0] << 24) |
+              (m_header->nItems[1] << 16) |
+              (m_header->nItems[2] <<  8) |
+              (m_header->nItems[3] <<  0));
+  m_event_time_high = ((m_header->EventTime[0] <<  8) |
+                       (m_header->EventTime[1] <<  0));
+  m_event_time_low = ((m_header->EventTime[2] << 24) |
+                      (m_header->EventTime[3] << 16) |
+                      (m_header->EventTime[4] <<  8) |
+                      (m_header->EventTime[5] <<  0));
+  m_event_id = ((m_header->EventIdx[0] << 24) |
+                (m_header->EventIdx[1] << 16) |
+                (m_header->EventIdx[2] <<  8) |
+                (m_header->EventIdx[3] <<  0));
   m_cobo_id = m_header->CoboIdx;
   m_asad_id = m_header->AsadIdx;
   m_n_padded = (m_frame_size - m_header_size)*256 - m_item_size*m_n_data;
-  if( m_event_offset == 0xffffffff ){
-    m_event_offset = m_event_id - GUnpacker::get_instance().get_event_number();
+
+  const UnpackerManager& gUnpacker = GUnpacker::get_instance();
+
+  uint32_t root_run_number = gUnpacker.get_root()->get_run_number();
+  if(m_event_offset == 0xffffffff ||
+     m_prev_run_number != root_run_number){
+    m_event_offset = m_event_id - gUnpacker.get_event_number();
+    m_prev_run_number = root_run_number;
   }
 }
 
@@ -185,11 +193,11 @@ GetAsAd::decode_header()
 void
 GetAsAd::print_header() const
 {
-  if( !m_header ){
+  if(!m_header){
     cout << "\n#E GetAsAd::print_asad_header() : got "
          << m_name << " null pointer to header"
          << std::endl;
-  } else {
+  }else{
     cout << "#D GetAsAd::print_header() " << m_name << std::endl
          << std::showbase << std::hex
          << " magic           = " << m_header->m_magic << std::endl
@@ -217,7 +225,7 @@ void
 GetAsAd::resize_fe_data()
 {
   m_fe_data.resize(k_n_channel);
-  for( uint32_t i=0; i<k_n_channel; ++i ){
+  for(uint32_t i=0; i<k_n_channel; ++i){
     m_fe_data[i].resize(k_n_data_type);
   }
   return;
@@ -227,7 +235,7 @@ GetAsAd::resize_fe_data()
 bool
 GetAsAd::unpack()
 {
-  m_header = reinterpret_cast<Header*>( &(*m_data_first) );
+  m_header = reinterpret_cast<Header*>(&(*m_data_first));
   m_module_data_first = m_data_first + k_header_size;
   decode_header();
   return true;

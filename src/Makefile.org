@@ -11,10 +11,12 @@ CC		:= gcc
 CXX		:= g++
 OUT_PUT_OPT	:= -o
 LD		:= g++
+LDFLAGS		:= -lstdc++fs
 #LDFLAGS	:= -export-dynamic
 CXXFLAGS	:= -O3
 #CXXFLAGS	:= -Winline
 CXXFLAGS	+= -Wall -fPIC
+CXXFLAGS	+= -std=c++17
 # CXXFLAGS	+= -pg -p
 # optimize
 CXXFLAGS	+= $(subst x86_64,-m64,$(findstring x86_64,$(shell uname -m)))

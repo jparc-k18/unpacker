@@ -5,11 +5,13 @@
 #include "UnpackerManager.hh"
 
 #include <algorithm>
+// #include <filesystem>
 #include <fstream>
 #include <iomanip>
 #include <iterator>
 #include <stdexcept>
 #include <cstdlib>
+#include <sstream>
 
 #include "std_ostream.hh"
 #include "Clear.hh"
@@ -26,6 +28,7 @@
 #include "UnpackerXMLChannelMap.hh"
 #include "EventReader.hh"
 #include "filesystem_util.hh"
+#include "replace_string.hh"
 
 #include "MemFuncThread.hh"
 
@@ -52,7 +55,8 @@ UnpackerManager::UnpackerManager()
     m_counter(0),
     m_decode_mode(true),
     m_dump_mode(),
-    m_run_number(-1)
+    m_run_number(-1),
+    m_enable_istream_bookmark(false)
 {
   UnpackerRegister unpacker_register;
   IStreamRegister  istream_register;
@@ -164,6 +168,14 @@ UnpackerManager::decode()
 
 //______________________________________________________________________________
 void
+UnpackerManager::disable_istream_bookmark()
+{
+  m_enable_istream_bookmark = false;
+  return;
+}
+
+//______________________________________________________________________________
+void
 UnpackerManager::dump_data() const
 {
   if (m_dump_mode[defines::k_binary]){
@@ -244,6 +256,14 @@ bool
 UnpackerManager::empty() const
 {
   return (m_fifo.get_entries()==0);
+}
+
+//______________________________________________________________________________
+void
+UnpackerManager::enable_istream_bookmark()
+{
+  m_enable_istream_bookmark = true;
+  return;
 }
 
 //______________________________________________________________________________
@@ -671,7 +691,10 @@ UnpackerManager::get_entries(const std::string& name,
 uint32_t
 UnpackerManager::get_event_number() const
 {
-  return m_reader->get_daq_root_event_number();
+  if (m_reader)
+    return m_reader->get_daq_root_event_number();
+  else
+    return 0;
 }
 
 //______________________________________________________________________________
@@ -693,6 +716,16 @@ std::string
 UnpackerManager::get_istream() const
 {
   return m_input_stream;
+}
+
+//______________________________________________________________________________
+uint64_t
+UnpackerManager::get_istream_bookmark() const
+{
+  if (m_reader && m_reader->is_open())
+    return m_reader->tellg();
+  else
+    return 0;
 }
 
 //______________________________________________________________________________
@@ -751,6 +784,16 @@ UnpackerManager::get_root() const
 }
 
 //______________________________________________________________________________
+uint32_t
+UnpackerManager::get_run_number() const
+{
+  if (m_reader)
+    return m_reader->get_daq_root_run_number();
+  else
+    return 0;
+}
+
+//______________________________________________________________________________
 int
 UnpackerManager::get_skip() const
 {
@@ -765,73 +808,72 @@ UnpackerManager::initialize()
   cout << "\n#D GUnpacker::initialize()" << std::endl;
 
   if (m_input_stream.empty())
-    {
-      cerr << "\n#E GUnpacker::initialize()\n"
-	   << " input data stream is not specified\n\n exit" << std::endl;
-      std::exit(1);
-    }
+  {
+    cerr << "\n#E GUnpacker::initialize()\n"
+         << " input data stream is not specified\n\n exit" << std::endl;
+    std::exit(1);
+  }
 
 //   if (is_online() && !m_reader->is_open())
   if (!m_reader->is_open())
     reset();
 
   if (s_is_initialized)
-    {
-      cout << "#D UnpackerManager::initialize()\n"
-	   << " already initialized" << std::endl;
-      return;
-    }
-
+  {
+    cerr << "#W UnpackerManager::initialize()\n"
+         << " already initialized" << std::endl;
+    return;
+  }
 
   const int n_unpacker = m_unpacker.size();
 
   if (m_fifo.size()>1)
+  {
+    cout << "#D UnpackerManager::initialize()\n"
+         << " initialize fifo " << m_fifo.size() << std::endl;
+    for (fifo_t::iterator itr=m_fifo.begin(); itr!=m_fifo.end(); ++itr)
     {
-      cout << "#D UnpackerManager::initialize()\n"
-	   << " initialize fifo " << m_fifo.size() << std::endl;
-      for (fifo_t::iterator itr=m_fifo.begin(); itr!=m_fifo.end(); ++itr)
-	{
-	  itr->m_digit = m_digit_list;
-	  itr->m_fe.resize(n_unpacker);
-	  for (int i=0; i<n_unpacker; ++i)
-	    {
-	      Unpacker* u = m_unpacker[i];
-	      if (u){
-		u->add_channel_map(itr->m_fe[i], itr->m_digit);
-	      }
-	    }
-	}
-      cout << "#D initialize fifo --> done" << std::endl;
+      itr->m_digit = m_digit_list;
+      itr->m_fe.resize(n_unpacker);
+      for (int i=0; i<n_unpacker; ++i)
+      {
+        Unpacker* u = m_unpacker[i];
+        if (u){
+          u->add_channel_map(itr->m_fe[i], itr->m_digit);
+        }
+      }
     }
+    cout << "#D initialize fifo --> done" << std::endl;
+  }
   else
-    {
-      m_front = &m_digit_list;
-    }
-
+  {
+    m_front = &m_digit_list;
+  }
 
   m_reader->read();
 
-  if (m_dump_mode[defines::k_binary]){
+  if (m_dump_mode[defines::k_binary])
+  {
     m_reader->dump_in_binary();
-  }else if (m_dump_mode[defines::k_dec]){
+  }else if (m_dump_mode[defines::k_dec])
+  {
     m_reader->dump_in_decimal();
-  }else if (m_dump_mode[defines::k_hex]){
+  }else if (m_dump_mode[defines::k_hex])
+  {
     m_reader->dump_in_hexadecimal();
   }
 
-  int skipped=0;
-  for (int i=0; i<m_skip; ++i, ++skipped)
-    {
-      if (m_reader->eof()
-	  ||
-	  !m_reader->is_open())
-	{
-	  cerr << "\n#E too much event skipped" << std::endl;
-	  return;
-	}
-      m_reader->read();
-    }
-  cout << "#D GUnpacker skipped " << skipped << " events"
+  if (m_enable_istream_bookmark) {
+    std::string base = hddaq::basename(m_input_stream);
+    replace_all(base, ".dat", "_bookmark.dat");
+    std::ostringstream path_oss;
+    path_oss << hddaq::dirname(m_input_stream)
+             << "/bookmark/" << base;
+    m_reader->set_bookmark(path_oss.str());
+  }
+
+  int n_skipped = m_reader->skip(m_skip);
+  cout << "#D GUnpacker skipped " << n_skipped << " events"
        << std::endl;
 
   const unsigned int node_id = m_reader->get_root_id();
@@ -1153,6 +1195,13 @@ UnpackerManager::set_istream(const std::string& name)
        << "#D ___________ GUnpacker::set_istream() __________\n"
        << "   input stream = " << m_input_stream
        << std::endl;
+  return;
+}
+
+//______________________________________________________________________________
+void
+UnpackerManager::set_istream_bookmark(uint64_t bookmark)
+{
   return;
 }
 
