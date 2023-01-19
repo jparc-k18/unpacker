@@ -87,7 +87,8 @@ HulHRTdc::check_data_format( void )
   static const std::string func_name("["+k_type+"::"+__func__+"()]");
 
   // header magic word check
-  if(k_HEADER_MAGIC != m_header->m_magic_word){
+  if(k_HEADER_MAGIC_1 != m_header->m_magic_word &&
+     k_HEADER_MAGIC_2 != m_header->m_magic_word){
     m_error_state.set(defines::k_header_bit);
   }
 }
