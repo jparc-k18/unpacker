@@ -866,6 +866,7 @@ UnpackerManager::initialize()
   if (m_enable_istream_bookmark) {
     std::string base = hddaq::basename(m_input_stream);
     replace_all(base, ".dat", "_bookmark.dat");
+    replace_all(base, ".gz", "");
     std::ostringstream path_oss;
     path_oss << hddaq::dirname(m_input_stream)
              << "/bookmark/" << base;
