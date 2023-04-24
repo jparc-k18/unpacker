@@ -850,6 +850,20 @@ UnpackerManager::initialize()
     m_front = &m_digit_list;
   }
 
+  if (m_enable_istream_bookmark && m_reader->get_stream_type() == ".dat") {
+    std::string base = hddaq::basename(m_input_stream);
+    replace_all(base, ".dat", "_bookmark.dat");
+    // replace_all(base, ".gz", "");
+    std::ostringstream path_oss;
+    path_oss << hddaq::dirname(m_input_stream)
+             << "/bookmark/" << base;
+    m_reader->set_bookmark(path_oss.str());
+  }
+
+  int n_skipped = m_reader->skip(m_skip);
+  cout << "#D GUnpacker skipped " << n_skipped << " events"
+       << std::endl;
+
   m_reader->read();
 
   if (m_dump_mode[defines::k_binary])
@@ -862,20 +876,6 @@ UnpackerManager::initialize()
   {
     m_reader->dump_in_hexadecimal();
   }
-
-  if (m_enable_istream_bookmark) {
-    std::string base = hddaq::basename(m_input_stream);
-    replace_all(base, ".dat", "_bookmark.dat");
-    replace_all(base, ".gz", "");
-    std::ostringstream path_oss;
-    path_oss << hddaq::dirname(m_input_stream)
-             << "/bookmark/" << base;
-    m_reader->set_bookmark(path_oss.str());
-  }
-
-  int n_skipped = m_reader->skip(m_skip);
-  cout << "#D GUnpacker skipped " << n_skipped << " events"
-       << std::endl;
 
   const unsigned int node_id = m_reader->get_root_id();
   if (node_id!=m_unpacker[0]->get_id())

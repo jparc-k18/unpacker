@@ -423,13 +423,15 @@ EventReader::skip(int n_skip)
 {
   if (n_skip <= 0)
     return 0;
-  if (m_bookmark && get_stream_type() == ".dat") {
+  if (m_bookmark && (get_stream_type() == ".dat"
+                     // || get_stream_type() == ".gz"
+        )){
     if (m_bookmark->eof() || !m_bookmark->is_open()) {
       std::ostringstream msg;
       msg << "\n#E failed to open stream bookmark file" << std::endl;
       throw FilesystemException(msg.str());
     } else {
-      m_bookmark->ignore((n_skip - 1)*sizeof(uint64_t));
+      m_bookmark->ignore(n_skip*sizeof(uint64_t));
       uint64_t bookmark;
       m_bookmark->read(reinterpret_cast<char*>(&bookmark), sizeof(uint64_t));
       if (m_bookmark->eof() || !m_bookmark->is_open()) {
@@ -439,7 +441,6 @@ EventReader::skip(int n_skip)
       }
       cout << "#D skipping to " << bookmark << " ..." << std::endl;
       m_stream->ignore(bookmark);
-      read();
       return n_skip;
     }
   } else {
@@ -448,7 +449,7 @@ EventReader::skip(int n_skip)
         cerr << "\n#E too much event skipped" << std::endl;
         return i-1;
       }
-      read(i != n_skip -1);
+      read(true);
     }
     return n_skip;
   }

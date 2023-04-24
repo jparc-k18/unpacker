@@ -266,7 +266,12 @@ IStream::sync()
 IStream::pos_type
 IStream::tellg()
 {
-  return (!m_stream) ? IStream::pos_type(0) : (m_stream->tellg());
+  if (m_stream_type == ".gz") {
+    std::cerr << "#E tellg() is not supported in gz stream type" << std::endl;
+    return IStream::pos_type(0);
+  } else {
+    return (!m_stream) ? IStream::pos_type(0) : (m_stream->tellg());
+  }
 }
 
   }
