@@ -37,7 +37,7 @@ namespace hddaq
   namespace unpacker
   {
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 UnpackerManager::UnpackerManager()
   : m_reader(new EventReader),
     m_input_stream(),
@@ -62,7 +62,7 @@ UnpackerManager::UnpackerManager()
   IStreamRegister  istream_register;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 UnpackerManager::~UnpackerManager()
 {
   // cout << "#D1 GUnpacker::~UnpackerManager()" << std::endl;
@@ -79,7 +79,7 @@ UnpackerManager::~UnpackerManager()
   m_reader = 0;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 void
 UnpackerManager::hoge(const std::string& arg) const
 {
@@ -87,7 +87,7 @@ UnpackerManager::hoge(const std::string& arg) const
   return;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 void
 UnpackerManager::check()
 {
@@ -96,7 +96,7 @@ UnpackerManager::check()
   return;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 void
 UnpackerManager::clear()
 {
@@ -139,7 +139,7 @@ UnpackerManager::clear()
   return;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 void
 UnpackerManager::close()
 {
@@ -147,7 +147,7 @@ UnpackerManager::close()
   return;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 Unpacker*
 UnpackerManager::create(const unpacker_type& type)
 {
@@ -157,7 +157,7 @@ UnpackerManager::create(const unpacker_type& type)
   return u;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 void
 UnpackerManager::decode()
 {
@@ -166,7 +166,7 @@ UnpackerManager::decode()
   return;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 void
 UnpackerManager::disable_istream_bookmark()
 {
@@ -174,7 +174,7 @@ UnpackerManager::disable_istream_bookmark()
   return;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 void
 UnpackerManager::dump_data() const
 {
@@ -190,7 +190,7 @@ UnpackerManager::dump_data() const
   return;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 void
 UnpackerManager::dump_data_device(int device_id, int plane_id) const
 {
@@ -215,7 +215,7 @@ UnpackerManager::dump_data_device(int device_id, int plane_id) const
   return;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 void
 UnpackerManager::dump_data_fe(int node_id, int address, int ma) const
 {
@@ -251,14 +251,14 @@ UnpackerManager::dump_data_fe(int node_id, int address, int ma) const
   return;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 bool
 UnpackerManager::empty() const
 {
   return (m_fifo.get_entries()==0);
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 void
 UnpackerManager::enable_istream_bookmark()
 {
@@ -266,7 +266,7 @@ UnpackerManager::enable_istream_bookmark()
   return;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 bool
 UnpackerManager::eof() const
 {
@@ -293,7 +293,7 @@ UnpackerManager::eof() const
   return ret;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 const Device&
 UnpackerManager::find(unsigned int device_id) const
 {
@@ -312,7 +312,7 @@ UnpackerManager::find(unsigned int device_id) const
 
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 const Device&
 UnpackerManager::find(const char* name) const
 {
@@ -320,7 +320,7 @@ UnpackerManager::find(const char* name) const
   return find(name_str);
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 const Device&
 UnpackerManager::find(const std::string& name) const
 {
@@ -340,7 +340,7 @@ UnpackerManager::find(const std::string& name) const
     }
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 const Plane&
 UnpackerManager::find(unsigned int device_id, unsigned int plane_id) const
 {
@@ -359,7 +359,7 @@ UnpackerManager::find(unsigned int device_id, unsigned int plane_id) const
 
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 const Plane&
 UnpackerManager::find(const char* device_name, const char* plane_name) const
 {
@@ -368,7 +368,7 @@ UnpackerManager::find(const char* device_name, const char* plane_name) const
   return find(device_name_str, plane_name_str);
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 const Plane&
 UnpackerManager::find(const std::string& device_name,
 		      const std::string& plane_name ) const
@@ -392,7 +392,7 @@ UnpackerManager::find(const std::string& device_name,
     }
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 unsigned long long
 UnpackerManager::get(unsigned int device_id,
 		     unsigned int plane_id,
@@ -405,7 +405,7 @@ UnpackerManager::get(unsigned int device_id,
   return digit_list[device_id][plane_id][segment_id][ch][data_type][hit_id];
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 unsigned long long
 UnpackerManager::get(const char* name,
 		     unsigned int plane_id,
@@ -418,7 +418,7 @@ UnpackerManager::get(const char* name,
   return get(device_name_str, plane_id, segment_id, ch, data_type, hit_id);
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 unsigned long long
 UnpackerManager::get(const std::string& name,
 		     unsigned int plane_id,
@@ -431,7 +431,7 @@ UnpackerManager::get(const std::string& name,
   return device[plane_id][segment_id][ch][data_type][hit_id];
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 unsigned long long
 UnpackerManager::get(const char* device_name,
 		     const char* plane_name,
@@ -445,7 +445,7 @@ UnpackerManager::get(const char* device_name,
   return get(device_name_str, plane_name_str, segment_id, ch, data_type, hit_id);
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 unsigned long long
 UnpackerManager::get(const std::string& device_name,
 		     const std::string& plane_name,
@@ -458,7 +458,7 @@ UnpackerManager::get(const std::string& device_name,
   return plane[segment_id][ch][data_type][hit_id];
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 void
 UnpackerManager::get_buffer(const std::vector<uint64_t>& fe_id,
 			    iterator& begin,
@@ -476,7 +476,7 @@ UnpackerManager::get_buffer(const std::vector<uint64_t>& fe_id,
   return;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 UnpackerManager::iterator
 UnpackerManager::get_buffer_begin(const std::vector<uint64_t>& fe_id) const
 {
@@ -491,7 +491,7 @@ UnpackerManager::get_buffer_begin(const std::vector<uint64_t>& fe_id) const
   return u->get_buffer_begin();
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 UnpackerManager::iterator
 UnpackerManager::get_buffer_end(const std::vector<uint64_t>& fe_id) const
 {
@@ -506,21 +506,21 @@ UnpackerManager::get_buffer_end(const std::vector<uint64_t>& fe_id) const
   return u->get_buffer_end();
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 unsigned int
 UnpackerManager::get_counter() const
 {
   return m_counter;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 unsigned int
 UnpackerManager::get_daq_root_number() const
 {
   return m_reader->get_daq_root_event_number();
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 int
 UnpackerManager::get_fe_id(const char* name) const
 {
@@ -528,7 +528,7 @@ UnpackerManager::get_fe_id(const char* name) const
   return get_fe_id(name_str);
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 unsigned int
 UnpackerManager::get_fe_info(int node_id, int address, int ma,
 			     int data_type) const
@@ -564,14 +564,14 @@ UnpackerManager::get_fe_info(int node_id, int address, int ma,
   return 0;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 int
 UnpackerManager::get_fe_id(const std::string& name) const
 {
   return GConfig::get_instance().get_channel_map().get_fe_id(name);
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 int
 UnpackerManager::get_device_id(const char* name) const
 {
@@ -579,14 +579,14 @@ UnpackerManager::get_device_id(const char* name) const
   return get_device_id(name_str);
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 int
 UnpackerManager::get_device_id(const std::string& name) const
 {
   return GConfig::get_instance().get_digit_info().get_device_id(name);
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 int
 UnpackerManager::get_plane_id(const char* device_name,
 			      const char* plane_name ) const
@@ -596,7 +596,7 @@ UnpackerManager::get_plane_id(const char* device_name,
   return get_plane_id(device_name_str, plane_name_str);
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 int
 UnpackerManager::get_plane_id(const std::string& device_name,
 			      const std::string& plane_name ) const
@@ -605,7 +605,7 @@ UnpackerManager::get_plane_id(const std::string& device_name,
   return GConfig::get_instance().get_digit_info().get_plane_id(device_id, plane_name);
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 int
 UnpackerManager::get_data_id(const char* device_name,
 			     const char* data_name ) const
@@ -615,7 +615,7 @@ UnpackerManager::get_data_id(const char* device_name,
   return get_data_id(device_name_str, data_name_str);
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 int
 UnpackerManager::get_data_id(const std::string& device_name,
 			     const std::string& data_name ) const
@@ -624,7 +624,7 @@ UnpackerManager::get_data_id(const std::string& device_name,
   return GConfig::get_instance().get_digit_info().get_data_id(device_id, 0, 0, 0, data_name);
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 unsigned int
 UnpackerManager::get_entries(unsigned int device_id,
 			     unsigned int plane_id,
@@ -668,7 +668,7 @@ UnpackerManager::get_entries(unsigned int device_id,
   return 0U;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 unsigned int
 UnpackerManager::get_entries(const std::string& name,
 			     unsigned int plane_id,
@@ -687,7 +687,46 @@ UnpackerManager::get_entries(const std::string& name,
 
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
+unsigned int
+UnpackerManager::get_n_device() const
+{
+  return GConfig::get_instance().get_digit_info().get_n_device();
+}
+
+//_____________________________________________________________________________
+unsigned int
+UnpackerManager::get_n_plane(int device_id) const
+{
+  return GConfig::get_instance().get_digit_info().get_n_plane(device_id);
+}
+
+//_____________________________________________________________________________
+unsigned int
+UnpackerManager::get_n_segment(int device_id, int plane_id) const
+{
+  return GConfig::get_instance().get_digit_info()
+    .get_n_segment(device_id, plane_id);
+}
+
+//_____________________________________________________________________________
+unsigned int
+UnpackerManager::get_n_ch(int device_id, int plane_id, int segment_id) const
+{
+  return GConfig::get_instance().get_digit_info()
+    .get_n_ch(device_id, plane_id, segment_id);
+}
+
+//_____________________________________________________________________________
+unsigned int
+UnpackerManager::get_n_data(int device_id, int plane_id, int segment_id,
+                            int ch_id) const
+{
+  return GConfig::get_instance().get_digit_info()
+    .get_n_data(device_id, plane_id, segment_id, ch_id);
+}
+
+//_____________________________________________________________________________
 uint32_t
 UnpackerManager::get_event_number() const
 {
@@ -697,28 +736,28 @@ UnpackerManager::get_event_number() const
     return 0;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 UnpackerManager::fifo_t::size_type
 UnpackerManager::get_fifo_entries() const
 {
   return m_fifo.get_entries();
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 UnpackerManager::fifo_t::size_type
 UnpackerManager::get_fifo_length() const
 {
   return m_fifo.size();
 }
 
-//______________________________________________________________________________
-std::string
+//_____________________________________________________________________________
+const std::string&
 UnpackerManager::get_istream() const
 {
   return m_input_stream;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 uint64_t
 UnpackerManager::get_istream_bookmark() const
 {
@@ -728,14 +767,14 @@ UnpackerManager::get_istream_bookmark() const
     return 0;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 int
 UnpackerManager::get_max_loop() const
 {
   return m_max_loop;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 unsigned int
 UnpackerManager::get_node_header(int node_id, int header_data_type) const
 {
@@ -762,7 +801,7 @@ UnpackerManager::get_node_header(int node_id, int header_data_type) const
   }
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 Unpacker*
 UnpackerManager::get_root() const
 {
@@ -783,7 +822,7 @@ UnpackerManager::get_root() const
   return u;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 uint32_t
 UnpackerManager::get_run_number() const
 {
@@ -793,14 +832,14 @@ UnpackerManager::get_run_number() const
     return 0;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 int
 UnpackerManager::get_skip() const
 {
   return m_skip;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 void
 UnpackerManager::initialize()
 {
@@ -940,7 +979,7 @@ UnpackerManager::initialize()
   return;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 bool
 UnpackerManager::is_data_ready()
 {
@@ -962,21 +1001,21 @@ UnpackerManager::is_data_ready()
   return m_is_data_ready;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 bool
 UnpackerManager::is_decode_mode() const
 {
   return m_decode_mode;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 bool
 UnpackerManager::is_good() const
 {
   return m_is_good;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 bool
 UnpackerManager::is_online() const
 {
@@ -987,7 +1026,7 @@ UnpackerManager::is_online() const
   }
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 void
 UnpackerManager::operator++()
 {
@@ -1021,7 +1060,7 @@ UnpackerManager::operator++()
   return;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 void
 UnpackerManager::pop_event()
 {
@@ -1041,7 +1080,7 @@ UnpackerManager::pop_event()
 
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 void
 UnpackerManager::print() const
 {
@@ -1051,7 +1090,7 @@ UnpackerManager::print() const
   return;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 void
 UnpackerManager::print_tag() const
 {
@@ -1065,7 +1104,7 @@ UnpackerManager::print_tag() const
   return;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 void
 UnpackerManager::push_event()
 {
@@ -1090,7 +1129,7 @@ UnpackerManager::push_event()
   return;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 void
 UnpackerManager::read()
 {
@@ -1101,7 +1140,7 @@ UnpackerManager::read()
   return;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 void
 UnpackerManager::reset()
 {
@@ -1123,7 +1162,7 @@ UnpackerManager::reset()
   return;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 void
 UnpackerManager::set_config_file(const std::string& config_file,
 				 const std::string& digit_file,
@@ -1168,7 +1207,7 @@ UnpackerManager::set_config_file(const std::string& config_file,
   return;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 void
 UnpackerManager::set_decode_mode(bool flag)
 {
@@ -1176,7 +1215,7 @@ UnpackerManager::set_decode_mode(bool flag)
   return;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 void
 UnpackerManager::set_dump_mode(unsigned int dump_mode)
 {
@@ -1184,7 +1223,7 @@ UnpackerManager::set_dump_mode(unsigned int dump_mode)
   return;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 void
 UnpackerManager::set_istream(const std::string& name)
 {
@@ -1199,14 +1238,14 @@ UnpackerManager::set_istream(const std::string& name)
   return;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 void
 UnpackerManager::set_istream_bookmark(uint64_t bookmark)
 {
   return;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 void
 UnpackerManager::set_parameter(const std::string& name,
 			       const std::string& value)
@@ -1260,7 +1299,7 @@ UnpackerManager::set_parameter(const std::string& name,
   return;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 void
 UnpackerManager::show_event_number() const
 {
@@ -1279,7 +1318,7 @@ UnpackerManager::show_event_number() const
   return;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 void
 UnpackerManager::show_summary(bool is_forced)
 {
@@ -1352,7 +1391,7 @@ UnpackerManager::show_summary(bool is_forced)
   return;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 void
 UnpackerManager::search_device(Unpacker* u,
 			       std::vector<Unpacker*>& uvect,
@@ -1376,7 +1415,7 @@ UnpackerManager::search_device(Unpacker* u,
   return;
 }
 
-//______________________________________________________________________________
+//_____________________________________________________________________________
 Unpacker*
 UnpackerManager::search_fe(Unpacker* parent, int id) const
 {

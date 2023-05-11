@@ -52,12 +52,15 @@ include=-I$incdir
 libs="-Wl,-rpath,$libdir -L$libdir"
 ### core libs
 libs="$libs -lHDDAQUnpacker"
+libs="$libs -lUnpackerConfig"
 libs="$libs -lUnpackerManager"
 libs="$libs -lUnpacker"
 ### util libs
 libs="$libs -lfilesystem_util"
 libs="$libs -lreplace_string"
 libs="$libs -lstd_ostream"
+### ext libs
+libs="$libs -lxerces-c"
 
 #_______________________________________________________________________________
 if test $# -eq 0; then
