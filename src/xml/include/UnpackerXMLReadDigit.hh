@@ -104,14 +104,14 @@ public:
   unsigned int  get_n_device() const;
   unsigned int  get_n_plane(int device_id) const;
   unsigned int  get_n_segment(int device_id,
-                              int plane_id) const;
+                              int plane_id=0) const;
   unsigned int  get_n_ch(int device_id,
-                         int plane_id,
-                         int segment_id) const;
+                         int plane_id=0,
+                         int segment_id=0) const;
   unsigned int  get_n_data(int device_id,
-                           int plane_id,
-                           int segment_id,
-                           int ch_id) const;
+                           int plane_id=0,
+                           int segment_id=0,
+                           int ch_id=0) const;
 
   int  get_null_device_id() const;
   void print(const std::string& arg="") const;
