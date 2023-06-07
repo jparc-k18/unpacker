@@ -42,6 +42,9 @@ public:
   typedef std::vector<SegmentNameList> ChNameList;
   typedef std::vector<ChNameList>      DataNameList;
 
+  // map : index -> type
+  using TypeList = std::map<int, std::string>;
+
 private:
   std::string m_tag;
   DigitList&  m_digit_list;
@@ -56,6 +59,8 @@ private:
   SegmentNameList m_segment_names;
   ChNameList      m_ch_names;
   DataNameList    m_data_names;
+
+  TypeList m_device_types;
 
 //       int m_device_id;
 //       int m_plane_id;
@@ -73,6 +78,8 @@ public:
                        DigitList& digit_list);
   virtual ~UnpackerXMLReadDigit();
 
+  const std::string& get_device_type(int device_id) const;
+  const std::string& get_device_type(const std::string& name) const;
   int  get_device_id(const std::string& name) const;
   int  get_plane_id(int device_id,
                     const std::string& name) const;

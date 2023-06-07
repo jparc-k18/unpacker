@@ -417,7 +417,6 @@ UnpackerXMLReadDigit::get_data_id(int device_id,
   return -1;
 }
 
-
 //_____________________________________________________________________________
 int
 UnpackerXMLReadDigit::get_device_id(const std::string& name) const
@@ -433,6 +432,20 @@ UnpackerXMLReadDigit::get_device_id(const std::string& name) const
   }
 
   return i->second;
+}
+
+//_____________________________________________________________________________
+const std::string&
+UnpackerXMLReadDigit::get_device_type(int device_id) const
+{
+  return m_device_types.at(device_id);
+}
+
+//_____________________________________________________________________________
+const std::string&
+UnpackerXMLReadDigit::get_device_type(const std::string& name) const
+{
+  return get_device_type(get_device_id(name));
 }
 
 //_____________________________________________________________________________
@@ -991,6 +1004,10 @@ UnpackerXMLReadDigit::read_device_digit(DOMElement* e)
 
   }
 
+
+  std::string& type = attr["type"];
+  m_device_types[m_device_id] = type;
+
 #ifdef DIGIT_DEVICE
   cout << "#D " << ks_class_name << "::read_device_digit()\n ";
 #endif
@@ -1000,8 +1017,9 @@ UnpackerXMLReadDigit::read_device_digit(DOMElement* e)
 #ifdef DIGIT_DEVICE
        << " ( .size() = " << n_device << ")"
 #endif
-       << " ( .size() = " << n_device << ")"
-       << ", ref = " << ref << std::endl;
+       << " ( .size() = " << std::setw(3) << n_device << ")"
+       << ", ref = " << std::setw(12) << ref
+       << ", type = " << type << std::endl;
 
   read(e);
 

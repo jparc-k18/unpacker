@@ -27,12 +27,12 @@ namespace hddaq
     class UnpackerConfig
       : private Uncopyable<UnpackerConfig>
     {
-      
+
     public:
       typedef defines::unpacker_type unpacker_type;
       typedef UnpackerXMLReadDigit  DigitInfo;
       typedef UnpackerXMLChannelMap ChannelMap;
-      
+
     private:
       friend class Singleton<UnpackerConfig>;
       xml::DOMParser* m_parser;
@@ -50,7 +50,7 @@ namespace hddaq
            get_control_param(const std::string& key) const;
       const DigitInfo&  get_digit_info() const;
       const ChannelMap& get_channel_map() const;
-      const std::vector<std::pair<int, int> >& 
+      const std::vector<std::pair<int, int> >&
            get_run_range() const;
       void initialize(DigitList& device_list,
 		      const std::string& config_file,
@@ -69,6 +69,6 @@ namespace hddaq
 
 
   }
-  
+
 }
 #endif
