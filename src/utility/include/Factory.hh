@@ -183,7 +183,7 @@ Factory<Product, ID, Creator, FactoryErrorPolicy>::create(const ID& id)
   if (i==m_product_table.end()) 
     {
       std::cerr << "#E " << get_name() << "::create()\n "
-		<< " got unknown type" << std::endl;
+		<< " got unknown type : " << id << std::endl;
       return handle_unknown_type(id);
     }
 
@@ -207,7 +207,7 @@ Factory<Product, ID, Creator, FactoryErrorPolicy>::get_creator(ID& id)
   if (i==m_product_table.end()) 
     {
       std::cerr << "#E " << get_name() << "::get_creator()\n "
-		<< " got unknown type" << std::endl;
+		<< " got unknown type : " << id << std::endl;
       std::exit(1);
     }
 
@@ -232,7 +232,7 @@ Factory<Product, ID, Creator, FactoryErrorPolicy>::get_creator(const ID& id)
   if (i==m_product_table.end()) 
     {
       std::cerr << "#E " << get_name() << "::get_creator()\n "
-		<< " got unknown type" << std::endl;
+		<< " got unknown type : " << id << std::endl;
       std::exit(1);
     }
 

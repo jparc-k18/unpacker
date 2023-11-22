@@ -52,6 +52,8 @@
 #include "Easiroc.hh"
 #include "VmeEasiroc.hh"
 
+#include "Rayraw.hh"
+
 #include "VmeAmt.hh"
 #include "VmeUmemAD413A.hh"
 #include "VmeUmem3377.hh"
@@ -125,6 +127,8 @@ UnpackerRegister::UnpackerRegister()
   g_factory.add_entry(Easiroc::k_type,     create<Easiroc>);
   g_factory.add_entry(VmeEasiroc::k_type,     create<VmeEasiroc>);
 
+  g_factory.add_entry(Rayraw::k_type,     create<Rayraw>);
+  
   g_factory.add_entry(VmeAmt::k_type,        create<VmeAmt>);
   g_factory.add_entry(VmeUmemAD413A::k_type, create<VmeUmemAD413A>);
   g_factory.add_entry(VmeUmem3377::k_type,   create<VmeUmem3377>);
