@@ -49,35 +49,93 @@ namespace hddaq
 
       const_iterator itr_body = m_body_first;
 
-      // Data -----------------------------------------------
-      for(; itr_body != m_data_last; ++itr_body){
+      // static uint32_t pre_ch=-1;
+      // static uint32_t no_l[32] = {};
+      // static uint32_t no_t[32] = {};
 
+      // Data -----------------------------------------------
+
+      for(; itr_body != m_data_last; ++itr_body){
 	// Magic check
-	uint32_t data_type = (*itr_body >> k_TDC_MAGIC_SHIFT) & k_TDC_MAGIC_MASK;
-	uint32_t ch        = (*itr_body >> k_TDC_CH_SHIFT)    & k_TDC_CH_MASK;
-	uint32_t val       = (*itr_body >> k_TDC_DATA_SHIFT)  & k_TDC_DATA_MASK;
-	if(data_type == k_LEADING_MAGIC_WORD){
-	  fill( ch, k_leading, val);
-	}else if(data_type == k_TRAILING_MAGIC_WORD){
-	  fill( ch, k_trailing, val);     
-	}else{        // ADC
-	  data_type = (*itr_body >> k_ADC_MAGIC_SHIFT) & k_ADC_MAGIC_MASK;
-	  if(data_type == k_ADC_MAGIC_WORD){
-	    ch        = (*itr_body >> k_ADC_CH_SHIFT)    & k_ADC_CH_MASK;
-	    val       = (*itr_body >> k_ADC_DATA_SHIFT)  & k_ADC_DATA_MASK;
-	    fill( ch, k_fadc, val);
+	uint32_t data_type = (*itr_body >> k_ADC_MAGIC_SHIFT) & k_ADC_MAGIC_MASK;
+
+	// FADC
+	if(data_type == k_ADC_MAGIC_WORD){
+	  uint32_t ch        = (*itr_body >> k_ADC_CH_SHIFT)       & k_ADC_CH_MASK;
+	  uint32_t crs_cnt   = (*itr_body >> k_ADC_CRS_CNT_SHIFT)  & k_ADC_CRS_CNT_MASK;
+	  uint32_t val       = (*itr_body >> k_ADC_DATA_SHIFT)     & k_ADC_DATA_MASK;
+	  fill( ch, k_fadc, val);
+	}else{
+	  // TDC
+	  data_type = (*itr_body >> k_TDC_MAGIC_SHIFT) & k_TDC_MAGIC_MASK;
+
+	  if(data_type == k_LEADING_MAGIC_WORD){
+	    uint32_t ch        = (*itr_body >> k_TDC_CH_SHIFT)    & k_TDC_CH_MASK;
+	    uint32_t val       = (*itr_body >> k_TDC_DATA_SHIFT)  & k_TDC_DATA_MASK;
+	    fill( ch, k_leading, val);
+	  
+	  }else if(data_type == k_TRAILING_MAGIC_WORD){
+	    uint32_t ch        = (*itr_body >> k_TDC_CH_SHIFT)    & k_TDC_CH_MASK;
+	    uint32_t val       = (*itr_body >> k_TDC_DATA_SHIFT)  & k_TDC_DATA_MASK;
+	    fill( ch, k_trailing, val);
+
 	  }else{
+	    // Unknown
 	    cerr << "#W " << func_name << " Unknown data type ("
 		 << std::hex << *itr_body << std::dec
 		 << ")"
 		 << std::endl;
-	    Unpacker::dump_data(*this);
 	  }
 	}
+
+	//	Unpacker::dump_data(*this);
       }//for(i)
-      Unpacker::dump_data(*this);
-      return;
-    }
+    return;
+
+
+    // // Data -----------------------------------------------
+    // for(; itr_body != m_data_last; ++itr_body){
+
+    // 	// Magic check
+    // 	uint32_t data_type = (*itr_body >> k_TDC_MAGIC_SHIFT) & k_TDC_MAGIC_MASK;
+    // 	uint32_t ch        = (*itr_body >> k_TDC_CH_SHIFT)    & k_TDC_CH_MASK;
+    // 	uint32_t val       = (*itr_body >> k_TDC_DATA_SHIFT)  & k_TDC_DATA_MASK;
+    // 	if(data_type == k_LEADING_MAGIC_WORD){
+
+    // 	  fill( ch, k_leading, val);
+    // 	  std::cout << "\x1b[38;2;230;130;238m" << "decode: ch=" << ch << ", Leading=" << val << ", no[" << no_l[ch] + 1 << "]"<< "\x1b[m" << std::endl;
+    // 	  no_l[ch] += 1;
+
+    // 	}else if(data_type == k_TRAILING_MAGIC_WORD){
+
+    // 	  fill( ch, k_trailing, val);     
+    // 	  std::cout << "\x1b[38;2;50;205;50m" << "decode: ch=" << ch << ", Trailing=" << val << ", no[" << no_t[ch] + 1 << "]" << "\x1b[m" << std::endl;
+    // 	  no_t[ch] += 1;
+
+    // 	}else{        // ADC
+
+    // 	  data_type = (*itr_body >> k_ADC_MAGIC_SHIFT) & k_ADC_MAGIC_MASK;
+    // 	  if(data_type == k_ADC_MAGIC_WORD){
+    // 	    ch        = (*itr_body >> k_ADC_CH_SHIFT)    & k_ADC_CH_MASK;
+    // 	    val       = (*itr_body >> k_ADC_DATA_SHIFT)  & k_ADC_DATA_MASK;
+    // 	    fill( ch, k_fadc, val);
+    // 	      // if (ch != pre_ch)
+    // 	      // 	std::cout << "ch=" << ch << ", FADC=" << val << std::endl;
+
+    // 	      // pre_ch = ch;
+
+    // 	  }else{
+    // 	    cerr << "#W " << func_name << " Unknown data type ("
+    // 		 << std::hex << *itr_body << std::dec
+    // 		 << ")"
+    // 		 << std::endl;
+    // 	    Unpacker::dump_data(*this);
+    // 	  }
+    // 	}
+    // }//for(i)
+
+    //Unpacker::dump_data(*this);
+  }
 
     //______________________________________________________________________________
     void
@@ -108,7 +166,6 @@ namespace hddaq
       m_node_header = reinterpret_cast<DAQNode::Header*>(&(*m_data_first));
       m_header
 	= reinterpret_cast<Header*>(&(*(m_data_first +DAQNode::k_header_size)));
-
       m_body_first = m_data_first
 	+ DAQNode::k_header_size
 	+ Rayraw::k_header_size;

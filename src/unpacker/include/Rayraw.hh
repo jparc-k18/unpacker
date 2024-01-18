@@ -58,8 +58,8 @@ namespace hddaq
     {
     public:
       static const unpacker_type k_type;
-      static const uint32_t      k_n_one_block =  8;  //Channel per 1 ASIC
-      static const uint32_t      k_n_channel   =  32;  //Channel per 1 board
+      static const uint32_t      k_n_one_block  = 8;   //Channel per 1 ASIC
+      static const uint32_t      k_n_channel    = 32;  //Channel per 1 board
       enum e_data_type
 	{
 	  k_fadc,
@@ -80,7 +80,7 @@ namespace hddaq
 
       // Event Header -------------------------------------------------
       // Header 1
-      static const uint32_t k_HEADER_SIZE     = sizeof(Header)/sizeof(uint32_t);
+      static const uint32_t k_header_size     = sizeof(Header)/sizeof(uint32_t);
       static const uint32_t k_HEADER_MAGIC    = 0xffff0160U;
 
       // Header 2
@@ -90,17 +90,17 @@ namespace hddaq
       static const uint32_t k_EVSIZE_SHIFT    = 0U;
 
       // Header 3
-      static const uint32_t k_ENABLE_RM_MASK    = 0x1U;
-      static const uint32_t k_ENABLE_RM_SHIFT   = 23U;
-      static const uint32_t k_TRM_TAG_MASK      = 0xfU;
-      static const uint32_t k_TRM_TAG_SHIFT     = 16U;
-      static const uint32_t k_EVCOUNTER_MASK    = 0xffffU;
-      static const uint32_t k_EVCOUNTER_SHIFT   = 0U;
+      static const uint32_t k_ENABLE_RM_MASK   = 0x1U;
+      static const uint32_t k_ENABLE_RM_SHIFT  = 23U;
+      static const uint32_t k_TRM_TAG_MASK     = 0xfU;
+      static const uint32_t k_TRM_TAG_SHIFT    = 16U;
+      static const uint32_t k_EVCOUNTER_MASK   = 0xffffU;
+      static const uint32_t k_EVCOUNTER_SHIFT  = 0U;
 
 
       // TAG ----------------------------------------------------------
-      static const uint32_t k_LOCAL_TAG_ORIGIN = 0U;
-      static const uint32_t k_MAX_LOCAL_TAG    = 0xffffU;
+      static const uint32_t k_LOCAL_TAG_ORIGIN  = 0U;
+      static const uint32_t k_MAX_LOCAL_TAG     = 0xffffU;
 
 
       // Data block ---------------------------------------------------
@@ -116,14 +116,14 @@ namespace hddaq
       static const uint32_t k_ADC_DATA_SHIFT     = 0U;
 
       // TDC
-      static const uint32_t k_LEADING_MAGIC_WORD = 0xccU;
-      static const uint32_t k_TRAILING_MAGIC_WORD= 0xcdU;
-      static const uint32_t k_TDC_MAGIC_MASK     = 0xffU;
-      static const uint32_t k_TDC_MAGIC_SHIFT    = 24U;
-      static const uint32_t k_TDC_CH_MASK        = 0x7fU;
-      static const uint32_t k_TDC_CH_SHIFT       = 16U;
-      static const uint32_t k_TDC_DATA_MASK      = 0x7fffU;
-      static const uint32_t k_TDC_DATA_SHIFT     = 0U;
+      static const uint32_t k_LEADING_MAGIC_WORD   = 0xccU;
+      static const uint32_t k_TRAILING_MAGIC_WORD  = 0xcdU;
+      static const uint32_t k_TDC_MAGIC_MASK       = 0xffU;
+      static const uint32_t k_TDC_MAGIC_SHIFT      = 24U;
+      static const uint32_t k_TDC_CH_MASK          = 0x7fU;
+      static const uint32_t k_TDC_CH_SHIFT         = 16U;
+      static const uint32_t k_TDC_DATA_MASK        = 0x7fffU;
+      static const uint32_t k_TDC_DATA_SHIFT       = 0U;
 
 
     private:

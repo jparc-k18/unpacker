@@ -232,7 +232,11 @@ Factory<Product, ID, Creator, FactoryErrorPolicy>::get_creator(const ID& id)
   if (i==m_product_table.end()) 
     {
       std::cerr << "#E " << get_name() << "::get_creator()\n "
-		<< " got unknown type : " << id << std::endl;
+		// << " got unknown type : \n"
+		// << "id = " << id << "\n"
+		// << "m_product_tablr.find(id) = " << m_product_table.find(id) << "\n"
+		// << "m_product_table.end() = " << m_product_table.end() << "\n"
+		<< std::endl;
       std::exit(1);
     }
 
