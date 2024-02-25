@@ -59,16 +59,18 @@ namespace hddaq
 	// Magic check
 	uint32_t data_type = (*itr_body >> k_ADC_MAGIC_SHIFT) & k_ADC_MAGIC_MASK;
 
-	// FADC
+	// Waveform
 	if(data_type == k_ADC_MAGIC_WORD){
 	  uint32_t ch        = (*itr_body >> k_ADC_CH_SHIFT)       & k_ADC_CH_MASK;
 	  uint32_t crs_cnt   = (*itr_body >> k_ADC_CRS_CNT_SHIFT)  & k_ADC_CRS_CNT_MASK;
 	  uint32_t val       = (*itr_body >> k_ADC_DATA_SHIFT)     & k_ADC_DATA_MASK;
 	  fill( ch, k_fadc, val);
+
 	}else{
+
 	  // TDC
 	  data_type = (*itr_body >> k_TDC_MAGIC_SHIFT) & k_TDC_MAGIC_MASK;
-
+	  //	  std::cout << std::hex << "body= " << *itr_body << std::endl;
 	  if(data_type == k_LEADING_MAGIC_WORD){
 	    uint32_t ch        = (*itr_body >> k_TDC_CH_SHIFT)    & k_TDC_CH_MASK;
 	    uint32_t val       = (*itr_body >> k_TDC_DATA_SHIFT)  & k_TDC_DATA_MASK;
@@ -80,6 +82,7 @@ namespace hddaq
 	    fill( ch, k_trailing, val);
 
 	  }else{
+
 	    // Unknown
 	    cerr << "#W " << func_name << " Unknown data type ("
 		 << std::hex << *itr_body << std::dec

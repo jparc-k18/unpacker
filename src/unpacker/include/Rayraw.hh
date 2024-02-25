@@ -30,14 +30,13 @@
               [23:23] 0
               [22:16] Channel
               [15:15] 0
-              [14: 0] TDC data
-
+              [14: 0] TDC data (LSB : 1/(4*300) = 0.8333 ns)
 
  
   Header      : 3 words
   Flash ADC   : ???
   TDC         : 0 - ???
-  Total       : ??? 5 - 2055
+  Total       : ???
 
   *********************** End of data structure of RAYRAW ***********************/
 
