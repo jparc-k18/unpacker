@@ -65,6 +65,7 @@ namespace hddaq
 	  uint32_t crs_cnt   = (*itr_body >> k_ADC_CRS_CNT_SHIFT)  & k_ADC_CRS_CNT_MASK;
 	  uint32_t val       = (*itr_body >> k_ADC_DATA_SHIFT)     & k_ADC_DATA_MASK;
 	  fill( ch, k_fadc, val);
+	  fill( ch, k_crs_cnt, crs_cnt);
 
 	}else{
 

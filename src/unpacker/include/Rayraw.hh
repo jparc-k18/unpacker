@@ -4,7 +4,6 @@
 /***************************** Data structure of RAYRAW *****************************
 
  Header(3 words) + Data(Flash ADC & TDC)
-
  
     Header1 : [31: 0] Magic word (0xffff0160)
 
@@ -19,6 +18,11 @@
               [19:16] 0 (trmTag)
               [15: 0] Self-counter (Event number)
 
+        TDC : [31:24] Magic word (Leading: 0xcc, Trailing: 0xcd)
+              [23:23] 0
+              [22:16] Channel
+              [15:15] 0
+              [14: 0] TDC data (LSB : 1/(4*300MHz) = 0.8333 ns)
 
   Flash ADC : [31:28] Magic word (0xa)
               [27:23] Channel
@@ -26,17 +30,11 @@
               [20:10] Coarse-counter (LSB : 1/75MHz = 13.3333 ns)
               [ 9: 0] ADC data
 
-        TDC : [31:24] Magic word (Leading: 0xcc, Trailing: 0xcd)
-              [23:23] 0
-              [22:16] Channel
-              [15:15] 0
-              [14: 0] TDC data (LSB : 1/(4*300) = 0.8333 ns)
-
  
-  Header      : 3 words
-  Flash ADC   : ???
-  TDC         : 0 - ???
-  Total       : ???
+  Header    : 3 words
+  TDC       : 0 - ???
+  Flash ADC : depends on window size
+  Total     : 3 -
 
   *********************** End of data structure of RAYRAW ***********************/
 
@@ -62,6 +60,7 @@ namespace hddaq
       enum e_data_type
 	{
 	  k_fadc,
+	  k_crs_cnt,
 	  k_leading,
 	  k_trailing,
 	  k_overflow,
@@ -79,14 +78,14 @@ namespace hddaq
 
       // Event Header -------------------------------------------------
       // Header 1
-      static const uint32_t k_header_size     = sizeof(Header)/sizeof(uint32_t);
-      static const uint32_t k_HEADER_MAGIC    = 0xffff0160U;
-
-      // Header 2
-      static const uint32_t k_OVERFLOW_MASK   = 0x1U;
-      static const uint32_t k_OVERFLOW_SHIFT  = 18U;
-      static const uint32_t k_EVSIZE_MASK     = 0x3ffffU;
-      static const uint32_t k_EVSIZE_SHIFT    = 0U;
+      static const uint32_t k_header_size      = sizeof(Header)/sizeof(uint32_t);
+      static const uint32_t k_HEADER_MAGIC     = 0xffff0160U;
+					       
+      // Header 2			       
+      static const uint32_t k_OVERFLOW_MASK    = 0x1U;
+      static const uint32_t k_OVERFLOW_SHIFT   = 18U;
+      static const uint32_t k_EVSIZE_MASK      = 0x3ffffU;
+      static const uint32_t k_EVSIZE_SHIFT     = 0U;
 
       // Header 3
       static const uint32_t k_ENABLE_RM_MASK   = 0x1U;
@@ -103,6 +102,16 @@ namespace hddaq
 
 
       // Data block ---------------------------------------------------
+      // TDC
+      static const uint32_t k_LEADING_MAGIC_WORD   = 0xccU;
+      static const uint32_t k_TRAILING_MAGIC_WORD  = 0xcdU;
+      static const uint32_t k_TDC_MAGIC_MASK       = 0xffU;
+      static const uint32_t k_TDC_MAGIC_SHIFT      = 24U;
+      static const uint32_t k_TDC_CH_MASK          = 0x7fU;
+      static const uint32_t k_TDC_CH_SHIFT         = 16U;
+      static const uint32_t k_TDC_DATA_MASK        = 0x7fffU;
+      static const uint32_t k_TDC_DATA_SHIFT       = 0U;
+
       // Flash ADC
       static const uint32_t k_ADC_MAGIC_WORD     = 0xaU;
       static const uint32_t k_ADC_MAGIC_MASK     = 0xfU;
@@ -113,16 +122,6 @@ namespace hddaq
       static const uint32_t k_ADC_CRS_CNT_SHIFT  = 10U;
       static const uint32_t k_ADC_DATA_MASK      = 0x3ffU;
       static const uint32_t k_ADC_DATA_SHIFT     = 0U;
-
-      // TDC
-      static const uint32_t k_LEADING_MAGIC_WORD   = 0xccU;
-      static const uint32_t k_TRAILING_MAGIC_WORD  = 0xcdU;
-      static const uint32_t k_TDC_MAGIC_MASK       = 0xffU;
-      static const uint32_t k_TDC_MAGIC_SHIFT      = 24U;
-      static const uint32_t k_TDC_CH_MASK          = 0x7fU;
-      static const uint32_t k_TDC_CH_SHIFT         = 16U;
-      static const uint32_t k_TDC_DATA_MASK        = 0x7fffU;
-      static const uint32_t k_TDC_DATA_SHIFT       = 0U;
 
 
     private:
