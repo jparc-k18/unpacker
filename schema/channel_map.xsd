@@ -130,27 +130,28 @@
   -->
   <xs:group name="vmeModuleGroup">
     <xs:choice>
-      <xs:element name="VmeAPVDaq"     type="VmeModuleType"/>
-      <xs:element name="VmeSmp"        type="VmeSmpType"/>
-      <xs:element name="VmeRpv130"     type="VmeModuleType"/>
-      <xs:element name="VmeRpv100"     type="VmeModuleType"/>
-      <xs:element name="VmeCaenV775"   type="VmeModuleType"/>
-      <xs:element name="VmeCaenV792"   type="VmeModuleType"/>
-      <xs:element name="VmeCaenV820"   type="VmeModuleType"/>
-      <xs:element name="VmeCaenV830"   type="VmeModuleType"/>
-      <xs:element name="VmeCaenV1724"  type="VmeModuleType"/>
-      <xs:element name="VmeCaenV1743"  type="VmeModuleType"/>
-      <xs:element name="VmeEmc"        type="VmeModuleType"/>
-      <xs:element name="VmeInputReg"   type="VmeModuleType"/>
-      <xs:element name="VmeTdc64M"     type="VmeModuleType"/>
-      <xs:element name="VmeRm"         type="VmeModuleType"/>
-      <xs:element name="VmeAmt"        type="VmeModuleType"/>
-      <xs:element name="VmeUmem"       type="VmeUmemType"/>
-      <xs:element name="HBJTimeStamp"  type="VmeModuleType"/>
-      <xs:element name="VVmeCamacRm"   type="VmeModuleType"/>
-      <xs:element name="VVmeFERA4300B" type="VmeModuleType"/>
-      <xs:element name="VVmeCoinReg"   type="VmeModuleType"/>
-      <xs:element name="VmeV1290A"     type="VmeModuleType"/>
+      <xs:element name="VmeAPVDaq"          type="VmeModuleType"/>
+      <xs:element name="VmeSmp"             type="VmeSmpType"/>
+      <xs:element name="VmeRpv130"          type="VmeModuleType"/>
+      <xs:element name="VmeRpv100"          type="VmeModuleType"/>
+      <xs:element name="VmeCaenV775"        type="VmeModuleType"/>
+      <xs:element name="VmeCaenV792"        type="VmeModuleType"/>
+      <xs:element name="VmeCaenV820"        type="VmeModuleType"/>
+      <xs:element name="VmeCaenV830"        type="VmeModuleType"/>
+      <xs:element name="VmeCaenV1724"       type="VmeModuleType"/>
+      <xs:element name="VmeCaenV1725ZLE"    type="VmeModuleType"/>
+      <xs:element name="VmeCaenV1743"       type="VmeModuleType"/>
+      <xs:element name="VmeEmc"             type="VmeModuleType"/>
+      <xs:element name="VmeInputReg"        type="VmeModuleType"/>
+      <xs:element name="VmeTdc64M"          type="VmeModuleType"/>
+      <xs:element name="VmeRm"              type="VmeModuleType"/>
+      <xs:element name="VmeAmt"             type="VmeModuleType"/>
+      <xs:element name="VmeUmem"            type="VmeUmemType"/>
+      <xs:element name="HBJTimeStamp"       type="VmeModuleType"/>
+      <xs:element name="VVmeCamacRm"        type="VmeModuleType"/>
+      <xs:element name="VVmeFERA4300B"      type="VmeModuleType"/>
+      <xs:element name="VVmeCoinReg"        type="VmeModuleType"/>
+      <xs:element name="VmeV1290A"          type="VmeModuleType"/>
       <xs:group   ref="feGroup"/>
     </xs:choice>
   </xs:group>
@@ -217,6 +218,7 @@
       <xs:element name="VmeCaenV820"        type="VmeModuleType"/>
       <xs:element name="VmeCaenV830"        type="VmeModuleType"/>
       <xs:element name="VmeCaenV1724"       type="VmeModuleType"/>
+      <xs:element name="VmeCaenV1725ZLE"    type="VmeModuleType"/>
       <xs:element name="VmeCaenV1743"       type="VmeModuleType"/>
       <xs:element name="VmeEmc"             type="VmeModuleType"/>
       <xs:element name="VmeInputReg"        type="VmeModuleType"/>
