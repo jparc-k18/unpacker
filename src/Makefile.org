@@ -21,7 +21,13 @@ CXXFLAGS	+= -std=c++17
 # optimize
 CXXFLAGS	+= $(subst x86_64,-m64,$(findstring x86_64,$(shell uname -m)))
 CXXFLAGS	+= -ftree-vectorize
-CXXFLAGS	+= -msse2
+
+ifeq ($(shell uname -m), aarch64)
+	CXXFLAGS	+= -march=armv8-a+simd
+else
+	CXXFLAGS	+= -msse2
+endif
+
 #CXXFLAGS	+= -ftree-vectorizer-verbose=7
 DEBUGFLAGS	:= -pg -g
 DEBUGFLAGS	+= -DRANGE_CHECK
