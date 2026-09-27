@@ -1,6 +1,6 @@
 // -*- C++ -*-
 
-// Author: Tomonori Takahashi 
+// Author: Tomonori Takahashi
 
 #ifndef HDDAQ__FACTORY_H
 #define HDDAQ__FACTORY_H
@@ -20,7 +20,7 @@
 namespace hddaq
 {
 
-  template 
+  template
   <
     typename Product,
     typename ID,
@@ -32,7 +32,7 @@ namespace hddaq
   class Factory
     : public FactoryErrorPolicy<Product, ID>
   {
-    
+
   public:
     typedef Product product_type;
     typedef ID      id_type;
@@ -41,7 +41,7 @@ namespace hddaq
   private:
     typename std::map<ID, Creator> m_product_table;
 //     Mutex                          m_mutex;
-    
+
   public:
              Factory();
     virtual ~Factory();
@@ -55,7 +55,7 @@ namespace hddaq
     Product*     create(const ID& id);
     Creator&     get_creator(ID& id);
     Creator&     get_creator(const ID& id);
-    virtual const std::string 
+    virtual const std::string
                  get_name() const = 0;
     bool         remove_entry(ID& id);
     bool         remove_entry(const ID& id);
@@ -63,11 +63,11 @@ namespace hddaq
   };
 
 //______________________________________________________________________________
-template 
+template
 <
- typename Product, 
- typename ID, 
- typename Creator, 
+ typename Product,
+ typename ID,
+ typename Creator,
  template <typename, typename> class FactoryErrorPolicy
 >
 inline
@@ -78,11 +78,11 @@ Factory<Product, ID, Creator, FactoryErrorPolicy>::Factory()
 }
 
 //______________________________________________________________________________
-template 
+template
 <
- typename Product, 
- typename ID, 
- typename Creator, 
+ typename Product,
+ typename ID,
+ typename Creator,
  template <typename, typename> class FactoryErrorPolicy
 >
 inline
@@ -91,15 +91,15 @@ Factory<Product, ID, Creator, FactoryErrorPolicy>::~Factory()
 }
 
 //______________________________________________________________________________
-template 
+template
 <
- typename Product, 
- typename ID, 
- typename Creator, 
+ typename Product,
+ typename ID,
+ typename Creator,
  template <typename, typename> class FactoryErrorPolicy
 >
 inline
-void 
+void
 Factory<Product, ID, Creator, FactoryErrorPolicy>::hoge() const
 {
   std::cout << "#D Facotry::hoge()" << std::endl;
@@ -107,16 +107,16 @@ Factory<Product, ID, Creator, FactoryErrorPolicy>::hoge() const
 }
 
 //______________________________________________________________________________
-template 
+template
 <
- typename Product, 
- typename ID, 
- typename Creator, 
+ typename Product,
+ typename ID,
+ typename Creator,
  template <typename, typename> class FactoryErrorPolicy
 >
 inline
 bool
-Factory<Product, ID, Creator, FactoryErrorPolicy>::add_entry(ID& id, 
+Factory<Product, ID, Creator, FactoryErrorPolicy>::add_entry(ID& id,
 							     Creator creator)
 {
 //   ScopedLock<Mutex> lock(m_mutex);
@@ -125,16 +125,16 @@ Factory<Product, ID, Creator, FactoryErrorPolicy>::add_entry(ID& id,
 
 
 //______________________________________________________________________________
-template 
+template
 <
- typename Product, 
- typename ID, 
- typename Creator, 
+ typename Product,
+ typename ID,
+ typename Creator,
  template <typename, typename> class FactoryErrorPolicy
 >
 inline
 bool
-Factory<Product, ID, Creator, FactoryErrorPolicy>::add_entry(const ID& id, 
+Factory<Product, ID, Creator, FactoryErrorPolicy>::add_entry(const ID& id,
 							     Creator creator)
 {
 //   ScopedLock<Mutex> lock(m_mutex);
@@ -142,11 +142,11 @@ Factory<Product, ID, Creator, FactoryErrorPolicy>::add_entry(const ID& id,
 }
 
 //______________________________________________________________________________
-template 
+template
 <
- typename Product, 
- typename ID, 
- typename Creator, 
+ typename Product,
+ typename ID,
+ typename Creator,
  template <typename, typename> class FactoryErrorPolicy
 >
 inline
@@ -155,22 +155,22 @@ Factory<Product, ID, Creator, FactoryErrorPolicy>::create(ID& id)
 {
 //   ScopedLock<Mutex> lock(m_mutex);
   typename std::map<ID, Creator>::iterator i = m_product_table.find(id);
-  
-  if (i!=m_product_table.end()) 
+
+  if (i!=m_product_table.end())
     {
       return (i->second)();
     }
   std::cerr << "#E " << get_name() << "::create()\n "
-	    << " got unknown id : " << id << std::endl;
+	    << " got unknown type: " << id << std::endl;
   return handle_unknown_type(id);
 }
 
 //______________________________________________________________________________
-template 
+template
 <
- typename Product, 
- typename ID, 
- typename Creator, 
+ typename Product,
+ typename ID,
+ typename Creator,
  template <typename, typename> class FactoryErrorPolicy
 >
 inline
@@ -179,11 +179,11 @@ Factory<Product, ID, Creator, FactoryErrorPolicy>::create(const ID& id)
 {
 //   ScopedLock<Mutex> lock(m_mutex);
   typename std::map<ID, Creator>::iterator i = m_product_table.find(id);
-  
-  if (i==m_product_table.end()) 
+
+  if (i==m_product_table.end())
     {
       std::cerr << "#E " << get_name() << "::create()\n "
-		<< " got unknown type" << std::endl;
+		<< " got unknown type: " << id << std::endl;
       return handle_unknown_type(id);
     }
 
@@ -191,11 +191,11 @@ Factory<Product, ID, Creator, FactoryErrorPolicy>::create(const ID& id)
 }
 
 //______________________________________________________________________________
-template 
+template
 <
- typename Product, 
- typename ID, 
- typename Creator, 
+ typename Product,
+ typename ID,
+ typename Creator,
  template <typename, typename> class FactoryErrorPolicy
 >
 inline
@@ -203,11 +203,11 @@ Creator&
 Factory<Product, ID, Creator, FactoryErrorPolicy>::get_creator(ID& id)
 {
   typename std::map<ID, Creator>::iterator i = m_product_table.find(id);
-  
-  if (i==m_product_table.end()) 
+
+  if (i==m_product_table.end())
     {
       std::cerr << "#E " << get_name() << "::get_creator()\n "
-		<< " got unknown type" << std::endl;
+		<< " got unknown type: " << id << std::endl;
       std::exit(1);
     }
 
@@ -216,11 +216,11 @@ Factory<Product, ID, Creator, FactoryErrorPolicy>::get_creator(ID& id)
 
 
 //______________________________________________________________________________
-template 
+template
 <
- typename Product, 
- typename ID, 
- typename Creator, 
+ typename Product,
+ typename ID,
+ typename Creator,
  template <typename, typename> class FactoryErrorPolicy
 >
 inline
@@ -228,11 +228,11 @@ Creator&
 Factory<Product, ID, Creator, FactoryErrorPolicy>::get_creator(const ID& id)
 {
   typename std::map<ID, Creator>::iterator i = m_product_table.find(id);
-  
-  if (i==m_product_table.end()) 
+
+  if (i==m_product_table.end())
     {
       std::cerr << "#E " << get_name() << "::get_creator()\n "
-		<< " got unknown type" << std::endl;
+		<< " got unknown type: " << id << std::endl;
       std::exit(1);
     }
 
@@ -240,11 +240,11 @@ Factory<Product, ID, Creator, FactoryErrorPolicy>::get_creator(const ID& id)
 }
 
 //______________________________________________________________________________
-template 
+template
 <
- typename Product, 
- typename ID, 
- typename Creator, 
+ typename Product,
+ typename ID,
+ typename Creator,
  template <typename, typename> class FactoryErrorPolicy
 >
 inline
@@ -255,11 +255,11 @@ Factory<Product, ID, Creator, FactoryErrorPolicy>::remove_entry(ID& id)
 }
 
 //______________________________________________________________________________
-template 
+template
 <
- typename Product, 
- typename ID, 
- typename Creator, 
+ typename Product,
+ typename ID,
+ typename Creator,
  template <typename, typename> class FactoryErrorPolicy
 >
 inline
