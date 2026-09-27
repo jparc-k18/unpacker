@@ -109,25 +109,25 @@ UnpackerRegister::UnpackerRegister()
   g_factory.add_entry(TkoMHTdc::k_type,     create<TkoMHTdc>);
   g_factory.add_entry(TkoMHTdcCSds::k_type, create<TkoMHTdcCSds>);
 
-  g_factory.add_entry(VmeAPVDaq::k_type,   create<VmeAPVDaq>);
-  g_factory.add_entry(VmeCaenV775::k_type, create<VmeCaenV775>);
-  g_factory.add_entry(VmeCaenV792::k_type, create<VmeCaenV792>);
-  g_factory.add_entry(VmeCaenV820::k_type, create<VmeCaenV820>);
-  g_factory.add_entry(VmeCaenV830::k_type, create<VmeCaenV830>);
-  g_factory.add_entry(VmeCaenV1724::k_type, create<VmeCaenV1724>);
+  g_factory.add_entry(VmeAPVDaq::k_type,       create<VmeAPVDaq>);
+  g_factory.add_entry(VmeCaenV775::k_type,     create<VmeCaenV775>);
+  g_factory.add_entry(VmeCaenV792::k_type,     create<VmeCaenV792>);
+  g_factory.add_entry(VmeCaenV820::k_type,     create<VmeCaenV820>);
+  g_factory.add_entry(VmeCaenV830::k_type,     create<VmeCaenV830>);
+  g_factory.add_entry(VmeCaenV1724::k_type,    create<VmeCaenV1724>);
   g_factory.add_entry(VmeCaenV1725ZLE::k_type, create<VmeCaenV1725ZLE>);
-  g_factory.add_entry(VmeCaenV1743::k_type, create<VmeCaenV1743>);
-  g_factory.add_entry(VmeEmc::k_type,      create<VmeEmc>);
-  g_factory.add_entry(VmeInputReg::k_type, create<VmeInputReg>);
-  g_factory.add_entry(VmeTdc64M::k_type,   create<VmeTdc64M>);
-  g_factory.add_entry(VmeRm::k_type,       create<VmeRm>);
-  g_factory.add_entry(VmeRpv100::k_type,   create<VmeRpv100>);
-  g_factory.add_entry(VmeRpv130::k_type,   create<VmeRpv130>);
-  g_factory.add_entry(VmeMaster::k_type,   create<VmeMaster>);
-  g_factory.add_entry(VmeSmp::k_type,      create<VmeSmp>);
-  g_factory.add_entry(VmeV1290A::k_type,   create<VmeV1290A>);
-  g_factory.add_entry(Easiroc::k_type,     create<Easiroc>);
-  g_factory.add_entry(VmeEasiroc::k_type,     create<VmeEasiroc>);
+  g_factory.add_entry(VmeCaenV1743::k_type,    create<VmeCaenV1743>);
+  g_factory.add_entry(VmeEmc::k_type,          create<VmeEmc>);
+  g_factory.add_entry(VmeInputReg::k_type,     create<VmeInputReg>);
+  g_factory.add_entry(VmeTdc64M::k_type,       create<VmeTdc64M>);
+  g_factory.add_entry(VmeRm::k_type,           create<VmeRm>);
+  g_factory.add_entry(VmeRpv100::k_type,       create<VmeRpv100>);
+  g_factory.add_entry(VmeRpv130::k_type,       create<VmeRpv130>);
+  g_factory.add_entry(VmeMaster::k_type,       create<VmeMaster>);
+  g_factory.add_entry(VmeSmp::k_type,          create<VmeSmp>);
+  g_factory.add_entry(VmeV1290A::k_type,       create<VmeV1290A>);
+  g_factory.add_entry(Easiroc::k_type,         create<Easiroc>);
+  g_factory.add_entry(VmeEasiroc::k_type,      create<VmeEasiroc>);
 
   g_factory.add_entry(Rayraw::k_type, create<Rayraw>);
 
@@ -143,8 +143,8 @@ UnpackerRegister::UnpackerRegister()
   g_factory.add_entry(VVmeFERA4300B::k_type, create<VVmeFERA4300B>);
   g_factory.add_entry(VVmeCoinReg::k_type,   create<VVmeCoinReg>);
 
-  g_factory.add_entry(GetCoBoMaster::k_type,   create<GetCoBoMaster>);
-  g_factory.add_entry(GetAsAd::k_type,         create<GetAsAd>);
+  g_factory.add_entry(GetCoBoMaster::k_type, create<GetCoBoMaster>);
+  g_factory.add_entry(GetAsAd::k_type,       create<GetAsAd>);
 
 }
 
