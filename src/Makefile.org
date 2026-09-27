@@ -87,14 +87,14 @@ ext_libs	:= -lz -lbz2 -lpthread -lxerces-c
 # $(xercesc_rpath) -L$(xercesc_libdir) -lxerces-c
 
 #### HD DAQ ####
-src_top_dir	:= $(PWD)
+src_top_dir	:= $(CURDIR)
 include_dir	:= ../include
 lib_dir		:= ../lib
 schema_dir	:= ../schema
 bin_dir		:= ../bin
 
 packages	:= $(filter-out -%,$(shell cat Unpacker_Packages.txt))
-rpath_dir	:= $(subst src,lib,$(src_top_dir))
+rpath_dir	:= $(abspath $(src_top_dir)/../lib)
 
 script_dir	:= script
 script_src	:= $(script_dir)/unpacker-config
