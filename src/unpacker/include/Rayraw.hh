@@ -3,11 +3,13 @@
 // Author: Rintaro Kurata
 
 /**
- * Data structure of RAYRAW
+ * Data structure of RAYRAW-v2
+ * Note: The magic word of RAYRAW-v2 is 0xffff0162, which
+ *       differs from that of RAYRAW-v1 (0xffff0160).
  *
  * Header (3 words) + Data (Flash ADC & TDC)
  *
- *   Header1 : [31: 0] Magic word (0xffff0160)
+ *   Header1 : [31: 0] Magic word (0xffff0162)
  *
  *   Header2 : [31:20] 0xff0
  *             [19:19] 0
@@ -76,7 +78,7 @@ public:
   // Event Header -------------------------------------------------
   // Header 1
   static const uint32_t k_header_size     = sizeof(Header)/sizeof(uint32_t);
-  static const uint32_t k_HEADER_MAGIC    = 0xffff0160U;
+  static const uint32_t k_HEADER_MAGIC    = 0xffff0162U;
 
   // Header 2
   static const uint32_t k_OVERFLOW_MASK   = 0x1U;
